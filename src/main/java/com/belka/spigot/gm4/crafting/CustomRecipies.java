@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.crafting;
 
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +22,7 @@ public class CustomRecipies implements Listener {
 	public static void CRAFT(Dropper dr) {
 		int amount = 0;
 		for(int i = 1; i <= 64; i++) {
-			if(mc.getConfig().getBoolean("options.CustomCrafter.StandardCrafting")) {
+			if(mc.getConfig().getBoolean("modules.CustomCrafter.StandardCrafting")) {
 				if(GRAVEL(dr, i)) {
 					amount = 1 * i;
 					dr.getInventory().clear();
@@ -89,7 +90,7 @@ public class CustomRecipies implements Listener {
 					playSound(dr);
 				}
 			}
-			if(mc.getConfig().getBoolean("options.CustomCrafter.RecordCrafting")) {
+			if(mc.getConfig().getBoolean("modules.CustomCrafter.RecordCrafting")) {
 				if(RECORD_13(dr, i)) {
 					amount = 1 * i;
 					dr.getInventory().clear();
@@ -163,7 +164,7 @@ public class CustomRecipies implements Listener {
 					playSound(dr);
 				}
 			}
-			if(mc.getConfig().getBoolean("HeartCanisters")) {
+			if(mc.getConfig().getBoolean("modules.HeartCanisters.enabled")) {
 				if(HEART_CANISTER_TIER_1(dr, i)) {
 					amount = 1 * i;
 					dr.getInventory().clear();
@@ -280,7 +281,7 @@ public class CustomRecipies implements Listener {
 				}
 			}
 			else {
-				if(five.equals(new ItemStack(Material.STEP, amount))) {
+				if(five.equals(new ItemStack(Material.SANDSTONE_SLAB, amount))) {
 					if(five.getAmount() == amount) {
 						return true;
 					}
@@ -302,7 +303,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.SAND, amount)) && two.equals(new ItemStack(Material.SAND, amount)) && three.equals(new ItemStack(Material.SAND, amount)) &&
-				four.equals(new ItemStack(Material.SAND, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount)) && six.equals(new ItemStack(Material.SAND, amount)) &&
+				four.equals(new ItemStack(Material.SAND, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.SAND, amount)) &&
 				seven.equals(new ItemStack(Material.SAND, amount)) && eight.equals(new ItemStack(Material.SAND, amount)) && nine.equals(new ItemStack(Material.SAND, amount))) {
 				return true;
 			}
@@ -351,33 +352,33 @@ public class CustomRecipies implements Listener {
 		ItemStack eight = dr.getInventory().getItem(7);
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one == null && two == null && three == null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-			if((four.equals(new ItemStack(Material.LEAVES, amount)) ||
-					four.equals(new ItemStack(Material.LEAVES, amount)) ||
-					four.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
-					four.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
-					four.equals(new ItemStack(Material.LEAVES_2, amount)) ||
-					four.equals(new ItemStack(Material.LEAVES_2, amount))) &&
-				
-				(five.equals(new ItemStack(Material.LEAVES, amount)) ||
-					five.equals(new ItemStack(Material.LEAVES, amount)) ||
-					five.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
-					five.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
-					five.equals(new ItemStack(Material.LEAVES_2, amount)) ||
-					five.equals(new ItemStack(Material.LEAVES_2, amount))) &&
-				
-				(six.equals(new ItemStack(Material.LEAVES, amount)) ||
-					six.equals(new ItemStack(Material.LEAVES, amount)) ||
-					six.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
-					six.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
-					six.equals(new ItemStack(Material.LEAVES_2, amount)) ||
-					six.equals(new ItemStack(Material.LEAVES_2, amount))) &&
-				
-				seven.equals(new ItemStack(Material.GRASS, amount)) && eight.equals(new ItemStack(Material.GRASS, amount)) && nine.equals(new ItemStack(Material.GRASS, amount))) {
+//			if((four.equals(new ItemStack(Material.LEAVES, amount)) ||
+//					four.equals(new ItemStack(Material.LEAVES, amount)) ||
+//					four.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
+//					four.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
+//					four.equals(new ItemStack(Material.LEAVES_2, amount)) ||
+//					four.equals(new ItemStack(Material.LEAVES_2, amount))) &&
+//
+//				(five.equals(new ItemStack(Material.LEAVES, amount)) ||
+//					five.equals(new ItemStack(Material.LEAVES, amount)) ||
+//					five.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
+//					five.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
+//					five.equals(new ItemStack(Material.LEAVES_2, amount)) ||
+//					five.equals(new ItemStack(Material.LEAVES_2, amount))) &&
+//
+//				(six.equals(new ItemStack(Material.LEAVES, amount)) ||
+//					six.equals(new ItemStack(Material.LEAVES, amount)) ||
+//					six.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
+//					six.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
+//					six.equals(new ItemStack(Material.LEAVES_2, amount)) ||
+//					six.equals(new ItemStack(Material.LEAVES_2, amount))) &&
+//
+//				seven.equals(new ItemStack(Material.GRASS, amount)) && eight.equals(new ItemStack(Material.GRASS, amount)) && nine.equals(new ItemStack(Material.GRASS, amount))) {
 				return true;
-			}
-			else {
-				return false;
-			}
+//			}
+//			else {
+//				return false;
+//			}
 		}
 		else {
 			return false;
@@ -468,7 +469,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount1)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -493,7 +494,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount, (byte) 2)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount, (byte) 2)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -518,7 +519,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount4)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -543,7 +544,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -568,7 +569,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount0)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -593,7 +594,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount, (byte) 5)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount, (byte) 5)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -618,7 +619,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount3)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -643,7 +644,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -668,7 +669,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount5)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -693,7 +694,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.EYE_OF_ENDER, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.ENDER_EYE, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -743,7 +744,7 @@ public class CustomRecipies implements Listener {
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
 			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SACK, amount2)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
+				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
 				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
 				return true;
 			}
@@ -793,9 +794,9 @@ public class CustomRecipies implements Listener {
 		ItemStack eight = dr.getInventory().getItem(7);
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-			if(one.equals(new ItemStack(Material.ENDER_STONE, amount)) && two.equals(new ItemStack(Material.GOLDEN_APPLE, amount)) && three.equals(new ItemStack(Material.ENDER_STONE, amount)) &&
+			if(one.equals(new ItemStack(Material.END_STONE, amount)) && two.equals(new ItemStack(Material.GOLDEN_APPLE, amount)) && three.equals(new ItemStack(Material.END_STONE, amount)) &&
 				four.equals(new ItemStack(Material.DIAMOND, amount)) && five.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.WHITE + "Heart Cansister") && five.getItemMeta().getLore().contains(ChatColor.DARK_PURPLE + "Tier 1") && six.equals(new ItemStack(Material.DIAMOND, amount)) &&
-				seven.equals(new ItemStack(Material.ENDER_STONE, amount)) && eight.equals(new ItemStack(Material.NETHER_STAR, amount)) && nine.equals(new ItemStack(Material.ENDER_STONE, amount))) {
+				seven.equals(new ItemStack(Material.END_STONE, amount)) && eight.equals(new ItemStack(Material.NETHER_STAR, amount)) && nine.equals(new ItemStack(Material.END_STONE, amount))) {
 				return true;
 			}
 			else {
@@ -819,9 +820,9 @@ public class CustomRecipies implements Listener {
 		ItemStack eight = dr.getInventory().getItem(7);
 		ItemStack nine = dr.getInventory().getItem(8);
 		if(one != null && two != null && three != null && four == null && five != null && six == null && seven != null && eight != null && nine != null) {
-			if(one.equals(new ItemStack(Material.IRON_FENCE, 1)) && two.equals(new ItemStack(Material.IRON_BLOCK, 1)) && three.equals(new ItemStack(Material.IRON_FENCE, 1)) &&
-				five.equals(new ItemStack(Material.PISTON_BASE, 1)) &&
-				seven.equals(new ItemStack(Material.REDSTONE_COMPARATOR, 1)) && eight.equals(new ItemStack(Material.REDSTONE_TORCH_ON, 1)) && nine.equals(new ItemStack(Material.REDSTONE_COMPARATOR, 1))) {
+			if(one.equals(new ItemStack(Material.IRON_BARS, 1)) && two.equals(new ItemStack(Material.IRON_BLOCK, 1)) && three.equals(new ItemStack(Material.IRON_BARS, 1)) &&
+				five.equals(new ItemStack(Material.PISTON, 1)) &&
+				seven.equals(new ItemStack(Material.COMPARATOR, 1)) && eight.equals(new ItemStack(Material.REDSTONE_TORCH, 1)) && nine.equals(new ItemStack(Material.COMPARATOR, 1))) {
 				return true;
 			}
 			else {

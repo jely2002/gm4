@@ -61,7 +61,7 @@ public class CustomCrafter implements Listener {
 			Block b = loc.subtract(0.0, 1.0, 0.0).getBlock();
 			if(b.getBlockData().getMaterial() == Material.DROPPER && b instanceof Dropper) {
 				Dropper dr = (Dropper) b.getState();
-				List<String> active = mc.getConfig().getStringList("options.CustomCrafter.active");
+				List<String> active = mc.getConfig().getStringList("modules.CustomCrafter.customCrafters");
 				if(!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
 //					if(crafting.checkRecipe(dr)) {
 						Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
@@ -84,7 +84,7 @@ public class CustomCrafter implements Listener {
 
 						e.getItemDrop().remove();
 						active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
-						mc.getConfig().set("options.CustomCrafter.active", active);
+						mc.getConfig().set("modules.CustomCrafter.customCrafters", active);
 						mc.saveConfig();
 //					}
 				}
@@ -95,13 +95,13 @@ public class CustomCrafter implements Listener {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
 		Block b = event.getBlock();
-		List<String> active = mc.getConfig().getStringList("options.CustomCrafter.active");
+		List<String> active = mc.getConfig().getStringList("modules.CustomCrafter.customCrafters");
 		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
 			b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), new ItemStack(Material.COBBLESTONE, 7));
 			b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), new ItemStack(Material.REDSTONE, 1));
 			b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), new ItemStack(Material.CRAFTING_TABLE, 1));
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
-			mc.getConfig().set("options.CustomCrafter.active", active);
+			mc.getConfig().set("modules.CustomCrafter.customCrafters", active);
 			mc.saveConfig();
 			for(Entity e : mc.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
