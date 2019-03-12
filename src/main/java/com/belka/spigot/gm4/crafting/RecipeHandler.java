@@ -9,13 +9,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class RecipeHandler {
 
-	ArrayList<Recipe> recipes = new ArrayList<Recipe>();
-	ArrayList<Integer> amounts = new ArrayList<Integer>();
+	private ArrayList<Recipe> recipes = new ArrayList<>();
+	private ArrayList<Integer> amounts = new ArrayList<>();
 	
 	private CustomItems customItems = new CustomItems();
 
 	public boolean checkRecipe(Dropper dr) { //TODO Extract blocks in dropper here.
-		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> items = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			items.add(dr.getInventory().getItem(i));
 		}
@@ -29,9 +29,10 @@ public class RecipeHandler {
 						
 					}
 					//Check if all amounts are equal.
-					if(!(amounts.stream().distinct().limit(2).count() <= 1)) {
+					if (!(amounts.stream().distinct().limit(2).count() <= 1)) {
 						return false;
-					} else {
+					}
+					else {
 						int amount = amounts.get(0);
 						dr.getInventory().clear();
 						ItemStack itemToGive = new ItemStack(r.getBlockToDrop());
@@ -80,13 +81,13 @@ public class RecipeHandler {
 				new ItemStack(Material.SAND),
 				new ItemStack(Material.SAND),
 				new ItemStack(Material.SAND),
-				new ItemStack(Material.INK_SACK, 1, (short) 1),
+				new ItemStack(Material.INK_SAC, 1),
 				new ItemStack(Material.SAND),
 				new ItemStack(Material.SAND),
 				new ItemStack(Material.SAND),
 				new ItemStack(Material.SAND),
 				8, //Amount
-				new ItemStack(Material.SAND, 1, (short) 1)); //Item to be crafted
+				new ItemStack(Material.SAND, 1)); //Item to be crafted
 		recipes.add(redSand);
 		
 		Recipe sand4 = new Recipe(
@@ -108,7 +109,7 @@ public class RecipeHandler {
 				new ItemStack(Material.AIR),
 				new ItemStack(Material.AIR),
 				new ItemStack(Material.AIR),
-				new ItemStack(Material.STEP, 1, (short) 1),
+				new ItemStack(Material.SANDSTONE_SLAB, 1),
 				new ItemStack(Material.AIR),
 				new ItemStack(Material.AIR),
 				new ItemStack(Material.AIR),
@@ -128,7 +129,7 @@ public class RecipeHandler {
 				Material.STRING,
 				Material.STRING,
 				1, //Amount
-				new ItemStack(Material.WEB)); //Item to be crafted
+				new ItemStack(Material.COBWEB)); //Item to be crafted
 		recipes.add(cobweb);
 		
 		Recipe ironHorseArmor = new Recipe(
@@ -142,7 +143,7 @@ public class RecipeHandler {
 				Material.AIR,
 				Material.IRON_INGOT,
 				1, //Amount
-				new ItemStack(Material.IRON_BARDING)); //Item to be crafted
+				new ItemStack(Material.IRON_HORSE_ARMOR)); //Item to be crafted
 		recipes.add(ironHorseArmor);
 		
 		Recipe goldHorseArmor = new Recipe(
@@ -156,7 +157,7 @@ public class RecipeHandler {
 				Material.AIR,
 				Material.GOLD_INGOT,
 				1, //Amount
-				new ItemStack(Material.GOLD_BARDING)); //Item to be crafted
+				new ItemStack(Material.GOLDEN_HORSE_ARMOR)); //Item to be crafted
 		recipes.add(goldHorseArmor);
 		
 		Recipe diamondHorseArmor = new Recipe(
@@ -170,7 +171,7 @@ public class RecipeHandler {
 				Material.AIR,
 				Material.DIAMOND,
 				1, //Amount
-				new ItemStack(Material.DIAMOND_BARDING)); //Item to be crafted
+				new ItemStack(Material.DIAMOND_HORSE_ARMOR)); //Item to be crafted
 		recipes.add(diamondHorseArmor);
 		
 		Recipe heartCannister1 = new Recipe(
@@ -178,7 +179,7 @@ public class RecipeHandler {
 				new ItemStack(Material.IRON_BLOCK), //1
 				new ItemStack(Material.OBSIDIAN), //2
 				new ItemStack(Material.DIAMOND),  //3
-				new ItemStack(Material.SKULL_ITEM, 1, (short) 1), //4
+				new ItemStack(Material.PLAYER_HEAD, 1), //4
 				new ItemStack(Material.DIAMOND), //5
 				new ItemStack(Material.OBSIDIAN), //6
 				new ItemStack(Material.BLAZE_ROD), //7
@@ -188,15 +189,15 @@ public class RecipeHandler {
 		recipes.add(heartCannister1);
 		
 		Recipe heartCannister2 = new Recipe(
-				new ItemStack(Material.ENDER_STONE), //0
+				new ItemStack(Material.END_STONE), //0
 				new ItemStack(Material.END_CRYSTAL), //1
-				new ItemStack(Material.ENDER_STONE), //2
+				new ItemStack(Material.END_STONE), //2
 				new ItemStack(Material.DIAMOND),  //3
 				customItems.HEART_CANISTER_TIER_1(1), //4
 				new ItemStack(Material.DIAMOND), //5
-				new ItemStack(Material.ENDER_STONE), //6
+				new ItemStack(Material.END_STONE), //6
 				new ItemStack(Material.NETHER_STAR), //7
-				new ItemStack(Material.ENDER_STONE), //8
+				new ItemStack(Material.END_STONE), //8
 				1, //Amount
 				customItems.HEART_CANISTER_TIER_2(1)); //Item to be crafted
 		recipes.add(heartCannister2);
