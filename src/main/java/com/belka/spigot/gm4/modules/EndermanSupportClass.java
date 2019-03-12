@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import java.util.List;
 
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.CaveSpider;

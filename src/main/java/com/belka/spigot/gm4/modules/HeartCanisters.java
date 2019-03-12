@@ -4,18 +4,13 @@ import java.util.Arrays;
 
 import api.SkullCreator;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.Initializable;
-import com.sun.org.apache.xml.internal.security.Init;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public class HeartCanisters implements Initializable {
 
@@ -26,9 +21,11 @@ public class HeartCanisters implements Initializable {
 	}
 
 	public void init(MainClass mc) {
+		if(!mc.getConfig().getBoolean("modules.heartcanisters.enabled")) {
+			return;
+		}
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, new Runnable() {
 			public void run() {
-				if (mc.getConfig().getBoolean("HeartCanisters")) {
 					for (Entity entity : Bukkit.getWorld("world").getEntities()) {
 						if (entity instanceof Item) {
 							if (entity.isOnGround()) {
@@ -51,7 +48,6 @@ public class HeartCanisters implements Initializable {
 							}
 						}
 					}
-				}
 			}
 		}, 0, 20L); // Seconds * 20L
 	}

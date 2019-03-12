@@ -80,7 +80,7 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 				else if (args[0].equalsIgnoreCase("reload")) {
 					reloadConfig();
 					saveConfig();
-					sender.sendMessage(ChatColor.GREEN + "Reloaded the Gamemode 4 Config File");
+					sender.sendMessage(ChatColor.GREEN + "Reloaded the Gamemode 4 DefaultEntries File");
 				}
 			}
 		}
