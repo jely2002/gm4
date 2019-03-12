@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class CustomItems {
 	
-    public ItemStack VORPEL_SWORD() {
+    public static ItemStack VORPEL_SWORD() {
     	ItemStack VORPEL_SWORD = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemMeta meta = VORPEL_SWORD.getItemMeta();
         meta.setDisplayName(ChatColor.AQUA + "Vorpel " + ChatColor.GOLD + "Sword");
@@ -22,7 +22,7 @@ public class CustomItems {
 		return VORPEL_SWORD;
     }
     
-	public ItemStack HEART_CANISTER_TIER_1(int amount) {
+	public static ItemStack HEART_CANISTER_TIER_1(int amount) {
     	ItemStack skull = getSkull("http://textures.minecraft.net/texture/53cf06d5b47b746d16ee631187cb857d8c16bfcd570a40f286b2c38867cfda", amount);
         ItemMeta meta = skull.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE + "Heart Cansister");
@@ -30,7 +30,7 @@ public class CustomItems {
         skull.setItemMeta(meta);
 		return skull;
     }
-	public ItemStack HEART_CANISTER_TIER_2(int amount) {
+	public static ItemStack HEART_CANISTER_TIER_2(int amount) {
     	ItemStack skull = getSkull("http://textures.minecraft.net/texture/455d9bf85ac565b35e1fa19247ca6541dc2e334bec115cb449efbe8e9b81022", amount);
     	ItemMeta meta = skull.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE + "Heart Cansister");
@@ -39,8 +39,7 @@ public class CustomItems {
 		return skull;
     }
 
-	
-	private ItemStack getSkull(String skinURL, int amount) {
+	public static ItemStack getSkull(String skinURL, int amount) {
 		ItemStack skull = SkullCreator.itemFromUrl(skinURL);
 		skull.setAmount(amount);
 		return skull;

@@ -2,7 +2,11 @@ package com.belka.spigot.gm4.modules;
 
 import java.util.Arrays;
 
-import com.belka.spigot.gm4.crafting.CustomPlayerSkull;
+import api.SkullCreator;
+import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.crafting.CustomItems;
+import com.belka.spigot.gm4.interfaces.Initializable;
+import com.sun.org.apache.xml.internal.security.Init;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -10,8 +14,10 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
-public class HeartCanisters implements Listener {
+public class HeartCanisters implements Initializable {
 
 	private MainClass mc;
 
@@ -19,23 +25,23 @@ public class HeartCanisters implements Listener {
 		this.mc = mc;
 	}
 
-	public void start() {
+	public void init(MainClass mc) {
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, new Runnable() {
-			@Override
 			public void run() {
-				if(mc.getConfig().getBoolean("HeartCanisters") == true) {
-					for(Entity entity : Bukkit.getWorld("world").getEntities()) {
-						if(entity instanceof Item) {
-							if(entity.isOnGround()) {
+				if (mc.getConfig().getBoolean("HeartCanisters")) {
+					for (Entity entity : Bukkit.getWorld("world").getEntities()) {
+						if (entity instanceof Item) {
+							if (entity.isOnGround()) {
 								ItemStack item = ((Item) entity).getItemStack();
 								ItemMeta meta = item.getItemMeta();
-								for(int amount = 1; amount < item.getAmount(); amount++) {
-									ItemStack c = CustomPlayerSkull.getSkull("http://textures.minecraft.net/texture/53cf06d5b47b746d16ee631187cb857d8c16bfcd570a40f286b2c38867cfda", amount);
+								for (int amount = 1; amount < item.getAmount(); amount++) {
+									ItemStack c = SkullCreator.itemFromUrl("http://textures.minecraft.net/texture/53cf06d5b47b746d16ee631187cb857d8c16bfcd570a40f286b2c38867cfda");
+									c.setAmount(amount);
 									ItemMeta cM = c.getItemMeta();
 									cM.setDisplayName(ChatColor.WHITE + "Heart Cansister");
 									cM.setLore(Arrays.asList(ChatColor.DARK_PURPLE + "Tier 1"));
 									c.setItemMeta(meta);
-									if(item.equals(c)) {
+									if (item.equals(c)) {
 										Bukkit.broadcastMessage("dsa");
 										meta.setDisplayName(ChatColor.WHITE + "Heart Cansister");
 										meta.setLore(Arrays.asList(ChatColor.DARK_PURPLE + "Tier 1"));
@@ -47,6 +53,6 @@ public class HeartCanisters implements Listener {
 					}
 				}
 			}
-		}, 0, 1 * 20L); // Seconds * 20L
+		}, 0, 20L); // Seconds * 20L
 	}
 }
