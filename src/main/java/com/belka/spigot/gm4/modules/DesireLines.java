@@ -6,6 +6,7 @@ import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,9 +29,9 @@ public class DesireLines implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
-		if(mc.getConfig().getBoolean("DesireLines") == true) {
-			max = mc.getConfig().getInt("options.DesireLines.max");
-			amount = mc.getConfig().getInt("options.DesireLines.amount");
+		if(mc.getConfig().getBoolean("modules.DesireLines.enabled")) {
+			max = mc.getConfig().getInt("modules.DesireLines.max");
+			amount = mc.getConfig().getInt("modules.DesireLines.amount");
 			final Player p = e.getPlayer();
 			if(e.getFrom().getBlock().equals(e.getTo().getBlock())) {
 				return;
@@ -41,8 +42,8 @@ public class DesireLines implements Listener {
 					ItemStack replace = new ItemStack(below.getType(), 1, (short) below.getData());
 					if(replace.getType().equals(Material.AIR)) {
 						below = p.getLocation().subtract(0.0, 1.0, 0.0).getBlock();
-						if(replace.getType() == Material.GRASS || replace.getType() == Material.DIRT || replace.getType() == Material.SAND) {
-							below.getWorld().spigot().playEffect(below.getLocation().add(0.5, 0.5, 0.5), Effect.TILE_BREAK, below.getType(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
+						if(replace.getType() == Material.GRASS_BLOCK || replace.getType() == Material.DIRT || replace.getType() == Material.SAND) {
+							below.getWorld().spawnParticle(Particle.BLOCK_CRACK, below.getLocation().add(0.5, 0.5, 0.5), below.getType(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
 						}
 						replace = replacement(new ItemStack(below.getType(), 1, (short) below.getData()));
 						below.setType(replace.getType());
@@ -50,7 +51,7 @@ public class DesireLines implements Listener {
 						below.getState().update();
 					}
 					else if(!replace.getType().equals(Material.AIR)) {
-						if(replace.getType() == Material.LONG_GRASS || replace.getType() == Material.DOUBLE_PLANT || replace.getType() == Material.BROWN_MUSHROOM || replace.getType() == Material.RED_MUSHROOM || replace.getType() == Material.YELLOW_FLOWER || replace.getType() == Material.DEAD_BUSH) {
+						if(replace.getType() == Material.TALL_GRASS || replace.getType() == Material.LEGACY_DOUBLE_PLANT || replace.getType() == Material.BROWN_MUSHROOM || replace.getType() == Material.RED_MUSHROOM || replace.getType() == Material.LEGACY_YELLOW_FLOWER || replace.getType() == Material.DEAD_BUSH) {
 							below.getWorld().spigot().playEffect(below.getLocation().add(0.5, 0.5, 0.5), Effect.TILE_BREAK, below.getType(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
 							//below.getWorld().dropItem(below.getLocation(), replace);
 						}
@@ -67,7 +68,7 @@ public class DesireLines implements Listener {
 	public ItemStack replacement(ItemStack i) {
 		ItemStack returnItem = i;
 		Material mat = i.getType();
-		if(mat == Material.LONG_GRASS || mat == Material.DOUBLE_PLANT || mat == Material.BROWN_MUSHROOM || mat == Material.RED_MUSHROOM || mat == Material.YELLOW_FLOWER || mat == Material.DEAD_BUSH) {
+		if(mat == Material.TALL_GRASS || mat == Material.LEGACY_DOUBLE_PLANT || mat == Material.BROWN_MUSHROOM || mat == Material.RED_MUSHROOM || mat == Material.LEGACY_YELLOW_FLOWER || mat == Material.DEAD_BUSH) {
 			returnItem.setType(Material.AIR);
 			returnItem.setDurability((short) 0);
 		}
