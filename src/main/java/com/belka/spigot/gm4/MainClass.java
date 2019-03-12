@@ -2,6 +2,7 @@ package com.belka.spigot.gm4;
 
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
+import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
@@ -48,7 +49,8 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
         storage = new ConfigManager();
 
         SpeedPaths speedPaths = new SpeedPaths(this);
-		CustomCrafter customCrafter = new CustomCrafter(this);
+		RecipeHandler recipeHandler = new RecipeHandler();
+		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 
         registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters);
