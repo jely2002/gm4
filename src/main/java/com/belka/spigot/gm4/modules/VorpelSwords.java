@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import java.util.Random;
 
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Bat;

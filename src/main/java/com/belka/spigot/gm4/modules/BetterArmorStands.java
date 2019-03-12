@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;

@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import java.util.Random;
 
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -41,7 +42,7 @@ public class DesireLines implements Listener {
 					if(replace.getType().equals(Material.AIR)) {
 						below = p.getLocation().subtract(0.0, 1.0, 0.0).getBlock();
 						if(replace.getType() == Material.GRASS || replace.getType() == Material.DIRT || replace.getType() == Material.SAND) {
-							below.getWorld().spigot().playEffect(below.getLocation().add(0.5, 0.5, 0.5), Effect.TILE_BREAK, below.getTypeId(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
+							below.getWorld().spigot().playEffect(below.getLocation().add(0.5, 0.5, 0.5), Effect.TILE_BREAK, below.getType(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
 						}
 						replace = replacement(new ItemStack(below.getType(), 1, (short) below.getData()));
 						below.setType(replace.getType());
@@ -50,7 +51,7 @@ public class DesireLines implements Listener {
 					}
 					else if(!replace.getType().equals(Material.AIR)) {
 						if(replace.getType() == Material.LONG_GRASS || replace.getType() == Material.DOUBLE_PLANT || replace.getType() == Material.BROWN_MUSHROOM || replace.getType() == Material.RED_MUSHROOM || replace.getType() == Material.YELLOW_FLOWER || replace.getType() == Material.DEAD_BUSH) {
-							below.getWorld().spigot().playEffect(below.getLocation().add(0.5, 0.5, 0.5), Effect.TILE_BREAK, below.getTypeId(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
+							below.getWorld().spigot().playEffect(below.getLocation().add(0.5, 0.5, 0.5), Effect.TILE_BREAK, below.getType(), (int)below.getData(), 0.0f, 0.0f, 0.0f, 0.0f, 10, 16);
 							//below.getWorld().dropItem(below.getLocation(), replace);
 						}
 						replace = replacement(new ItemStack(below.getType(), 1, (short) below.getData()));
