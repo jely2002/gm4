@@ -1,10 +1,9 @@
 name: Gamemode-4
-main: me.MaximumFX.GM4.MainClass
-version: 1.0
-description: >
-            Gamemode 4 Plugin
+main: com.belka.spigot.gm4.MainClass
+version: 1.2
+description: Gamemode 4 Plugin
 commands:
    gamemode4:
       aliases: gm4
       description: Gamemode 4 command.
-      usage: /gm4 [reload]
+      usage: /gm4 [sub-command]
