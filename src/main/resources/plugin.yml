@@ -1,6 +1,7 @@
 name: Gamemode-4
 main: com.belka.spigot.gm4.MainClass
 version: 1.2
+api-version: 1.13
 description: Gamemode 4 Plugin
 commands:
    gamemode4:
