@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
@@ -22,7 +23,7 @@ public class BetterArmorStands implements Initializable {
 				for(Entity entity : Bukkit.getWorld("world").getEntities()) {
 					if(entity instanceof Item) {
 						if(entity.isOnGround()) {
-							for(Entity e : mc.getNearbyEntities(entity.getLocation(), 1)) {
+							for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 1)) {
 								if(e instanceof ArmorStand) {
 									Material itemMat = ((Item) entity).getItemStack().getType();
 									ArmorStand as = (ArmorStand) e;
