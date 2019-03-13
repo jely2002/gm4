@@ -1,0 +1,5 @@
+modules:
+  DesireLines:
+    enabled: true
+    max: 50
+    amount: 2

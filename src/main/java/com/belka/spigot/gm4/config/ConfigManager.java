@@ -11,13 +11,13 @@ public class ConfigManager implements Initializable {
     private MainClass mc;
 
     private CustomConfig data;
-    private CustomConfig locale;
+    //private CustomConfig locale;
 
     public void init(MainClass mc) {
        data = new CustomConfig(mc, "data.yml") ;
-       locale = new CustomConfig(mc, "locale.yml");
+       //locale = new CustomConfig(mc, "locale.yml");
        data.saveDefaultConfig();
-       locale.saveDefaultConfig();
+       //locale.saveDefaultConfig();
        loadDefaultConfig();
     }
 
@@ -36,19 +36,19 @@ public class ConfigManager implements Initializable {
         return data.getConfig();
     }
 
-    public FileConfiguration locale() {
-        return locale.getConfig();
-    }
+    //public FileConfiguration locale() {
+    //    return locale.getConfig();
+    //}
 
     public void reloadAll() {
         reloadData();
         reloadConfig();
-        reloadLocale();
+        //reloadLocale();
     }
 
     public void saveAll() {
         mc.saveConfig();
-        saveLocale();
+        //saveLocale();
         saveData();
     }
 
@@ -60,13 +60,13 @@ public class ConfigManager implements Initializable {
         data.saveConfig();
     }
 
-    public void reloadLocale() {
-        locale.reloadConfig();
-    }
+    //public void reloadLocale() {
+    //    locale.reloadConfig();
+    //}
 
-    public void saveLocale() {
-        locale.saveConfig();
-    }
+    //public void saveLocale() {
+    //    locale.saveConfig();
+    //}
 
     public void reloadConfig() {
         mc.reloadConfig();

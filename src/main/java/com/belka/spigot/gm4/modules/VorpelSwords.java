@@ -2,6 +2,8 @@ package com.belka.spigot.gm4.modules;
 
 import java.util.Random;
 
+import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.crafting.CustomItems;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Bat;
@@ -55,21 +57,21 @@ public class VorpelSwords implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent e) {
-		if(mc.getConfig().getBoolean("VorpelSwords") == true) {
+		if(mc.getConfig().getBoolean("VorpelSwords")) {
 			max = mc.getConfig().getInt("options.VorpelSwords.max");
 			amount = mc.getConfig().getInt("options.VorpelSwords.amount");
 			Player killer = e.getEntity().getKiller();
 			if(killer != null) {
 				if(isSimilar(CustomItems.VORPEL_SWORD(), killer.getInventory().getItemInMainHand())) {
 					if(!(e.getEntity() instanceof Player) && random.nextInt(max) <= amount) {
-						ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+						ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
 						SkullMeta meta = (SkullMeta) skull.getItemMeta();
 						meta.setOwner(getHeadOwner(e.getEntity()));
 						skull.setItemMeta(meta);
 						killer.getWorld().dropItemNaturally(e.getEntity().getLocation(), skull);
 					}
 					else if(e.getEntity() instanceof Player) {
-						ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+						ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
 						SkullMeta meta = (SkullMeta) skull.getItemMeta();
 						meta.setOwner(e.getEntity().getName());
 						skull.setItemMeta(meta);

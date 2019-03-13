@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -110,7 +111,7 @@ public class WeightedArmour implements Listener {
 			else if(inv.getBoots().getType().equals(Material.CHAINMAIL_BOOTS)) {
 				boots = chainBoots;
 			}
-			else if(inv.getBoots().getType().equals(Material.GOLD_BOOTS)) {
+			else if(inv.getBoots().getType().equals(Material.GOLDEN_BOOTS)) {
 				boots = goldBoots;
 			}
 			else if(inv.getBoots().getType().equals(Material.IRON_BOOTS)) {
@@ -137,7 +138,7 @@ public class WeightedArmour implements Listener {
 			else if(inv.getLeggings().getType().equals(Material.CHAINMAIL_LEGGINGS)) {
 				leggings = chainLeggings;
 			}
-			else if(inv.getLeggings().getType().equals(Material.GOLD_LEGGINGS)) {
+			else if(inv.getLeggings().getType().equals(Material.GOLDEN_LEGGINGS)) {
 				leggings = goldLeggings;
 			}
 			else if(inv.getLeggings().getType().equals(Material.IRON_LEGGINGS)) {
@@ -164,7 +165,7 @@ public class WeightedArmour implements Listener {
 			else if(inv.getChestplate().getType().equals(Material.CHAINMAIL_CHESTPLATE)) {
 				chestplate = chainChestplate;
 			}
-			else if(inv.getChestplate().getType().equals(Material.GOLD_CHESTPLATE)) {
+			else if(inv.getChestplate().getType().equals(Material.GOLDEN_CHESTPLATE)) {
 				chestplate = goldChestplate;
 			}
 			else if(inv.getChestplate().getType().equals(Material.IRON_CHESTPLATE)) {
@@ -191,7 +192,7 @@ public class WeightedArmour implements Listener {
 			else if(inv.getHelmet().getType().equals(Material.CHAINMAIL_HELMET)) {
 				helmet = chainHelmet;
 			}
-			else if(inv.getHelmet().getType().equals(Material.GOLD_HELMET)) {
+			else if(inv.getHelmet().getType().equals(Material.GOLDEN_HELMET)) {
 				helmet = goldHelmet;
 			}
 			else if(inv.getHelmet().getType().equals(Material.IRON_HELMET)) {
@@ -211,29 +212,29 @@ public class WeightedArmour implements Listener {
 	}
 	
 	public void loadArmorWeight() {
-		leatherBoots = mc.getConfig().getInt("options.WeightedArmour.leather.boots");
-		leatherLeggings = mc.getConfig().getInt("options.WeightedArmour.leather.leggings");
-		leatherChestplate = mc.getConfig().getInt("options.WeightedArmour.leather.chestplate");
-		leatherHelmet = mc.getConfig().getInt("options.WeightedArmour.leather.helmet");
+		leatherBoots = mc.getConfig().getInt("modules.WeightedArmour.leather.boots");
+		leatherLeggings = mc.getConfig().getInt("modules.WeightedArmour.leather.leggings");
+		leatherChestplate = mc.getConfig().getInt("modules.WeightedArmour.leather.chestplate");
+		leatherHelmet = mc.getConfig().getInt("modules.WeightedArmour.leather.helmet");
 					
-		chainBoots = mc.getConfig().getInt("options.WeightedArmour.chain.boots");
-		chainLeggings = mc.getConfig().getInt("options.WeightedArmour.chain.leggings");
-		chainChestplate = mc.getConfig().getInt("options.WeightedArmour.chain.chestplate");
-		chainHelmet = mc.getConfig().getInt("options.WeightedArmour.chain.helmet");
+		chainBoots = mc.getConfig().getInt("modules.WeightedArmour.chain.boots");
+		chainLeggings = mc.getConfig().getInt("modules.WeightedArmour.chain.leggings");
+		chainChestplate = mc.getConfig().getInt("modules.WeightedArmour.chain.chestplate");
+		chainHelmet = mc.getConfig().getInt("modules.WeightedArmour.chain.helmet");
 					
-		goldBoots = mc.getConfig().getInt("options.WeightedArmour.gold.boots");
-		goldLeggings = mc.getConfig().getInt("options.WeightedArmour.gold.leggings");
-		goldChestplate = mc.getConfig().getInt("options.WeightedArmour.gold.chestplate");
-		goldHelmet = mc.getConfig().getInt("options.WeightedArmour.gold.helmet");
+		goldBoots = mc.getConfig().getInt("modules.WeightedArmour.gold.boots");
+		goldLeggings = mc.getConfig().getInt("modules.WeightedArmour.gold.leggings");
+		goldChestplate = mc.getConfig().getInt("modules.WeightedArmour.gold.chestplate");
+		goldHelmet = mc.getConfig().getInt("modules.WeightedArmour.gold.helmet");
 					
-		ironBoots = mc.getConfig().getInt("options.WeightedArmour.iron.boots");
-		ironLeggings = mc.getConfig().getInt("options.WeightedArmour.iron.leggings");
-		ironChestplate = mc.getConfig().getInt("options.WeightedArmour.iron.chestplate");
-		ironHelmet = mc.getConfig().getInt("options.WeightedArmour.iron.helmet");
+		ironBoots = mc.getConfig().getInt("modules.WeightedArmour.iron.boots");
+		ironLeggings = mc.getConfig().getInt("modules.WeightedArmour.iron.leggings");
+		ironChestplate = mc.getConfig().getInt("modules.WeightedArmour.iron.chestplate");
+		ironHelmet = mc.getConfig().getInt("modules.WeightedArmour.iron.helmet");
 					
-		diamondBoots = mc.getConfig().getInt("options.WeightedArmour.diamond.boots");
-		diamondLeggings = mc.getConfig().getInt("options.WeightedArmour.diamond.leggings");
-		diamondChestplate = mc.getConfig().getInt("options.WeightedArmour.diamond.chestplate");
-		diamondHelmet = mc.getConfig().getInt("options.WeightedArmour.diamond.helmet");
+		diamondBoots = mc.getConfig().getInt("modules.WeightedArmour.diamond.boots");
+		diamondLeggings = mc.getConfig().getInt("modules.WeightedArmour.diamond.leggings");
+		diamondChestplate = mc.getConfig().getInt("modules.WeightedArmour.diamond.chestplate");
+		diamondHelmet = mc.getConfig().getInt("modules.WeightedArmour.diamond.helmet");
 	}
 }
