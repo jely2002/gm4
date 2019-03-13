@@ -66,7 +66,7 @@ public class CustomConfig {
         return fileConfiguration;
     }
 
-    public void saveConfig() {
+    public void save() {
         if (fileConfiguration == null || configFile == null) {
             return;
         } else {

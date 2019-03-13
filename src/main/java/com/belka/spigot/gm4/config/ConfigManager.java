@@ -57,7 +57,7 @@ public class ConfigManager implements Initializable {
     }
 
     public void saveData() {
-        data.saveConfig();
+        data.save();
     }
 
     //public void reloadLocale() {

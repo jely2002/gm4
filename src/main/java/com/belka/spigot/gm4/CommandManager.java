@@ -41,14 +41,9 @@ public class CommandManager implements PluginCommand {
     }
 
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if(!(commandSender instanceof Player)) {
-            commandSender.sendMessage(ChatColor.RED + "This command can only be used by players.");
-            return true;
-        }
-        Player p = (Player) commandSender;
         if(args.length >= 1) {
             PluginSubcommand handler = subcommands.get(args[0]);
-            return handler.onSubcommand(args, p);
+            return handler.onSubcommand(args, commandSender);
         } else {
             //TODO Show help.
         }

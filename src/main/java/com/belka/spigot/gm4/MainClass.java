@@ -7,11 +7,7 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -25,10 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class MainClass extends JavaPlugin implements Listener, PluginCommand {
+public class MainClass extends JavaPlugin implements Listener{
 
     private CommandManager cmdMgmt;
     private ConfigManager storage;
+    private MainCommands mCmds;
 
     @Override
     public void onEnable() {
@@ -44,6 +41,7 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 
         cmdMgmt = new CommandManager(this);
         storage = new ConfigManager();
+        mCmds = new MainCommands(this);
 
         SpeedPaths speedPaths = new SpeedPaths(this);
 		RecipeHandler recipeHandler = new RecipeHandler();
@@ -57,7 +55,7 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters, desireLines, advancements, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
+        registerClasses(this, storage, cmdMgmt, mCmds, speedPaths, customCrafter, heartCanisters, desireLines, advancements, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override
@@ -71,60 +69,6 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Advancements.grantAdvancement("gm4/start", e.getPlayer());
 	}
-
-	public String[] getCommands() {
-		String commands[] = {"gamemode4","gm4"};
-		return commands;
-	}
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if ((cmd.getName().equalsIgnoreCase("gamemode4") || cmd.getName().equalsIgnoreCase("gm4"))) {
-			if (sender instanceof Player && (sender.isOp() || sender.hasPermission("gm4.reload")) || sender instanceof ConsoleCommandSender) {
-				if (args.length == 0 || !args[0].equalsIgnoreCase("reload")) {
-					sender.sendMessage(ChatColor.RED + "Available: [reload]");
-				}
-				else if (args[0].equalsIgnoreCase("reload")) {
-					reloadConfig();
-					saveConfig();
-					sender.sendMessage(ChatColor.GREEN + "Reloaded the Gamemode 4 DefaultEntries File");
-				}
-			}
-		}
-		return true;
-	}
-
-	// HELPER FUNCTIONS
-	public List<Entity> getNearbyEntities(Location l, int size) {
-		List<Entity> entities = new ArrayList<Entity>();
-
-		for(Entity e : l.getWorld().getEntities()) {
-			if(l.distance(e.getLocation()) <= size) {
-				entities.add(e);
-			}
-		}
-		return entities;
-	}
-	public List<EntityType> getNearbyEntityTypes(Location l, int size) {
-		List<EntityType> entitytypes = new ArrayList<EntityType>();
-
-		for(Entity e : l.getWorld().getEntities()) {
-			if(l.distance(e.getLocation()) <= size) {
-				entitytypes.add(e.getType());
-			}
-		}
-		return entitytypes;
-	}
-	public List<Player> getNearbyPlayers(Location l, int size) {
-		List<Player> players = new ArrayList<Player>();
-
-		for(Entity e : l.getWorld().getEntities()) {
-			if(l.distance(e.getLocation()) <= size && e instanceof Player) {
-				players.add((Player) e);
-			}
-		}
-		return players;
-	}
-
 
     public ConfigManager storage() {
         return storage;
