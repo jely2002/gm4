@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Damageable;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -41,10 +41,9 @@ public class BetterArmorStands implements Initializable {
 										}
 										if (itemMat == Material.SHEARS && !as.isSmall()) {
 											as.setSmall(true);
-											ItemStack shears = new ItemStack(Material.SHEARS);
-											Damageable shearsMeta = (Damageable) shears.getItemMeta();
-											shearsMeta.setDamage(1);
-											item.setItemMeta((ItemMeta) shearsMeta);
+											Damageable itemMeta = (Damageable) item.getItemMeta();
+											itemMeta.setDamage(itemMeta.getDamage() + 1);
+											item.setItemMeta((ItemMeta) itemMeta);
 										}
 									}
 								}
