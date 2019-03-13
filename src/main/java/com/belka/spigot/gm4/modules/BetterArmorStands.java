@@ -5,8 +5,10 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class BetterArmorStands implements Initializable {
 
@@ -21,20 +23,22 @@ public class BetterArmorStands implements Initializable {
 			if(mc.getConfig().getBoolean("modules.BetterArmorStands.enabled")) {
 				for(Entity entity : Bukkit.getWorld("world").getEntities()) {
 					if(entity instanceof Item) {
+						Item item = (Item) entity;
 						if(entity.isOnGround()) {
-							for(Entity e : mc.getNearbyEntities(entity.getLocation(), 1)) {
+							for(Entity e : mc.getNearbyEntities(item.getLocation(), 1)) {
 								if(e instanceof ArmorStand) {
-									Material itemMat = ((Item) entity).getItemStack().getType();
+									Material itemMat = item.getItemStack().getType();
 									ArmorStand as = (ArmorStand) e;
-									if(itemMat == Material.STICK && ((Item) entity).getItemStack().getAmount() >= 2 && !as.hasArms()) {
+									if(itemMat == Material.STICK && item.getItemStack().getAmount() >= 2 && !as.hasArms()) {
 										as.setArms(true);
-										for(int i = 0; i < 2; i++) {
-											((Item) entity).remove();
+										for(int x = 0; x < 2; x++) {
+											entity.remove();
 										}
 									}
 									if(itemMat == Material.SHEARS && !as.isSmall()) {
 										as.setSmall(true);
-										((Item) entity).getItemStack().setDurability((short) (((Item) entity).getItemStack().getDurability() + 1));
+										Damageable itemMeta = (Damageable) item.getItemStack().getItemMeta();
+
 									}
 								}
 							}
