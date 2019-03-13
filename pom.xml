@@ -15,6 +15,14 @@
             <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>eu.endercentral.crazy_advancements</groupId>
+            <artifactId>CrazyAdvancementAPI</artifactId>
+            <version>1.13.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <repositories>
