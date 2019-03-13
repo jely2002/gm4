@@ -32,14 +32,14 @@ public class DesireLines implements Listener {
 			max = mc.getConfig().getInt("modules.DesireLines.max");
 			amount = mc.getConfig().getInt("modules.DesireLines.amount");
 			final Player p = e.getPlayer();
-			if(e.getFrom().getBlock().equals(e.getTo().getBlock())) {
+			if(e.getFrom().getBlock() == e.getTo().getBlock()) {
 				return;
 			}
 			if(random.nextInt(max) <= amount) {
 				Block below = p.getLocation().getBlock();
 				if(below != null && (p.getGameMode() == GameMode.SURVIVAL ||  p.getGameMode() == GameMode.ADVENTURE)) {
 					Material replace = below.getType();
-					if(replace.equals(Material.AIR)) {
+					if(replace == Material.AIR) {
 						below = p.getLocation().subtract(0.0, 1.0, 0.0).getBlock();
 					}
 //					if(below.getType() == Material.GRASS_BLOCK || below.getType() == Material.DIRT || below.getType() == Material.SAND) {
@@ -52,7 +52,6 @@ public class DesireLines implements Listener {
 					replace = replacement(below.getType());
 					below.setType(replace);
 					below.getState().update();
-
 				}
 			}
 		}
@@ -74,9 +73,33 @@ public class DesireLines implements Listener {
 				return Material.AIR;
 			case DEAD_BUSH:
 				return Material.AIR;
-			case LEGACY_DOUBLE_PLANT:
+			case DANDELION:
 				return Material.AIR;
-			case LEGACY_YELLOW_FLOWER:
+			case POPPY:
+				return Material.AIR;
+			case BLUE_ORCHID:
+				return Material.AIR;
+			case ALLIUM:
+				return Material.AIR;
+			case AZURE_BLUET:
+				return Material.AIR;
+			case ORANGE_TULIP:
+				return Material.AIR;
+			case PINK_TULIP:
+				return Material.AIR;
+			case RED_TULIP:
+				return Material.AIR;
+			case WHITE_TULIP:
+				return Material.AIR;
+			case OXEYE_DAISY:
+				return Material.AIR;
+			case SUNFLOWER:
+				return Material.AIR;
+			case LILAC:
+				return Material.AIR;
+			case ROSE_BUSH:
+				return Material.AIR;
+			case PEONY:
 				return Material.AIR;
 			default:
 				return i;
