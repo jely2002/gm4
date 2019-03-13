@@ -1,20 +1,19 @@
 package com.belka.spigot.gm4.modules;
 
+import api.AdvancementsBuilder.AdvancementAPI;
+import api.AdvancementsBuilder.FrameType;
+import api.AdvancementsBuilder.Trigger;
+import api.AdvancementsBuilder.Trigger.TriggerBuilder;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.WorldCreator;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
-import api.AdvancementsBuilder.AdvancementAPI;
-import api.AdvancementsBuilder.FrameType;
-import api.AdvancementsBuilder.Trigger;
-import api.AdvancementsBuilder.Trigger.TriggerBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
-
-public class Advancements implements Listener {
+public class Advancements implements Initializable {
 	
 	private static MainClass mc;
 
@@ -22,12 +21,9 @@ public class Advancements implements Listener {
 		Advancements.mc = mc;
 	}
 
-	private final String worldName = "world";
-
-    @SuppressWarnings("deprecation")
-    public void createAndSave() {
-		String mainWorld = Bukkit.getWorlds().get(0).getName();
-		Bukkit.unloadWorld(mainWorld, false);
+    public void init(MainClass mc) {
+		String worldName = Bukkit.getWorlds().get(0).getName();
+		Bukkit.unloadWorld(worldName, false);
     	// MAIN
 		AdvancementAPI gm4 = AdvancementAPI.builder(new NamespacedKey(mc, "gm4/start"))
 			.title("Gamemode 4")
@@ -130,7 +126,7 @@ public class Advancements implements Listener {
 		
 		mobs.save(worldName);
 		
-		addAdvancementToParent("gm4/natural_defences", "Natural Defences", "Get blinded by an underwater squid.", "minecraft:dye",
+		addAdvancementToParent("gm4/natural_defences", "Natural Defences", "Get blinded by an underwater squid.", "minecraft:ink_sac",
 				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.TASK, mobs, worldName);
 		
 		addAdvancementToParent("gm4/ender_aid", "Ender Aid", "Come in contact with a support Enderman.", "minecraft:ender_pearl",
@@ -164,28 +160,10 @@ public class Advancements implements Listener {
 		addAdvancementToParent("gm4/plenty_o_posing", "Plenty o' Posing", "Make your armor stand strike a pose.", "minecraft:armor_stand",
 				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.GOAL, ar, worldName);
 		
-		Bukkit.createWorld(WorldCreator.name(mainWorld));
+		Bukkit.createWorld(WorldCreator.name(worldName));
 	}
-    
-    @SuppressWarnings("deprecation")
-	public void addAdvancementToParent(String key, TextComponent title, TextComponent desc, String icon, TriggerBuilder trigger, Boolean announce, Boolean hidden, Boolean toast, FrameType frame, AdvancementAPI parent, String world) {
-    	AdvancementAPI advancementAPI = AdvancementAPI.builder(new NamespacedKey(mc, key))
-    			.title(title)
-    			.description(desc)
-    			.icon(icon)
-    			.trigger(trigger)
-    			.announce(announce)
-    			.hidden(hidden)
-    			.toast(toast)
-    			.background(parent.getBackground())
-    			.frame(frame)
-    			.parent(parent.getId().toString())
-    			.build();
-    		advancementAPI.save(world);
-    }
-    
-	@SuppressWarnings("deprecation")
-	public void addAdvancementToParent(String key, String title, String desc, String icon, TriggerBuilder trigger, Boolean announce, Boolean hidden, Boolean toast, FrameType frame, AdvancementAPI parent, String world) {
+
+	private void addAdvancementToParent(String key, String title, String desc, String icon, TriggerBuilder trigger, Boolean announce, Boolean hidden, Boolean toast, FrameType frame, AdvancementAPI parent, String world) {
     	AdvancementAPI advancementAPI = AdvancementAPI.builder(new NamespacedKey(mc, key))
     			.title(title)
     			.description(desc)

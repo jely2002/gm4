@@ -50,8 +50,9 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		DesireLines desireLines = new DesireLines(this);
+		Advancements advancements = new Advancements(this);
 
-        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters, desireLines);
+        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters, desireLines, advancements);
     }
 
     @Override
