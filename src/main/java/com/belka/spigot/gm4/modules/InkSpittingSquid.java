@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import java.util.List;
 
+import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
@@ -29,7 +30,7 @@ public class InkSpittingSquid implements Initializable {
 					for(Entity entity : w.getEntities()) {
 						if(entity instanceof Player) {
 							Player p = (Player) entity;
-							for(Entity e : mc.getNearbyEntities(entity.getLocation(), 3)) {
+							for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 3)) {
 								if(e instanceof Squid) {
 									List<String> players = mc.getConfig().getStringList("achievements.InkSpittingSquid");
 									if(!players.contains(p.getName())) {

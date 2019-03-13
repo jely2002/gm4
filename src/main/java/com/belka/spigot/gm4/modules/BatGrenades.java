@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
@@ -25,12 +26,12 @@ public class BatGrenades implements Initializable {
 					for(Entity entity : w.getEntities()) {
 						if(entity instanceof Player) {
 							Player p = (Player) entity;
-							for(Entity e : mc.getNearbyEntities(entity.getLocation(), 7)) {
+							for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 7)) {
 								if(e instanceof Bat) {
 									p.playSound(e.getLocation(), Sound.ENTITY_BAT_AMBIENT, 2, 0);
 								}
 							}
-							for(Entity e : mc.getNearbyEntities(entity.getLocation(), 3)) {
+							for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 3)) {
 								if(e instanceof Bat && !e.isDead()) {
 									if(p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL) {
 										double x = e.getLocation().getX();
