@@ -7,6 +7,7 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -67,7 +68,8 @@ public class MainClass extends JavaPlugin implements Listener{
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		Advancements.grantAdvancement("gm4/start", e.getPlayer());
+		Advancements.grantAdvancement("custom", e.getPlayer());
+		Bukkit.broadcastMessage("Welcome " + e.getPlayer().getName());
 	}
 
     public ConfigManager storage() {
