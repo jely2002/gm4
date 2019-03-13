@@ -62,7 +62,7 @@ public class CustomCrafter implements Listener {
 						e.getItemDrop().remove();
 						active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
 						mc.storage().data().set("CustomCrafter.customCrafters", active);
-						mc.saveConfig();
+						mc.storage().saveData();
 					}
 				}
 			}
