@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.crafting;
 
+import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -835,7 +836,7 @@ public class CustomRecipies implements Listener {
 	}
 	
 	public static void playSound(Dropper dr) {
-		for(Player p : mc.getNearbyPlayers(dr.getLocation(), 7)) {
+		for(Player p : Helper.getNearbyPlayers(dr.getLocation(), 7)) {
 			p.playSound(dr.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 1);
 		}
 	}

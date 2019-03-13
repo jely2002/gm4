@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.crafting;
 
+import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -80,7 +81,7 @@ public class CustomCrafter implements Listener {
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
 			mc.storage().data().set("CustomCrafter.customCrafters", active);
 			mc.storage().saveData();
-			for(Entity e : mc.getNearbyEntities(b.getLocation(), 1)) {
+			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
 					ArmorStand as = (ArmorStand) e;
 					if(as.getCustomName().equalsIgnoreCase("CustomCrafter")) {
