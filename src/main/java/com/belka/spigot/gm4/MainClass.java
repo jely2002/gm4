@@ -40,7 +40,7 @@ public class MainClass extends JavaPlugin implements Listener{
 		saveConfig();
 
         cmdMgmt = new CommandManager(this);
-        storage = new ConfigManager();
+        storage = new ConfigManager(this);
         mCmds = new MainCommands(this);
 
         SpeedPaths speedPaths = new SpeedPaths(this);
