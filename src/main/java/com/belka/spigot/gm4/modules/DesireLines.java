@@ -1,9 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
-import java.util.Random;
-
 import com.belka.spigot.gm4.MainClass;
-import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -12,7 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
+
+import java.util.Random;
 
 public class DesireLines implements Listener {
 
@@ -22,15 +20,13 @@ public class DesireLines implements Listener {
 		this.mc = mc;
 	}
 
-    public int max = 50;
-    public int amount = 2;
-	public Random random = new Random();
+	private Random random = new Random();
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
 		if(mc.getConfig().getBoolean("modules.DesireLines.enabled")) {
-			max = mc.getConfig().getInt("modules.DesireLines.max");
-			amount = mc.getConfig().getInt("modules.DesireLines.amount");
+			int max = mc.getConfig().getInt("modules.DesireLines.max");
+			int amount = mc.getConfig().getInt("modules.DesireLines.amount");
 			final Player p = e.getPlayer();
 			if(e.getFrom().getBlock() == e.getTo().getBlock()) {
 				return;
@@ -53,7 +49,7 @@ public class DesireLines implements Listener {
 		}
 	}
 	
-	public Material replacement(Material i) {
+	private Material replacement(Material i) {
 		switch (i) {
 			case GRASS_BLOCK:
 				return Material.DIRT;

@@ -6,10 +6,7 @@ import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
-import com.belka.spigot.gm4.modules.Advancements;
-import com.belka.spigot.gm4.modules.ConsoleColor;
-import com.belka.spigot.gm4.modules.HeartCanisters;
-import com.belka.spigot.gm4.modules.SpeedPaths;
+import com.belka.spigot.gm4.modules.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -52,8 +49,9 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 		RecipeHandler recipeHandler = new RecipeHandler();
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		HeartCanisters heartCanisters = new HeartCanisters(this);
+		DesireLines desireLines = new DesireLines(this);
 
-        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters);
+        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters, desireLines);
     }
 
     @Override
