@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 
 public class Advancements implements Initializable {
 	
-	private static MainClass mc;
+	private MainClass mc;
 	private static AdvancementManager manager = CrazyAdvancements.getNewAdvancementManager();
 
 	public Advancements(MainClass mc) {
-		Advancements.mc = mc;
+		this.mc = mc;
 	}
 
     public void init(MainClass mc) {
