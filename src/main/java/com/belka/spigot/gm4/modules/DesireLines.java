@@ -16,7 +16,7 @@ public class DesireLines implements Listener {
 
 	private MainClass mc;
 
-	public DesireLines(MainClass mc){
+	public DesireLines(MainClass mc) {
 		this.mc = mc;
 	}
 

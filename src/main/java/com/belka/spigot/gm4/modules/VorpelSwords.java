@@ -57,9 +57,9 @@ public class VorpelSwords implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent e) {
-		if(mc.getConfig().getBoolean("VorpelSwords")) {
-			max = mc.getConfig().getInt("options.VorpelSwords.max");
-			amount = mc.getConfig().getInt("options.VorpelSwords.amount");
+		if(mc.getConfig().getBoolean("modules.VorpelSwords.enabled")) {
+			max = mc.getConfig().getInt("modules.VorpelSwords.max");
+			amount = mc.getConfig().getInt("modules.VorpelSwords.amount");
 			Player killer = e.getEntity().getKiller();
 			if(killer != null) {
 				if(isSimilar(CustomItems.VORPEL_SWORD(), killer.getInventory().getItemInMainHand())) {
