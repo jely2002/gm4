@@ -16,15 +16,16 @@ public class SpeedPaths implements Listener {
 
     public SpeedPaths(MainClass mc) {
         this.mc = mc;
-        this.pathBlock = Material.getMaterial(mc.storage().config().getString("modules.speedpaths.path-block"));
+        this.pathBlock = Material.getMaterial(mc.storage().config().getString("modules.SpeedPaths.pathBlock"));
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if(e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
-        if(e.getTo().getBlock().getType() == pathBlock ) {
+        if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
+        if (e.getTo().getBlock().getType() == pathBlock) {
             e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999,3));
-        } else if(e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) {
+        }
+        else if (e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) {
             e.getPlayer().removePotionEffect(PotionEffectType.SPEED);
         }
     }

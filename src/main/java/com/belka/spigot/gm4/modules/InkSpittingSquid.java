@@ -3,6 +3,7 @@ package com.belka.spigot.gm4.modules;
 import java.util.List;
 
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -13,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class InkSpittingSquid implements Listener {
+public class InkSpittingSquid implements Initializable {
 
 	private MainClass mc;
 
@@ -21,36 +22,33 @@ public class InkSpittingSquid implements Listener {
 		this.mc = mc;
 	}
 
-	public void start() {
-		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, new Runnable() {
-			@Override
-			public void run() {
-				if(mc.getConfig().getBoolean("InkSpittingSquid") == true) {
-					for(World w : Bukkit.getWorlds()) {
-						for(Entity entity : w.getEntities()) {
-							if(entity instanceof Player) {
-								Player p = (Player) entity;
-								for(Entity e : mc.getNearbyEntities(entity.getLocation(), 3)) {
-									if(e instanceof Squid) {
-										List<String> players = mc.getConfig().getStringList("achievements.InkSpittingSquid");
-										if(!players.contains(p.getName())) {
-											players.add(p.getName());
-											mc.getConfig().set("achievements.InkSpittingSquid", players);
-											mc.saveConfig();
-										}
-										p.removePotionEffect(PotionEffectType.CONFUSION);
-										p.removePotionEffect(PotionEffectType.BLINDNESS);
-										p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5 * 20, 1, true));// Seconds * 20
-										p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, true));// Seconds * 20
-										p.playSound(p.getLocation(), Sound.ENTITY_SPIDER_DEATH, 1, 0);
-										Advancements.grantAdvancement("gm4/natural_defences", p);
+	public void init(MainClass mc) {
+		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+			if(mc.getConfig().getBoolean("modules.InkSpittingSquid.enabled")) {
+				for(World w : Bukkit.getWorlds()) {
+					for(Entity entity : w.getEntities()) {
+						if(entity instanceof Player) {
+							Player p = (Player) entity;
+							for(Entity e : mc.getNearbyEntities(entity.getLocation(), 3)) {
+								if(e instanceof Squid) {
+									List<String> players = mc.getConfig().getStringList("achievements.InkSpittingSquid");
+									if(!players.contains(p.getName())) {
+										players.add(p.getName());
+										mc.getConfig().set("achievements.InkSpittingSquid", players);
+										mc.saveConfig();
 									}
+									p.removePotionEffect(PotionEffectType.CONFUSION);
+									p.removePotionEffect(PotionEffectType.BLINDNESS);
+									p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5 * 20, 1, true));// Seconds * 20
+									p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, true));// Seconds * 20
+									p.playSound(p.getLocation(), Sound.ENTITY_SPIDER_DEATH, 1, 0);
+									Advancements.grantAdvancement("gm4/natural_defences", p);
 								}
 							}
 						}
 					}
 				}
 			}
-		}, 0, 1 * 20L); // Seconds * 20L
+		}, 0, 20L); // Seconds * 20L
 	}
 }

@@ -51,8 +51,13 @@ public class MainClass extends JavaPlugin implements Listener, PluginCommand {
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		DesireLines desireLines = new DesireLines(this);
 		Advancements advancements = new Advancements(this);
+		BatGrenades batGrenades = new BatGrenades(this);
+		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
+		BetterFire betterFire = new BetterFire(this);
+		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
+		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters, desireLines, advancements);
+        registerClasses(this, storage, cmdMgmt, speedPaths, customCrafter, heartCanisters, desireLines, advancements, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override

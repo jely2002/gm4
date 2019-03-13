@@ -1,10 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.BlockIterator;
 
-public class BetterFire implements Listener {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
+
+public class BetterFire implements Listener, Initializable {
 	//Based of cadenzatb's Better Fire
 	private MainClass mc;
 
@@ -26,39 +27,36 @@ public class BetterFire implements Listener {
 		this.mc = mc;
 	}
 
-	ArrayList<Arrow> fireArrows = new ArrayList<Arrow>();
-	HashMap<UUID, Integer> checkArrow = new HashMap<UUID, Integer>();
-	ArrayList<Arrow> deleteArrows = new ArrayList<Arrow>();
+	ArrayList<Arrow> fireArrows = new ArrayList<>();
+	HashMap<UUID, Integer> checkArrow = new HashMap<>();
+	ArrayList<Arrow> deleteArrows = new ArrayList<>();
 
-	public void start() {
-		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, new Runnable() {
-			@Override
-			public void run() {
-				if(mc.getConfig().getBoolean("BetterFire")) {
-					for (Arrow arrow : fireArrows) {
-						if (checkArrow.containsKey(arrow.getUniqueId())) {
-							if (checkArrow.get(arrow.getUniqueId()).intValue() == arrow.getTicksLived()) {
-								deleteArrows.add(arrow);
-								checkArrow.remove(arrow.getUniqueId());
-							} else {
-								checkArrow.put(arrow.getUniqueId(), arrow.getTicksLived());
-							}
+	public void init(MainClass mc) {
+		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+			if(mc.getConfig().getBoolean("modules.BetterFire.enabled")) {
+				for (Arrow arrow : fireArrows) {
+					if (checkArrow.containsKey(arrow.getUniqueId())) {
+						if (checkArrow.get(arrow.getUniqueId()).intValue() == arrow.getTicksLived()) {
+							deleteArrows.add(arrow);
+							checkArrow.remove(arrow.getUniqueId());
 						} else {
 							checkArrow.put(arrow.getUniqueId(), arrow.getTicksLived());
 						}
-						Location loc = arrow.getLocation();
-						if(loc.getBlock().getType() == Material.AIR) {
-							arrow.getLocation().getBlock().setType(Material.FIRE);
-						}
+					} else {
+						checkArrow.put(arrow.getUniqueId(), arrow.getTicksLived());
 					}
-					if(deleteArrows.size() > 0) {
-						for(Arrow arrow : deleteArrows) {
-							fireArrows.remove(arrow);
-						}
+					Location loc = arrow.getLocation();
+					if(loc.getBlock().getType() == Material.AIR) {
+						arrow.getLocation().getBlock().setType(Material.FIRE);
+					}
+				}
+				if(deleteArrows.size() > 0) {
+					for(Arrow arrow : deleteArrows) {
+						fireArrows.remove(arrow);
 					}
 				}
 			}
-		}, 0, (long) 0.5 * 20L);
+		}, 0, 10L);
 	}
 
 	@EventHandler
