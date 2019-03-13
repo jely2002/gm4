@@ -3,12 +3,12 @@ package com.belka.spigot.gm4.modules;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
@@ -33,13 +33,17 @@ public class DesireLines implements Listener {
 			}
 			if(random.nextInt(max) <= amount) {
 				Block below = p.getLocation().getBlock();
-				if(below != null && (p.getGameMode() == GameMode.SURVIVAL ||  p.getGameMode() == GameMode.ADVENTURE)) {
+				if(below != null && (p.getGameMode() == GameMode.SURVIVAL ||  p.getGameMode() == GameMode.ADVENTURE) && !p.isSneaking()) {
 					Material replace = below.getType();
 					if(replace == Material.AIR) {
 						below = p.getLocation().subtract(0.0, 1.0, 0.0).getBlock();
 					}
-
-					below.getWorld().spawnParticle(Particle.BLOCK_CRACK, below.getLocation().add(0.5, 0.5, 0.5), 10, below.getType());
+					if(plant(replace)) {
+						Material drop = replace;
+						if (drop == Material.TALL_GRASS) drop = Material.GRASS;
+						else if (drop == Material.LARGE_FERN) drop = Material.FERN;
+						below.getWorld().dropItemNaturally(below.getLocation().add(0.5, 0.5, 0.5), new ItemStack(drop, 1));
+					}
 
 					replace = replacement(below.getType());
 					below.setType(replace);
@@ -58,13 +62,17 @@ public class DesireLines implements Listener {
 			case SAND:
 				return Material.SANDSTONE;
 			default:
-				if(i == Material.BROWN_MUSHROOM || i == Material.RED_MUSHROOM || i == Material.DEAD_BUSH || i == Material.GRASS || i == Material.FERN ||
-						i == Material.DANDELION || i == Material.POPPY || i == Material.BLUE_ORCHID || i == Material.ALLIUM || i == Material.AZURE_BLUET || i == Material.OXEYE_DAISY ||
-						i == Material.ORANGE_TULIP || i == Material.PINK_TULIP || i == Material.RED_TULIP || i == Material.WHITE_TULIP ||
-						i == Material.SUNFLOWER || i == Material.LILAC || i == Material.ROSE_BUSH || i == Material.PEONY || i == Material.TALL_GRASS || i == Material.LARGE_FERN) {
+				if(plant(i)) {
 					return Material.AIR;
 				}
 				return i;
 		}
+	}
+
+	private boolean plant(Material i) {
+		return (i == Material.BROWN_MUSHROOM || i == Material.RED_MUSHROOM || i == Material.DEAD_BUSH || i == Material.GRASS || i == Material.FERN ||
+				i == Material.DANDELION || i == Material.POPPY || i == Material.BLUE_ORCHID || i == Material.ALLIUM || i == Material.AZURE_BLUET || i == Material.OXEYE_DAISY ||
+				i == Material.ORANGE_TULIP || i == Material.PINK_TULIP || i == Material.RED_TULIP || i == Material.WHITE_TULIP ||
+				i == Material.SUNFLOWER || i == Material.LILAC || i == Material.ROSE_BUSH || i == Material.PEONY || i == Material.TALL_GRASS || i == Material.LARGE_FERN);
 	}
 }
