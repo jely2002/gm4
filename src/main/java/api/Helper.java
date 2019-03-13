@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Helper {
-    // HELPER FUNCTIONS
     public static List<Entity> getNearbyEntities(Location l, int size) {
-        List<Entity> entities = new ArrayList<Entity>();
+        List<Entity> entities = new ArrayList<>();
 
         for(Entity e : l.getWorld().getEntities()) {
             if(l.distance(e.getLocation()) <= size) {
@@ -21,17 +20,17 @@ public class Helper {
         return entities;
     }
     public static List<EntityType> getNearbyEntityTypes(Location l, int size) {
-        List<EntityType> entitytypes = new ArrayList<EntityType>();
+        List<EntityType> entityTypes = new ArrayList<>();
 
         for(Entity e : l.getWorld().getEntities()) {
             if(l.distance(e.getLocation()) <= size) {
-                entitytypes.add(e.getType());
+				entityTypes.add(e.getType());
             }
         }
-        return entitytypes;
+        return entityTypes;
     }
     public static List<Player> getNearbyPlayers(Location l, int size) {
-        List<Player> players = new ArrayList<Player>();
+        List<Player> players = new ArrayList<>();
 
         for(Entity e : l.getWorld().getEntities()) {
             if(l.distance(e.getLocation()) <= size && e instanceof Player) {
