@@ -7,8 +7,11 @@ import eu.endercentral.crazy_advancements.manager.AdvancementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
-public class Advancements implements Initializable {
+public class Advancements implements Listener, Initializable {
 	
 	private MainClass mc;
 	private static AdvancementManager manager = CrazyAdvancements.getNewAdvancementManager();
@@ -18,7 +21,7 @@ public class Advancements implements Initializable {
 	}
 
     public void init(MainClass mc) {
-		Bukkit.broadcastMessage("Init Advancements");
+		System.out.println("Init Advancements");
 		AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.ARMOR_STAND, "My Custom Advancements", "With cool additions", AdvancementDisplay.AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
 		rootDisplay.setBackgroundTexture("textures/blocks/concrete_yellow.png");
 		Advancement root = new Advancement(null, new NameKey("custom", "root"), rootDisplay);
@@ -28,7 +31,7 @@ public class Advancements implements Initializable {
 		Advancement children = new Advancement(root, new NameKey("custom", "right"), childrenDisplay);
 
 		manager.addAdvancement(root, children);
-		Bukkit.broadcastMessage("Added Advancements");
+		System.out.println("Added Advancements");
 		// OLD
 //		String worldName = Bukkit.getWorlds().get(0).getName();
 //		Bukkit.unloadWorld(worldName, false);
@@ -186,9 +189,18 @@ public class Advancements implements Initializable {
 //    			.build();
 //    		advancementAPI.save(world);
 //    }
-	
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e) {
+		manager.addPlayer(e.getPlayer());
+		grantAdvancement("root", e.getPlayer());
+		Bukkit.broadcastMessage("Welcome " + e.getPlayer().getName());
+	}
+
 	public static void grantAdvancement(String advName, Player p) {
-		manager.grantAdvancement(p, manager.getAdvancement(new NameKey(advName, "root")));
+		Bukkit.broadcastMessage(advName + " granted to " + p.getName());
+		Advancement adv = manager.getAdvancement(new NameKey("custom", advName));
+		manager.grantAdvancement(p, adv);
 //		NamespacedKey key = new NamespacedKey(mc, advName);
 //		AdvancementProgress progress = p.getAdvancementProgress(Bukkit.getAdvancement(key));
 //		for(String criteria : progress.getRemainingCriteria()) {

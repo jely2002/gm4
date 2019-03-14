@@ -7,22 +7,13 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 
-public class MainClass extends JavaPlugin implements Listener{
+public class MainClass extends JavaPlugin {
 
     private CommandManager cmdMgmt;
     private ConfigManager storage;
@@ -65,12 +56,6 @@ public class MainClass extends JavaPlugin implements Listener{
 		saveConfig();
     	storage().saveAll();
     }
-
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent e) {
-		Advancements.grantAdvancement("custom", e.getPlayer());
-		Bukkit.broadcastMessage("Welcome " + e.getPlayer().getName());
-	}
 
     public ConfigManager storage() {
         return storage;
