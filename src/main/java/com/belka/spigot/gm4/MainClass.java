@@ -35,19 +35,19 @@ public class MainClass extends JavaPlugin {
         storage = new ConfigManager(this);
         mCmds = new MainCommands(this);
 
+		Advancements advancements = new Advancements(this);
         SpeedPaths speedPaths = new SpeedPaths(this);
 		RecipeHandler recipeHandler = new RecipeHandler();
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		DesireLines desireLines = new DesireLines(this);
-		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
 		BetterFire betterFire = new BetterFire(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, mCmds, speedPaths, customCrafter, heartCanisters, desireLines, advancements, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
+        registerClasses(this, storage, cmdMgmt, mCmds, advancements, speedPaths, customCrafter, heartCanisters, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override

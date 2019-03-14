@@ -1,4 +1,6 @@
 modules:
+  Advancements:
+    enabled: true
   BetterArmorStands:
     enabled: true
   CustomCrafter:
