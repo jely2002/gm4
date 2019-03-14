@@ -33,16 +33,21 @@ public class Advancements implements Listener, Initializable {
 
 		manager.addAdvancement(gm4);
 
-		addAdvancement(gm4, "natural_defences", "Natural Defenses", "Get blinded by an underwater squid.", Material.INK_SAC, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 0f);
-		addAdvancement(gm4, "ender_aid", "Ender Aid", "Come in contact with a support Enderman.", Material.ENDER_EYE, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 1f);
-		addAdvancement(gm4, "risen", "Risen", "Die and raise up an undead zombie in your body's place.", Material.TOTEM_OF_UNDYING, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 2f);
+		Advancement cc = getParentAdvancement(gm4, "clever_crafting", "Clever Crafting", "Build yourself a Custom Crafter with droppers and a crafting table.", Material.CRAFTING_TABLE, AdvancementFrame.CHALLENGE, true, true, AdvancementVisibility.ALWAYS, 1f, 0f);
+		addAdvancement(cc, "clever_decrafting", "Clever Decrafting", "Assemble a Disassembler.", Material.DROPPER, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 2f, -1.5f);
+		addAdvancement(cc, "clever_smelting", "Clever Smelting", "Create your own Blast Furnace.", Material.FURNACE, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 2f, -0.5f);
+		addAdvancement(cc, "clever_crushing", "Clever Crushing", "Make yourself a new Block Compressor using a Custom Crafter.", Material.PISTON, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 2f, 0.5f);
+		addAdvancement(cc, "green_feet", "Green Feet", "Wear the Boots of Ostara.", Material.LEATHER_BOOTS, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 2.5f, 1.5f);
 
-		addAdvancement(gm4, "all_my_audreys", "All my Audreys", "Find all Dearest Audrey messages in a bottle.", Material.GLASS_BOTTLE, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, -1f);
-		addAdvancement(gm4, "a_fun_gi", "A Fun-gi", "Decor some decorative mushroom.", Material.RED_MUSHROOM_BLOCK, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, -2f);
+		Advancement hc = getParentAdvancement(gm4, "clever_crafting", "Clever Crafting", "Build yourself a Custom Crafter with droppers and a crafting table.", Material.CRAFTING_TABLE, AdvancementFrame.CHALLENGE, true, true, AdvancementVisibility.ALWAYS, 1f, 0f);
 
-		Advancement cc = getParentAdvancement(gm4, "clever_crafting", "Clever Crafting", "Build yourself a Custom Crafter with droppers and a crafting table.", Material.CRAFTING_TABLE, AdvancementFrame.CHALLENGE, true, true, AdvancementVisibility.ALWAYS, 1f, -3f);
+		Advancement mobs = getParentAdvancement(cc, "mobs", "Mobs", "", Material.IRON_SWORD, AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS, 1f, 3f);
+		addAdvancement(gm4, "natural_defences", "Natural Defenses", "Get blinded by an underwater squid.", Material.INK_SAC, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 2f, 2f);
+		addAdvancement(gm4, "ender_aid", "Ender Aid", "Come in contact with a support Enderman.", Material.ENDER_EYE, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 2f, 3f);
+		addAdvancement(gm4, "risen", "Risen", "Die and raise up an undead zombie in your body's place.", Material.TOTEM_OF_UNDYING, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 2f, 4f);
 
-		addAdvancement(cc, "clever_smelting", "Clever Smelting", "Create your own Blast Furnace.", Material.FURNACE, AdvancementFrame.GOAL, true, true, AdvancementVisibility.PARENT_GRANTED, 2f, -3f);
+//		addAdvancement(gm4, "all_my_audreys", "All my Audreys", "Find all Dearest Audrey messages in a bottle.", Material.GLASS_BOTTLE, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, -1f);
+//		addAdvancement(gm4, "a_fun_gi", "A Fun-gi", "Decor some decorative mushroom.", Material.RED_MUSHROOM_BLOCK, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, -2f);
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			manager.addPlayer(p);
@@ -52,15 +57,6 @@ public class Advancements implements Listener, Initializable {
 		}
 
 		// OLD
-//		addAdvancementToParent("gm4/clever_decrafting", "Clever Decrafting", "Assemble a Disassembler.", "minecraft:dropper",
-//				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.GOAL, cc, worldName);
-//
-//		addAdvancementToParent("gm4/clever_crushing", "Clever Crushing", "Make yourself a new Block Compressor using a gm4 Crafter.", "minecraft:piston",
-//				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.GOAL, cc, worldName);
-//
-//		addAdvancementToParent("gm4/green_feet", "Green Feet", "Wear the Boots of Ostara.", "minecraft:leather_boots",
-//				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.GOAL, cc, worldName);
-//
 //		// HEART CANISTER
 //		AdvancementAPI hc = AdvancementAPI.builder(new NamespacedKey(mc, "gm4/cant_buy_me_love"))
 //			.title("Can't buy me love")
