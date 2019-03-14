@@ -9,29 +9,37 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Advancements implements Listener, Initializable {
 	
 	private MainClass mc;
-	private static AdvancementManager manager = CrazyAdvancements.getNewAdvancementManager();
+	private static AdvancementManager manager;
 
 	public Advancements(MainClass mc) {
 		this.mc = mc;
 	}
 
     public void init(MainClass mc) {
+		manager = CrazyAdvancements.getNewAdvancementManager();
 		System.out.println("Init Advancements");
-		AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.ARMOR_STAND, "My Custom Advancements", "With cool additions", AdvancementDisplay.AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
-		rootDisplay.setBackgroundTexture("textures/blocks/concrete_yellow.png");
-		Advancement root = new Advancement(null, new NameKey("custom", "root"), rootDisplay);
+		AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.COMMAND_BLOCK, "Gamemode 4", "Vanilla Re-Imagined", AdvancementDisplay.AdvancementFrame.CHALLENGE, false, false, AdvancementVisibility.VANILLA);
+		rootDisplay.setBackgroundTexture("textures/blocks/cyan_concrete.png");
+		Advancement root = new Advancement(null, new NameKey("gm4", "root"), rootDisplay);
 
 		AdvancementDisplay childrenDisplay = new AdvancementDisplay(Material.ENDER_EYE, "To the right", "Your Goal", AdvancementDisplay.AdvancementFrame.GOAL, true, true, AdvancementVisibility.VANILLA);
 		childrenDisplay.setCoordinates(1, 0);//x, y
-		Advancement children = new Advancement(root, new NameKey("custom", "right"), childrenDisplay);
+		Advancement children = new Advancement(root, new NameKey("gm4", "right"), childrenDisplay);
 
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			manager.grantAdvancement(p, root);
+			manager.loadProgress(p, children);
+		}
 		manager.addAdvancement(root, children);
+
 		System.out.println("Added Advancements");
+
 		// OLD
 //		String worldName = Bukkit.getWorlds().get(0).getName();
 //		Bukkit.unloadWorld(worldName, false);
@@ -59,10 +67,10 @@ public class Advancements implements Listener, Initializable {
 //		addAdvancementToParent("gm4/a_fun_gi", "A Fun-gi", "Decor some decorative mushroom.", "minecraft:red_mushroom_block",
 //				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.TASK, gm4, worldName);
 //
-//		// CUSTOM CRAFTING
+//		// gm4 CRAFTING
 //		AdvancementAPI cc = AdvancementAPI.builder(new NamespacedKey(mc, "gm4/clever_crafting"))
 //			.title("Clever Crafting")
-//			.description("Build yourself a Custom Crafter with droppers and a crafting table.")
+//			.description("Build yourself a gm4 Crafter with droppers and a crafting table.")
 //			.icon("minecraft:crafting_table")
 //			.trigger(Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"))
 //			.announce(true)
@@ -81,7 +89,7 @@ public class Advancements implements Listener, Initializable {
 //		addAdvancementToParent("gm4/clever_decrafting", "Clever Decrafting", "Assemble a Disassembler.", "minecraft:dropper",
 //				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.GOAL, cc, worldName);
 //
-//		addAdvancementToParent("gm4/clever_crushing", "Clever Crushing", "Make yourself a new Block Compressor using a Custom Crafter.", "minecraft:piston",
+//		addAdvancementToParent("gm4/clever_crushing", "Clever Crushing", "Make yourself a new Block Compressor using a gm4 Crafter.", "minecraft:piston",
 //				Trigger.builder(Trigger.TriggerType.IMPOSSIBLE, "default"), true, false, true, FrameType.GOAL, cc, worldName);
 //
 //		addAdvancementToParent("gm4/green_feet", "Green Feet", "Wear the Boots of Ostara.", "minecraft:leather_boots",
@@ -190,6 +198,10 @@ public class Advancements implements Listener, Initializable {
 //    		advancementAPI.save(world);
 //    }
 
+	private void addAdvencement(Advancement parent, String key, String title, String description, Material icon, AdvancementDisplay.AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+
+	}
+
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		manager.addPlayer(e.getPlayer());
@@ -197,15 +209,16 @@ public class Advancements implements Listener, Initializable {
 		Bukkit.broadcastMessage("Welcome " + e.getPlayer().getName());
 	}
 
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		manager.addPlayer(e.getPlayer());
+		grantAdvancement("right", e.getPlayer());
+	}
+
 	public static void grantAdvancement(String advName, Player p) {
-		Bukkit.broadcastMessage(advName + " granted to " + p.getName());
-		Advancement adv = manager.getAdvancement(new NameKey("custom", advName));
+		Advancement adv = manager.getAdvancement(new NameKey("gm4", advName));
 		manager.grantAdvancement(p, adv);
-//		NamespacedKey key = new NamespacedKey(mc, advName);
-//		AdvancementProgress progress = p.getAdvancementProgress(Bukkit.getAdvancement(key));
-//		for(String criteria : progress.getRemainingCriteria()) {
-//		    progress.awardCriteria(criteria);
-//		}
+		manager.saveProgress(p, "gm4");
 	}
 }
 
