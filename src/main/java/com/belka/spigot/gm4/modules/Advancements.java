@@ -65,7 +65,7 @@ public class Advancements implements Listener, Initializable {
         Advancement as = getParentAdvancement(gm4, "gettin_handsy", "Gettin' Handsy", "Give an armor stand arms", Material.ARMOR_STAND, AdvancementFrame.GOAL, true, true, AdvancementVisibility.ALWAYS, 1f, 4f);
         addAdvancement(as, "plenty_o_posing", "Plenty o' Posing", "Make your armor stand strike a pose", Material.ARMOR_STAND, AdvancementFrame.GOAL, true, true, AdvancementVisibility.PARENT_GRANTED, 2f, 4f);
 
-        Advancement zc = getParentAdvancement(gm4, "potion_chef", "Potion Chef", "Create a Zauber Cauldron", Material.CAULDRON, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 2.5f, -3f);
+        Advancement zc = getParentAdvancement(gm4, "potion_chef", "Potion Chef", "Create a Zauber Cauldron", Material.CAULDRON, AdvancementFrame.GOAL, true, true, AdvancementVisibility.ALWAYS, 2.5f, -3f);
         addAdvancement(zc, "underrated_materials", "Underrated Materials", "Suit up with a full suit of Zauber Armor.", Material.GOLDEN_CHESTPLATE, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 3.5f, -3f);
 		addAdvancement(zc, "soup_kitchen_magician", "Soup Kitchen Magician", "Where did my lunch go?", Material.MUSHROOM_STEW, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 3.5f, -4f);
 		addAdvancement(zc, "questionable_ingredients", "Questionable Ingredients", "Just like the Rabbits!", Material.CHORUS_FRUIT, AdvancementFrame.TASK, true, true, AdvancementVisibility.PARENT_GRANTED, 3.5f, -5f);
@@ -88,9 +88,11 @@ public class Advancements implements Listener, Initializable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             manager.addPlayer(p);
+            manager.setAnnounceAdvancementMessages(false);
             manager.grantAdvancement(p, gm4);
             manager.loadProgress(p, "gm4");
             manager.saveProgress(p, "gm4");
+            manager.setAnnounceAdvancementMessages(true);
         }
     }
 
@@ -128,9 +130,11 @@ public class Advancements implements Listener, Initializable {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 		manager.addPlayer(p);
+		manager.setAnnounceAdvancementMessages(false);
 		manager.grantAdvancement(p, manager.getAdvancement(new NameKey("gm4", "root")));
 		manager.loadProgress(p, "gm4");
 		manager.saveProgress(p, "gm4");
+		manager.setAnnounceAdvancementMessages(true);
     }
 
     @EventHandler
