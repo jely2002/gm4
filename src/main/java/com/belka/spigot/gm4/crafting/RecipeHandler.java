@@ -2,12 +2,14 @@ package com.belka.spigot.gm4.crafting;
 
 import java.util.ArrayList;
 
+import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Dropper;
 import org.bukkit.inventory.ItemStack;
 
-public class RecipeHandler {
+public class RecipeHandler implements Initializable {
 
 	private ArrayList<Recipe> recipes = new ArrayList<>();
 	private ArrayList<Integer> amounts = new ArrayList<>();
@@ -47,7 +49,7 @@ public class RecipeHandler {
 		return false;
 	}
 	
-	public void registerRecipes() {
+	public void init(MainClass mc) {
 		Recipe gravel = new Recipe(
 				Material.FLINT,
 				Material.FLINT,

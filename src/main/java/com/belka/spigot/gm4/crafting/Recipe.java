@@ -13,7 +13,7 @@ public class Recipe {
 	int amount;
 	
 	public Recipe(ItemStack item1, ItemStack item2, ItemStack item3, ItemStack item4, ItemStack item5, ItemStack item6, ItemStack item7, ItemStack item8, ItemStack item9, int amount, ItemStack itemToDrop) {
-		ArrayList<ItemStack> recipe = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> recipe = new ArrayList<>();
 		recipe.add(item1);
 		recipe.add(item2);
 		recipe.add(item3);
@@ -29,8 +29,8 @@ public class Recipe {
 	}
 	
 	public Recipe(Material item1, Material item2, Material item3, Material item4, Material item5, Material item6, Material item7, Material item8, Material item9, int amount, ItemStack itemToDrop) {
-		ArrayList<Material> recipe = new ArrayList<Material>();
-		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
+		ArrayList<Material> recipe = new ArrayList<>();
+		ArrayList<ItemStack> stacks = new ArrayList<>();
 		recipe.add(item1);
 		recipe.add(item2);
 		recipe.add(item3);

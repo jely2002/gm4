@@ -37,42 +37,47 @@ public class CustomCrafter implements Listener {
 		Item i = e.getItemDrop();
 		final int[] task = new int[]{-1};
 		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			Location loc = i.getLocation();
-			if (i.getItemStack().getType() == Material.CRAFTING_TABLE) {
-				Block b = loc.subtract(0.0, 1.0, 0.0).getBlock();
-				if (b.getBlockData().getMaterial() == Material.DROPPER && b instanceof Dropper) {
-					Dropper dr = (Dropper) b.getState();
-					List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
-					if (!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
-						if (crafting.checkRecipe(dr)) {
-							Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
-							ArmorStand as = (ArmorStand) dr.getWorld().spawnEntity(asLoc, EntityType.ARMOR_STAND);
-							as.setSmall(true);
-							as.setGravity(false);
-							as.setVisible(false);
-							as.setCanPickupItems(false);
-							as.setCustomNameVisible(false);
-							as.setRemoveWhenFarAway(false);
-							as.setCustomName("CustomCrafter");
-							as.setHelmet(new ItemStack(Material.CRAFTING_TABLE, 1));
+            if (i.isOnGround()) {
+                Bukkit.getScheduler().cancelTask(task[0]);
+                Location loc = i.getLocation();
+                e.getPlayer().sendMessage("Drop " + i.isOnGround());
+                if (i.getItemStack().getType() == Material.CRAFTING_TABLE) {
+                    Block b = loc.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
+                    if (b.getBlockData().getMaterial() == Material.DROPPER) {
+                        Dropper dr = (Dropper) b.getState();
+                        List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
+                        e.getPlayer().sendMessage("Dropper");
+                        if (!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
+                            e.getPlayer().sendMessage("Contains");
+//                            if (crafting.checkRecipe(dr)) {
+                                Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
+                                ArmorStand as = (ArmorStand) dr.getWorld().spawnEntity(asLoc, EntityType.ARMOR_STAND);
+                                as.setSmall(true);
+                                as.setGravity(false);
+                                as.setVisible(false);
+                                as.setCanPickupItems(false);
+                                as.setCustomNameVisible(false);
+                                as.setRemoveWhenFarAway(false);
+                                as.setCustomName("CustomCrafter");
+                                as.setHelmet(new ItemStack(Material.CRAFTING_TABLE, 1));
 
-							BlockData blockData = b.getBlockData();
-							((Directional) blockData).setFacing(BlockFace.DOWN);
-							b.setBlockData(blockData);
+                                BlockData blockData = b.getBlockData();
+                                ((Directional) blockData).setFacing(BlockFace.DOWN);
+                                b.setBlockData(blockData);
 
-							dr.setCustomName("Custom Crafter");
-							dr.getInventory().clear();
+                                dr.setCustomName("Custom Crafter");
+                                dr.getInventory().clear();
 
-							e.getItemDrop().remove();
-							active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
-							mc.storage().data().set("CustomCrafter.customCrafters", active);
-							mc.storage().saveData();
-						}
-					}
-				}
+                                e.getItemDrop().remove();
+                                active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
+                                mc.storage().data().set("CustomCrafter.customCrafters", active);
+                                mc.storage().saveData();
+//                            }
+                        }
+                    }
+                }
 			}
-			if (i.isOnGround()) Bukkit.getScheduler().cancelTask(task[0]);
-		}, 0, 20L);
+		}, 0, 10L);
 	}
 
 	@EventHandler
