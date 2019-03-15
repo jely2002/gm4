@@ -4,10 +4,12 @@ import java.util.Arrays;
 
 import api.SkullCreator;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class CustomItems {
 	
@@ -37,6 +39,13 @@ public class CustomItems {
         meta.setLore(Arrays.asList(ChatColor.DARK_PURPLE + "Tier 2"));
         skull.setItemMeta(meta);
 		return skull;
+    }
+    public static ItemStack BOOTS_OF_OSTARA(int amount) {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, amount);
+        LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
+        bootsMeta.setColor(Color.fromRGB(56, 140, 43));
+        boots.setItemMeta(bootsMeta);
+        return boots;
     }
 
 	public static ItemStack getSkull(String skinURL, int amount) {
