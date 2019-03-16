@@ -34,6 +34,7 @@ public class CustomCrafter implements Listener {
 
 	@EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
+		if (!mc.getConfig().getBoolean("CustomCrafter.enabled")) return;
 		Item i = e.getItemDrop();
 		final int[] task = new int[]{-1};
 		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
@@ -61,12 +62,13 @@ public class CustomCrafter implements Listener {
                                 as.setCustomName("CustomCrafter");
                                 as.setHelmet(new ItemStack(Material.CRAFTING_TABLE, 1));
 
+								dr.setCustomName("Custom Crafter");
+								dr.update();
+								dr.getInventory().clear();
+
                                 BlockData blockData = b.getBlockData();
                                 ((Directional) blockData).setFacing(BlockFace.DOWN);
                                 b.setBlockData(blockData);
-
-                                dr.setCustomName("Custom Crafter");
-                                dr.getInventory().clear();
 
                                 e.getItemDrop().remove();
                                 active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
