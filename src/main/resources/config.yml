@@ -1,52 +1,53 @@
-modules:
-  Advancements:
-    enabled: true
-  BetterArmorStands:
-    enabled: true
-  CustomCrafter:
-    enabled: true
-  DesireLines:
-    enabled: true
-    max: 50
-    amount: 2
-  EndermanSupportClass:
-    enabled: true
-  HeartCanisters:
-    enabled: true
-  InkSpittingSquid:
-    enabled: true
-  SpeedPaths:
-    enabled: true
-    pathBlock: GRASS_PATH
-  VorpelSwords:
-    enabled: true
-    max: 10
-    amount: 3
-  WeightedArmour:
-    enabled: true
-    weight:
-      leather:
-        boots: 1
-        leggings: 2
-        chestplate: 3
-        helmet: 1
-      chain:
-        boots: 1
-        leggings: 4
-        chestplate: 5
-        helmet: 2
-      gold:
-        boots: 1
-        leggings: 3
-        chestplate: 5
-        helmet: 2
-      iron:
-        boots: 2
-        leggings: 5
-        chestplate: 6
-        helmet: 2
-      diamond:
-        boots: 3
-        leggings: 6
-        chestplate: 8
-        helmet: 3
+Advancements:
+  enabled: true
+BetterArmorStands:
+  enabled: true
+CustomCrafter:
+  enabled: true
+DesireLines:
+  enabled: true
+  max: 50
+  amount: 2
+EndermanSupportClass:
+  enabled: true
+HeartCanisters:
+  enabled: true
+InkSpittingSquid:
+  enabled: true
+SpeedPaths:
+  enabled: true
+  pathBlock: GRASS_PATH
+VorpelSwords:
+  enabled: true
+  max: 10
+  amount: 3
+BatGrenades:
+  enabled: true
+WeightedArmour:
+  enabled: true
+  weight:
+    leather:
+      boots: 1
+      leggings: 2
+      chestplate: 3
+      helmet: 1
+    chain:
+      boots: 1
+      leggings: 4
+      chestplate: 5
+      helmet: 2
+    gold:
+      boots: 1
+      leggings: 3
+      chestplate: 5
+      helmet: 2
+    iron:
+      boots: 2
+      leggings: 5
+      chestplate: 6
+      helmet: 2
+    diamond:
+      boots: 3
+      leggings: 6
+      chestplate: 8
+      helmet: 3
