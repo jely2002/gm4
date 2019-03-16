@@ -2,7 +2,7 @@ package com.belka.spigot.gm4;
 
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
-import com.belka.spigot.gm4.crafting.CustomRecipies;
+import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
@@ -40,7 +40,7 @@ public class MainClass extends JavaPlugin {
         SpeedPaths speedPaths = new SpeedPaths(this);
 		RecipeHandler recipeHandler = new RecipeHandler();
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
-        CustomRecipies customRecipies = new CustomRecipies(this);
+        CustomRecipes customRecipes = new CustomRecipes(this);
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		DesireLines desireLines = new DesireLines(this);
 		BatGrenades batGrenades = new BatGrenades(this);
@@ -49,7 +49,7 @@ public class MainClass extends JavaPlugin {
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, mCmds, advancements, speedPaths, customCrafter, customRecipies, heartCanisters, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
+        registerClasses(this, storage, cmdMgmt, mCmds, advancements, speedPaths, customCrafter, customRecipes, heartCanisters, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override

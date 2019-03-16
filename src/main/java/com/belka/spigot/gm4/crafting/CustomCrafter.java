@@ -25,11 +25,11 @@ import java.util.List;
 public class CustomCrafter implements Listener {
 
 	private MainClass mc;
-	private RecipeHandler crafting;
+	private RecipeHandler rh;
 
-	public CustomCrafter(MainClass mc, RecipeHandler crafting) {
+	public CustomCrafter(MainClass mc, RecipeHandler rh) {
 		this.mc = mc;
-		this.crafting = crafting;
+		this.rh = rh;
 	}
 
 	@EventHandler
@@ -50,7 +50,7 @@ public class CustomCrafter implements Listener {
                         e.getPlayer().sendMessage("Dropper");
                         if (!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
                             e.getPlayer().sendMessage("Contains");
-//                            if (crafting.checkRecipe(dr)) {
+                            if (rh.equalsRecipe(dr, CustomRecipes.create()) && dr.getInventory().getItem(0).getAmount() == 1) {
                                 Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
                                 ArmorStand as = (ArmorStand) dr.getWorld().spawnEntity(asLoc, EntityType.ARMOR_STAND);
                                 as.setSmall(true);
@@ -74,7 +74,7 @@ public class CustomCrafter implements Listener {
                                 active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
                                 mc.storage().data().set("CustomCrafter.customCrafters", active);
                                 mc.storage().saveData();
-//                            }
+                            }
                         }
                     }
                 }
