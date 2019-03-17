@@ -55,8 +55,7 @@ public class RecipeHandler {
 		ArrayList<ItemStack> singleDropperItems = new ArrayList<>();
 		for (ItemStack is : dr.getInventory().getContents()) {
 			if (is != null)  {
-				ItemStack item = is.clone();
-				item.setAmount(1);
+				ItemStack item = new ItemStack(is.clone().getType());
 				singleDropperItems.add(item);
 			}
 			else singleDropperItems.add(null);

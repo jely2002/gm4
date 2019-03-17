@@ -287,6 +287,7 @@ public class CustomRecipes implements Initializable {
 		recipe.shape("OIO","DSD","ORO");
 		recipe.setIngredient('O', Material.OBSIDIAN);
 		recipe.setIngredient('I', Material.IRON_BLOCK);
+		recipe.setIngredient('D', Material.DIAMOND);
 		recipe.setIngredient('S', Material.WITHER_SKELETON_SKULL);
 		recipe.setIngredient('R', Material.BLAZE_ROD);
 		return recipe;
