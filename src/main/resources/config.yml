@@ -4,6 +4,8 @@ BetterArmorStands:
   enabled: true
 CustomCrafter:
   enabled: true
+  StandardCrafting: true
+  RecordCrafting: true
 DesireLines:
   enabled: true
   max: 50

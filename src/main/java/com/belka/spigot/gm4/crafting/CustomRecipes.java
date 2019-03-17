@@ -1,21 +1,41 @@
 package com.belka.spigot.gm4.crafting;
 
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
-public class CustomRecipes {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class CustomRecipes implements Initializable {
 
 	private static MainClass mc;
+	public static ArrayList<ShapedRecipe> shapedRecipes = new ArrayList<>();
+	public static ArrayList<ShapelessRecipe> shapelessRecipes = new ArrayList<>();
 
-	public CustomRecipes(MainClass mc){
+	public CustomRecipes(MainClass mc) {
 		this.mc = mc;
 	}
 
+	public void init(MainClass mc) {
+		if (mc.getConfig().getBoolean("CustomCrafter.StandardCrafting")) {
+			add(shapedRecipes, GRAVEL(), RED_SAND(), COBWEB(), IRON_HORSE_ARMOR(), GOLDEN_HORSE_ARMOR(), DIAMOND_HORSE_ARMOR(),
+					OAK_PLANKS(), SPRUCE_PLANKS(), BIRCH_PLANKS(), JUNGLE_PLANKS(), ACACIA_PLANKS(), DARK_OAK_PLANKS(),
+					ENCHANTED_GOLDEN_APPLE(), SMOOTH_STONE(), SMOOTH_SANDSTONE(), SMOOTH_RED_SANDSTONE(), SMOOTH_QUARTZ());
+			add(shapelessRecipes, SAND(), SAND_2());
+		}
+		if (mc.getConfig().getBoolean("CustomCrafter.RecordCrafting"))
+			add(shapedRecipes, MUSIC_DISC_11(), MUSIC_DISC_13(), MUSIC_DISC_BLOCKS(), MUSIC_DISC_CAT(), MUSIC_DISC_CHIRP(), MUSIC_DISC_FAR(), MUSIC_DISC_MALL(), MUSIC_DISC_MELLOHI(), MUSIC_DISC_STAL(), MUSIC_DISC_STRAD(), MUSIC_DISC_WAIT(), MUSIC_DISC_WARD());
+		if (mc.getConfig().getBoolean("HeartCanisters.enabled"))
+			add(shapedRecipes, HEART_CANISTER_TIER_1(), HEART_CANISTER_TIER_2());
+	}
+
 	public static ShapedRecipe create() {
-		ItemStack returnItem = new ItemStack(Material.AIR);
+		ItemStack returnItem = new ItemStack(Material.AIR, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "create"), returnItem);
 		recipe.shape("CCC","C C","CRC");
 		recipe.setIngredient('C', Material.COBBLESTONE);
@@ -23,744 +43,274 @@ public class CustomRecipes {
 		return recipe;
 	}
 
-//	public static void CRAFT(Dropper dr) {
-//		int amount = 0;
-//		for(int i = 1; i <= 64; i++) {
-//			if(mc.getConfig().getBoolean("modules.CustomCrafter.StandardCrafting")) {
-//				if(GRAVEL(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.GRAVEL, amount));
-//					playSound(dr);
-//				}
-//				else if(PACKED_ICE(dr, i)) {
-//					amount = 4 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().addItem(new ItemStack(Material.PACKED_ICE, amount));
-//					playSound(dr);
-//				}
-//				else if(RED_SAND(dr, i)) {
-//					amount = 8 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().addItem(new ItemStack(Material.SAND, amount));
-//					playSound(dr);
-//				}
-//				else if(SAND(dr, i, false)) {
-//					amount = 4 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().addItem(new ItemStack(Material.SAND, amount));
-//					playSound(dr);
-//				}
-//				else if(SAND(dr, i, true)) {
-//					amount = 2 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().addItem(new ItemStack(Material.SAND, amount));
-//					playSound(dr);
-//				}
-//				else if(COBWEB(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.COBWEB, amount));
-//					playSound(dr);
-//				}
-//				else if(PODZOL(dr, i)) {
-//					amount = 3 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.DIRT, amount, (byte) 2));
-//					playSound(dr);
-//				}
-//				else if(HORSE_ARMOR(dr, i, "gold")) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.GOLDEN_HORSE_ARMOR, amount));
-//					playSound(dr);
-//				}
-//				else if(HORSE_ARMOR(dr, i, "iron")) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.IRON_HORSE_ARMOR, amount));
-//					playSound(dr);
-//				}
-//				else if(HORSE_ARMOR(dr, i, "diamond")) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.DIAMOND_HORSE_ARMOR, amount));
-//					playSound(dr);
-//				}
-//				else if(NOTCH_APPLE(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.GOLDEN_APPLE, amount));
-//					playSound(dr);
-//				}
-//			}
-//			if(mc.getConfig().getBoolean("modules.CustomCrafter.RecordCrafting")) {
-//				if(RECORD_13(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_GOLD_RECORD, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_CAT(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_GREEN_RECORD, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_BLOCKS(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_3, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_CHIRP(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_4, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_FAR(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_5, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_MALL(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_6, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_MELLOHI(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_7, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_STAL(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_8, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_STRAD(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_9, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_WARD(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_10, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_11(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_11, amount));
-//					playSound(dr);
-//				}
-//				else if(RECORD_WAIT(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, new ItemStack(Material.LEGACY_RECORD_12, amount));
-//					playSound(dr);
-//				}
-//			}
-//			if(mc.getConfig().getBoolean("modules.HeartCanisters.enabled")) {
-//				if(HEART_CANISTER_TIER_1(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, CustomItems.HEART_CANISTER_TIER_1(amount));
-//					playSound(dr);
-//				}
-//				if(HEART_CANISTER_TIER_2(dr, i)) {
-//					amount = 1 * i;
-//					dr.getInventory().clear();
-//					dr.getInventory().setItem(4, CustomItems.HEART_CANISTER_TIER_2(amount));
-//					playSound(dr);
-//				}
-//			}
-//			if(mc.getConfig().getBoolean("BlastFurnace")) {
-//				if(BLAST_FURNACE(dr)) {
-//					Bukkit.broadcastMessage("furnace");
-//				}
-//			}
-//		}
-//	}
-//
-//	public static boolean CREATE(Dropper dr) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five == null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.COBBLESTONE, 1)) && two.equals(new ItemStack(Material.COBBLESTONE, 1)) && three.equals(new ItemStack(Material.COBBLESTONE, 1)) &&
-//				four.equals(new ItemStack(Material.COBBLESTONE, 1)) && six.equals(new ItemStack(Material.COBBLESTONE, 1)) &&
-//				seven.equals(new ItemStack(Material.COBBLESTONE, 1)) && eight.equals(new ItemStack(Material.REDSTONE, 1)) && nine.equals(new ItemStack(Material.COBBLESTONE, 1))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	//Standart Crafting
-//	public static boolean GRAVEL(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.FLINT, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean PACKED_ICE(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.ICE, amount)) && two.equals(new ItemStack(Material.ICE, amount)) && three.equals(new ItemStack(Material.ICE, amount)) &&
-//				four.equals(new ItemStack(Material.ICE, amount)) && five.equals(new ItemStack(Material.SNOW_BLOCK, amount)) && six.equals(new ItemStack(Material.ICE, amount)) &&
-//				seven.equals(new ItemStack(Material.ICE, amount)) && eight.equals(new ItemStack(Material.ICE, amount)) && nine.equals(new ItemStack(Material.ICE, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean SAND(Dropper dr, int amount, boolean slab) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one == null && two == null && three == null && four == null && five != null && six == null && seven == null && eight == null && nine == null) {
-//			if(slab == false) {
-//				if(five.equals(new ItemStack(Material.SANDSTONE, amount))) {
-//					if(five.getAmount() == amount) {
-//						return true;
-//					}
-//				}
-//			}
-//			else {
-//				if(five.equals(new ItemStack(Material.SANDSTONE_SLAB, amount))) {
-//					if(five.getAmount() == amount) {
-//						return true;
-//					}
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//
-//	public static boolean RED_SAND(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.SAND, amount)) && two.equals(new ItemStack(Material.SAND, amount)) && three.equals(new ItemStack(Material.SAND, amount)) &&
-//				four.equals(new ItemStack(Material.SAND, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.SAND, amount)) &&
-//				seven.equals(new ItemStack(Material.SAND, amount)) && eight.equals(new ItemStack(Material.SAND, amount)) && nine.equals(new ItemStack(Material.SAND, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean COBWEB(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.STRING, amount)) && two.equals(new ItemStack(Material.STRING, amount)) && three.equals(new ItemStack(Material.STRING, amount)) &&
-//				four.equals(new ItemStack(Material.STRING, amount)) && five.equals(new ItemStack(Material.SLIME_BALL, amount)) && six.equals(new ItemStack(Material.STRING, amount)) &&
-//				seven.equals(new ItemStack(Material.STRING, amount)) && eight.equals(new ItemStack(Material.STRING, amount)) && nine.equals(new ItemStack(Material.STRING, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean PODZOL(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one == null && two == null && three == null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-////			if((four.equals(new ItemStack(Material.LEAVES, amount)) ||
-////					four.equals(new ItemStack(Material.LEAVES, amount)) ||
-////					four.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
-////					four.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
-////					four.equals(new ItemStack(Material.LEAVES_2, amount)) ||
-////					four.equals(new ItemStack(Material.LEAVES_2, amount))) &&
-////
-////				(five.equals(new ItemStack(Material.LEAVES, amount)) ||
-////					five.equals(new ItemStack(Material.LEAVES, amount)) ||
-////					five.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
-////					five.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
-////					five.equals(new ItemStack(Material.LEAVES_2, amount)) ||
-////					five.equals(new ItemStack(Material.LEAVES_2, amount))) &&
-////
-////				(six.equals(new ItemStack(Material.LEAVES, amount)) ||
-////					six.equals(new ItemStack(Material.LEAVES, amount)) ||
-////					six.equals(new ItemStack(Material.LEAVES, amount, (byte) 2)) ||
-////					six.equals(new ItemStack(Material.LEAVES, amount, (byte) 3)) ||
-////					six.equals(new ItemStack(Material.LEAVES_2, amount)) ||
-////					six.equals(new ItemStack(Material.LEAVES_2, amount))) &&
-////
-////				seven.equals(new ItemStack(Material.GRASS, amount)) && eight.equals(new ItemStack(Material.GRASS, amount)) && nine.equals(new ItemStack(Material.GRASS, amount))) {
-//				return true;
-////			}
-////			else {
-////				return false;
-////			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//
-//	public static boolean HORSE_ARMOR(Dropper dr, int amount, String type) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two == null && three == null && four != null && five != null && six != null && seven != null && eight == null && nine != null) {
-//			if(type.equalsIgnoreCase("gold")) {
-//				if(one.equals(new ItemStack(Material.GOLD_INGOT, amount)) &&
-//					four.equals(new ItemStack(Material.GOLD_INGOT, amount)) && five.equals(new ItemStack(Material.LEATHER, amount)) && six.equals(new ItemStack(Material.GOLD_INGOT, amount)) &&
-//					seven.equals(new ItemStack(Material.GOLD_INGOT, amount)) && nine.equals(new ItemStack(Material.GOLD_INGOT, amount))) {
-//					return true;
-//				}
-//				else {
-//					return false;
-//				}
-//			}
-//			else if(type.equalsIgnoreCase("iron")) {
-//				if(one.equals(new ItemStack(Material.IRON_INGOT, amount)) &&
-//					four.equals(new ItemStack(Material.IRON_INGOT, amount)) && five.equals(new ItemStack(Material.LEATHER, amount)) && six.equals(new ItemStack(Material.IRON_INGOT, amount)) &&
-//					seven.equals(new ItemStack(Material.IRON_INGOT, amount)) && nine.equals(new ItemStack(Material.IRON_INGOT, amount))) {
-//					return true;
-//				}
-//				else {
-//					return false;
-//				}
-//			}
-//			else if(type.equalsIgnoreCase("diamond")) {
-//				if(one.equals(new ItemStack(Material.DIAMOND, amount)) &&
-//					four.equals(new ItemStack(Material.DIAMOND, amount)) && five.equals(new ItemStack(Material.LEATHER, amount)) && six.equals(new ItemStack(Material.DIAMOND, amount)) &&
-//					seven.equals(new ItemStack(Material.DIAMOND, amount)) && nine.equals(new ItemStack(Material.DIAMOND, amount))) {
-//					return true;
-//				}
-//				else {
-//					return false;
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//
-//	public static boolean NOTCH_APPLE(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.GOLD_BLOCK, amount)) && two.equals(new ItemStack(Material.GOLD_BLOCK, amount)) && three.equals(new ItemStack(Material.GOLD_BLOCK, amount)) &&
-//				four.equals(new ItemStack(Material.GOLD_BLOCK, amount)) && five.equals(new ItemStack(Material.APPLE, amount)) && six.equals(new ItemStack(Material.GOLD_BLOCK, amount)) &&
-//				seven.equals(new ItemStack(Material.GOLD_BLOCK, amount)) && eight.equals(new ItemStack(Material.GOLD_BLOCK, amount)) && nine.equals(new ItemStack(Material.GOLD_BLOCK, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	//Record Crafting
-//	public static boolean RECORD_13(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_CAT(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount, (byte) 2)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_BLOCKS(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_CHIRP(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_FAR(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_MALL(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount, (byte) 5)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_MELLOHI(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_STAL(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_STRAD(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_WARD(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.ENDER_EYE, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_11(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.COAL, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean RECORD_WAIT(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.FLINT, amount)) && two.equals(new ItemStack(Material.FLINT, amount)) && three.equals(new ItemStack(Material.FLINT, amount)) &&
-//				four.equals(new ItemStack(Material.FLINT, amount)) && five.equals(new ItemStack(Material.INK_SAC, amount)) && six.equals(new ItemStack(Material.FLINT, amount)) &&
-//				seven.equals(new ItemStack(Material.FLINT, amount)) && eight.equals(new ItemStack(Material.FLINT, amount)) && nine.equals(new ItemStack(Material.FLINT, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
+//	StandardCrafting
+	public static ShapedRecipe GRAVEL() {
+		ItemStack returnItem = new ItemStack(Material.GRAVEL, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "GRAVEL"), returnItem);
+		recipe.shape("FFF","FFF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		return recipe;
+	}
+	public static ShapedRecipe RED_SAND() {
+		ItemStack returnItem = new ItemStack(Material.RED_SAND, 8);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "RED_SAND"), returnItem);
+		recipe.shape("SSS","SRS","SSS");
+		recipe.setIngredient('S', Material.SAND);
+		recipe.setIngredient('R', Material.ROSE_RED);
+		return recipe;
+	}
+	public static ShapedRecipe COBWEB() {
+		ItemStack returnItem = new ItemStack(Material.COBWEB, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COBWEB"), returnItem);
+		recipe.shape("SSS","SBS","SSS");
+		recipe.setIngredient('S', Material.STRING);
+		recipe.setIngredient('B', Material.SLIME_BALL);
+		return recipe;
+	}
+	public static ShapedRecipe IRON_HORSE_ARMOR() {
+		ItemStack returnItem = new ItemStack(Material.IRON_HORSE_ARMOR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "IRON_HORSE_ARMOR"), returnItem);
+		recipe.shape("  I","ILI","I I");
+		recipe.setIngredient('I', Material.IRON_INGOT);
+		recipe.setIngredient('L', Material.LEATHER);
+		return recipe;
+	}
+	public static ShapedRecipe GOLDEN_HORSE_ARMOR() {
+		ItemStack returnItem = new ItemStack(Material.GOLDEN_HORSE_ARMOR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "GOLDEN_HORSE_ARMOR"), returnItem);
+		recipe.shape("  I","ILI","I I");
+		recipe.setIngredient('I', Material.GOLD_INGOT);
+		recipe.setIngredient('L', Material.LEATHER);
+		return recipe;
+	}
+	public static ShapedRecipe DIAMOND_HORSE_ARMOR() {
+		ItemStack returnItem = new ItemStack(Material.DIAMOND_HORSE_ARMOR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "DIAMOND_HORSE_ARMOR"), returnItem);
+		recipe.shape("  I","ILI","I I");
+		recipe.setIngredient('I', Material.DIAMOND);
+		recipe.setIngredient('L', Material.LEATHER);
+		return recipe;
+	}
+	public static ShapedRecipe OAK_PLANKS() {
+		ItemStack returnItem = new ItemStack(Material.OAK_PLANKS, 6);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "OAK_PLANKS"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.OAK_STAIRS);
+		return recipe;
+	}
+	public static ShapedRecipe SPRUCE_PLANKS() {
+		ItemStack returnItem = new ItemStack(Material.SPRUCE_PLANKS, 6);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SPRUCE_PLANKS"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.SPRUCE_STAIRS);
+		return recipe;
+	}
+	public static ShapedRecipe BIRCH_PLANKS() {
+		ItemStack returnItem = new ItemStack(Material.BIRCH_PLANKS, 6);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "BIRCH_PLANKS"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.BIRCH_STAIRS);
+		return recipe;
+	}
+	public static ShapedRecipe JUNGLE_PLANKS() {
+		ItemStack returnItem = new ItemStack(Material.JUNGLE_PLANKS, 6);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "JUNGLE_PLANKS"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.JUNGLE_STAIRS);
+		return recipe;
+	}
+	public static ShapedRecipe ACACIA_PLANKS() {
+		ItemStack returnItem = new ItemStack(Material.ACACIA_PLANKS, 6);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "ACACIA_PLANKS"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.ACACIA_STAIRS);
+		return recipe;
+	}
+	public static ShapedRecipe DARK_OAK_PLANKS() {
+		ItemStack returnItem = new ItemStack(Material.DARK_OAK_PLANKS, 6);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "DARK_OAK_PLANKS"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.DARK_OAK_STAIRS);
+		return recipe;
+	}
+	public static ShapedRecipe ENCHANTED_GOLDEN_APPLE() {
+		ItemStack returnItem = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "ENCHANTED_GOLDEN_APPLE"), returnItem);
+		recipe.shape("GGG","GAG","GGG");
+		recipe.setIngredient('G', Material.GOLD_BLOCK);
+		recipe.setIngredient('A', Material.APPLE);
+		return recipe;
+	}
+	public static ShapedRecipe SMOOTH_STONE() {
+		ItemStack returnItem = new ItemStack(Material.SMOOTH_STONE, 2);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SMOOTH_STONE"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.STONE_SLAB);
+		return recipe;
+	}
+	public static ShapedRecipe SMOOTH_SANDSTONE() {
+		ItemStack returnItem = new ItemStack(Material.SMOOTH_SANDSTONE, 2);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SMOOTH_SANDSTONE"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.SANDSTONE_SLAB);
+		return recipe;
+	}
+	public static ShapedRecipe SMOOTH_RED_SANDSTONE() {
+		ItemStack returnItem = new ItemStack(Material.SMOOTH_RED_SANDSTONE, 2);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SMOOTH_RED_SANDSTONE"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.RED_SANDSTONE_SLAB);
+		return recipe;
+	}
+	public static ShapedRecipe SMOOTH_QUARTZ() {
+		ItemStack returnItem = new ItemStack(Material.SMOOTH_QUARTZ, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SMOOTH_QUARTZ"), returnItem);
+		recipe.shape("SS ","SS ","   ");
+		recipe.setIngredient('S', Material.QUARTZ_SLAB);
+		return recipe;
+	}
+	public static ShapelessRecipe SAND() {
+		ItemStack returnItem = new ItemStack(Material.SAND, 4);
+		ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(mc, "SAND"), returnItem);
+		recipe.addIngredient(Material.SANDSTONE);
+		return recipe;
+	}
+	public static ShapelessRecipe SAND_2() {
+		ItemStack returnItem = new ItemStack(Material.SAND, 2);
+		ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(mc, "SAND_2"), returnItem);
+		recipe.addIngredient(Material.SANDSTONE_SLAB);
+		return recipe;
+	}
+
+//	RecordCrafting
+	public static ShapedRecipe MUSIC_DISC_13() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_13, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_13"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.DANDELION_YELLOW);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_CAT() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_CAT, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_CAT"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.CACTUS_GREEN);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_BLOCKS() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_BLOCKS, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_BLOCKS"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.ORANGE_DYE);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_CHIRP() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_CHIRP, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_CHIRP"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.ROSE_RED);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_FAR() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_FAR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_FAR"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.LIME_DYE);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_MALL() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_MALL, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_MALL"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.PURPLE_DYE);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_MELLOHI() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_MELLOHI, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_MELLOHI"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.MAGENTA_DYE);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_STAL() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_STAL, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_STAL"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.INK_SAC);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_STRAD() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_STRAD, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_STRAD"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.BONE_MEAL);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_WARD() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_WARD, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_WARD"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.ENDER_EYE);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_11() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_11, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_11"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.COAL);
+		return recipe;
+	}
+	public static ShapedRecipe MUSIC_DISC_WAIT() {
+		ItemStack returnItem = new ItemStack(Material.MUSIC_DISC_WAIT, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_WAIT"), returnItem);
+		recipe.shape("FFF","FDF","FFF");
+		recipe.setIngredient('F', Material.FLINT);
+		recipe.setIngredient('D', Material.LIGHT_BLUE_DYE);
+		return recipe;
+	}
+
+//	HeartCanisters
+	public static ShapedRecipe HEART_CANISTER_TIER_1() {
+		ItemStack returnItem = CustomItems.HEART_CANISTER_TIER_1(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "HEART_CANISTER_TIER_1"), returnItem);
+		recipe.shape("OIO","DSD","ORO");
+		recipe.setIngredient('O', Material.OBSIDIAN);
+		recipe.setIngredient('I', Material.IRON_BLOCK);
+		recipe.setIngredient('S', Material.WITHER_SKELETON_SKULL);
+		recipe.setIngredient('R', Material.BLAZE_ROD);
+		return recipe;
+	}
+	public static ShapedRecipe HEART_CANISTER_TIER_2() {
+		ItemStack returnItem = CustomItems.HEART_CANISTER_TIER_2(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "HEART_CANISTER_TIER_2"), returnItem);
+		recipe.shape("ECE","DHD","ENE");
+		recipe.setIngredient('E', Material.END_STONE);
+		recipe.setIngredient('C', Material.END_CRYSTAL);
+		recipe.setIngredient('D', Material.DIAMOND);
+		recipe.setIngredient('H', Material.PLAYER_HEAD);
+		recipe.setIngredient('N', Material.NETHER_STAR);
+		return recipe;
+	}
+
+	private void add(ArrayList<ShapedRecipe> arr, ShapedRecipe... recipes) {
+		arr.addAll(new ArrayList<>(Arrays.asList(recipes)));
+	}
+	private void add(ArrayList<ShapelessRecipe> arr, ShapelessRecipe... recipes) {
+		arr.addAll(new ArrayList<>(Arrays.asList(recipes)));
+	}
+
+
 //	//Heart Canisters
 //	public static boolean HEART_CANISTER_TIER_1(Dropper dr, int amount) {
 //		ItemStack one = dr.getInventory().getItem(0);

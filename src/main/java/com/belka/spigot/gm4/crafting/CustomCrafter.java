@@ -17,7 +17,11 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -104,4 +108,26 @@ public class CustomCrafter implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onClick(InventoryClickEvent e) {
+		updateInv(e.getInventory());
+	}
+	@EventHandler
+	public void onDrag(InventoryDragEvent e) {
+		updateInv(e.getInventory());
+	}
+
+	private void updateInv(Inventory inv) {
+		if (inv.getType().equals(InventoryType.DROPPER)) {
+			Block b = inv.getLocation().getBlock();
+			List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
+			if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
+				Bukkit.broadcastMessage("Custom Crafter");
+				mc.getServer().getScheduler().runTaskLater(mc, () -> {
+					Dropper dropper = (Dropper) b.getState();
+					rh.craft(dropper);
+				}, 1L);
+			}
+		}
+	}
 }
