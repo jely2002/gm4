@@ -1,10 +1,18 @@
 package com.belka.spigot.gm4.crafting;
 
+import api.Helper;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.block.Dropper;
+import org.bukkit.block.Hopper;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +20,14 @@ import java.util.Arrays;
 public class RecipeHandler {
 
 	public void craft(Dropper dr) {
-		for (ShapedRecipe recipe : CustomRecipes.shapedRecipes) {
+		for (ShapedRecipe recipe : CustomRecipes.shapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
+				if (dr.getCustomName().equalsIgnoreCase("Custom Crafter")) {
+					String[] cases = {"master_crafter","blast_furnace","disassembler"};
+					if (Arrays.asList(cases).contains(recipe.getKey().getKey())) {
+						convert(dr, recipe.getKey().getKey());
+					}
+				}
 				int amount = dr.getInventory().getItem(0).getAmount();
 				dr.getInventory().clear();
 				ArrayList<ItemStack> results = new ArrayList<>();
@@ -48,8 +62,47 @@ public class RecipeHandler {
 				else dr.getInventory().addItem(results.toArray(new ItemStack[]{}));
 				dr.getLocation().getWorld().playSound(dr.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 1);
 			}
+	}
+
+	public void convert(Dropper dr, String convert) {
+		for (Entity e : Helper.getNearbyEntities(dr.getLocation(), 1)) {
+			if (e instanceof ArmorStand && e.getCustomName().equalsIgnoreCase("CustomCrafter")) {
+				ArmorStand as = (ArmorStand) e;
+				ItemStack helmet = new ItemStack(Material.AIR);
+				EulerAngle pose = new EulerAngle(0f, 0f, 0f);
+				Vector loc = new Vector(0f, 0f, 0f);
+				switch (convert) {
+					case "master_crafter":
+						dr.setCustomName("Master Crafter");
+						as.setCustomName("masterCrafter");
+						helmet.setType(Material.PISTON);
+						pose.setX(180f);
+						loc.setY(0f);
+						break;
+					case "blast_furnace":
+						Block block = dr.getBlock();
+						block.setType(Material.HOPPER);
+						Hopper hp = (Hopper) block.getState();
+						hp.setCustomName("Blast Furnace Output");
+						as.setCustomName("blastFurnace");
+						helmet.setType(Material.AIR);
+						break;
+					case "disassembler":
+						dr.setCustomName("Blast Furnace");
+						as.setCustomName("disassembler");
+						helmet.setType(Material.PISTON);
+						pose.setX(180f);
+						loc.setY(0f);
+						break;
+				}
+				as.setHelmet(helmet);
+				as.setHeadPose(pose);
+				Location asLoc = as.getLocation().add(loc);
+				as.teleport(asLoc);
+			}
 		}
 	}
+
 
 	public boolean equalsRecipe(Dropper dr, ShapedRecipe recipe) {
 		ArrayList<ItemStack> singleDropperItems = new ArrayList<>();

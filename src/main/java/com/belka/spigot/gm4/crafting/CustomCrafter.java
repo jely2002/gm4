@@ -64,7 +64,7 @@ public class CustomCrafter implements Listener {
                                 as.setCustomNameVisible(false);
                                 as.setRemoveWhenFarAway(false);
                                 as.setCustomName("CustomCrafter");
-                                as.setHelmet(new ItemStack(Material.CRAFTING_TABLE, 1));
+                                as.setHelmet(new ItemStack(Material.CRAFTING_TABLE));
 
 								dr.setCustomName("Custom Crafter");
 								dr.update();
