@@ -34,11 +34,45 @@ public class CustomRecipes implements Initializable {
 			add(shapedRecipes, HEART_CANISTER_TIER_1(), HEART_CANISTER_TIER_2());
 	}
 
+//	CREATION
 	public static ShapedRecipe create() {
 		ItemStack returnItem = new ItemStack(Material.AIR, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "create"), returnItem);
 		recipe.shape("CCC","C C","CRC");
 		recipe.setIngredient('C', Material.COBBLESTONE);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	//	Mastercraftsman's Workbench
+	public static ShapedRecipe master_crafter() {
+		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "master_crafter"), returnItem);
+		recipe.shape("CPC","P P","CFC");
+		recipe.setIngredient('C', Material.COBBLESTONE);
+		recipe.setIngredient('P', Material.PISTON);
+		recipe.setIngredient('C', Material.COMPARATOR);
+		recipe.setIngredient('F', Material.FURNACE);
+		return recipe;
+	}
+	//	Blast Furnace
+	public static ShapedRecipe blast_furnace() {
+		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "blast_furnace"), returnItem);
+		recipe.shape("IBI"," P ","CTC");
+		recipe.setIngredient('I', Material.IRON_BARS);
+		recipe.setIngredient('B', Material.IRON_BLOCK);
+		recipe.setIngredient('P', Material.PISTON);
+		recipe.setIngredient('C', Material.COMPARATOR);
+		recipe.setIngredient('T', Material.REDSTONE_TORCH);
+		return recipe;
+	}
+	//	Disassembler
+	public static ShapedRecipe disassembler() {
+		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "disassembler"), returnItem);
+		recipe.shape("CCC","CTC","CRC");
+		recipe.setIngredient('C', Material.COBBLESTONE);
+		recipe.setIngredient('T', Material.TNT);
 		recipe.setIngredient('R', Material.REDSTONE);
 		return recipe;
 	}
@@ -311,58 +345,6 @@ public class CustomRecipes implements Initializable {
 		arr.addAll(new ArrayList<>(Arrays.asList(recipes)));
 	}
 
-
-//	//Heart Canisters
-//	public static boolean HEART_CANISTER_TIER_1(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.OBSIDIAN, amount)) && two.equals(new ItemStack(Material.IRON_BLOCK, amount)) && three.equals(new ItemStack(Material.OBSIDIAN, amount)) &&
-//				four.equals(new ItemStack(Material.DIAMOND, amount)) && five.equals(new ItemStack(Material.GOLDEN_APPLE, amount)) && six.equals(new ItemStack(Material.DIAMOND, amount)) &&
-//				seven.equals(new ItemStack(Material.OBSIDIAN, amount)) && eight.equals(new ItemStack(Material.IRON_BLOCK, amount)) && nine.equals(new ItemStack(Material.OBSIDIAN, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
-//	public static boolean HEART_CANISTER_TIER_2(Dropper dr, int amount) {
-//		ItemStack one = dr.getInventory().getItem(0);
-//		ItemStack two = dr.getInventory().getItem(1);
-//		ItemStack three = dr.getInventory().getItem(2);
-//		ItemStack four = dr.getInventory().getItem(3);
-//		ItemStack five = dr.getInventory().getItem(4);
-//		ItemStack six = dr.getInventory().getItem(5);
-//		ItemStack seven = dr.getInventory().getItem(6);
-//		ItemStack eight = dr.getInventory().getItem(7);
-//		ItemStack nine = dr.getInventory().getItem(8);
-//		if(one != null && two != null && three != null && four != null && five != null && six != null && seven != null && eight != null && nine != null) {
-//			if(one.equals(new ItemStack(Material.END_STONE, amount)) && two.equals(new ItemStack(Material.GOLDEN_APPLE, amount)) && three.equals(new ItemStack(Material.END_STONE, amount)) &&
-//				four.equals(new ItemStack(Material.DIAMOND, amount)) && five.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.WHITE + "Heart Cansister") && five.getItemMeta().getLore().contains(ChatColor.DARK_PURPLE + "Tier 1") && six.equals(new ItemStack(Material.DIAMOND, amount)) &&
-//				seven.equals(new ItemStack(Material.END_STONE, amount)) && eight.equals(new ItemStack(Material.NETHER_STAR, amount)) && nine.equals(new ItemStack(Material.END_STONE, amount))) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-//
 //	//Blast Furnace
 //	public static boolean BLAST_FURNACE(Dropper dr) {
 //		ItemStack one = dr.getInventory().getItem(0);
