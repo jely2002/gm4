@@ -20,10 +20,6 @@ SpeedPaths:
   enabled: true
   pathBlock: GRASS_PATH
   speedFactor: 1
-VorpelSwords:
-  enabled: true
-  max: 10
-  amount: 3
 BatGrenades:
   enabled: true
 WeightedArmour:
