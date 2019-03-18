@@ -1,8 +1,10 @@
 package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
+import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dropper;
@@ -19,6 +21,12 @@ import java.util.Arrays;
 
 public class RecipeHandler {
 
+	private static MainClass mc;
+
+	public RecipeHandler(MainClass mc) {
+		this.mc = mc;
+	}
+
 	public void craft(Dropper dr) {
 		for (ShapedRecipe recipe : CustomRecipes.shapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
@@ -32,11 +40,6 @@ public class RecipeHandler {
 				dr.getInventory().clear();
 				ArrayList<ItemStack> results = new ArrayList<>();
 				ItemStack result = recipe.getResult();
-				if (recipe.getResult().getType() == Material.PLAYER_HEAD) {
-					if (recipe.getKey().getKey().equalsIgnoreCase("HEART_CANISTER_TIER_2")) {
-						result = CustomItems.HEART_CANISTER_TIER_2(1);
-					}
-				}
 				int max = result.getMaxStackSize();
 				int totAmount = result.getAmount() * amount;
 				if (totAmount == max) {
@@ -117,7 +120,11 @@ public class RecipeHandler {
 		for (String chars : recipe.getShape()) {
 			for (String character : chars.split("(?!^)")) {
 				char c = character.charAt(0);
-				recipeItems.add(recipe.getIngredientMap().get(c));
+				ItemStack item = recipe.getIngredientMap().get(c);
+				if (recipe.getIngredientMap().get(c).equals(new ItemStack(Material.PLAYER_HEAD))) {
+					if (recipe.getKey().equals(new NamespacedKey(mc, "HEART_CANISTER_TIER_2"))) item = CustomItems.HEART_CANISTER_TIER_1(1);
+				}
+				recipeItems.add(item);
 			}
 		}
 		if (singleDropperItems.equals(recipeItems)) {
