@@ -5,15 +5,14 @@ import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dropper;
+import org.bukkit.block.Hopper;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -83,25 +82,34 @@ public class CustomCrafter implements Listener {
                     }
                 }
 			}
-		}, 0, 10L);
+		}, 0, 1L);
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block b = event.getBlock();
 		List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
-		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
-			b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), new ItemStack(Material.COBBLESTONE, 7));
-			b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), new ItemStack(Material.REDSTONE, 1));
-			b.getWorld().dropItemNaturally(b.getLocation().add(0.5, 0.5, 0.5), new ItemStack(Material.CRAFTING_TABLE, 1));
-			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
+		World w = b.getWorld();
+		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName())) {
+			Location loc = b.getLocation().add(0.5, 0.5, 0.5);
+			w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 7));
+			w.dropItem(loc, new ItemStack(Material.REDSTONE, 1));
+			w.dropItem(loc, new ItemStack(Material.CRAFTING_TABLE, 1));
+			if (b.getType() == Material.HOPPER) {
+				w.dropItem(loc, new ItemStack(Material.IRON_BARS, 2));
+				w.dropItem(loc, new ItemStack(Material.IRON_BLOCK, 1));
+				w.dropItem(loc, new ItemStack(Material.PISTON, 1));
+				w.dropItem(loc, new ItemStack(Material.COMPARATOR, 2));
+				w.dropItem(loc, new ItemStack(Material.REDSTONE_TORCH, 1));
+			}
+			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
 			mc.storage().data().set("CustomCrafter.customCrafters", active);
 			mc.storage().saveData();
 			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
-					ArmorStand as = (ArmorStand) e;
-					if(as.getCustomName().equalsIgnoreCase("CustomCrafter")) {
-						as.remove();
+					String name = e.getCustomName();
+					if(name.equalsIgnoreCase("CustomCrafter") || name.equalsIgnoreCase("masterCrafter") || name.equalsIgnoreCase("blastFurnace") || name.equalsIgnoreCase("disassembler")) {
+						e.remove();
 					}
 				}
 			}
@@ -125,7 +133,7 @@ public class CustomCrafter implements Listener {
 				Bukkit.broadcastMessage("Custom Crafter");
 				mc.getServer().getScheduler().runTaskLater(mc, () -> {
 					Dropper dropper = (Dropper) b.getState();
-					rh.craft(dropper);
+					rh.craft(dropper, (Player) inv.getViewers().get(0));
 				}, 1L);
 			}
 		}

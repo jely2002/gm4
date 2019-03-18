@@ -2,15 +2,13 @@ package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dropper;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.util.EulerAngle;
@@ -27,13 +25,13 @@ public class RecipeHandler {
 		this.mc = mc;
 	}
 
-	public void craft(Dropper dr) {
+	public void craft(Dropper dr, Player p) {
 		for (ShapedRecipe recipe : CustomRecipes.shapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
 				if (dr.getCustomName().equalsIgnoreCase("Custom Crafter")) {
 					String[] cases = {"master_crafter","blast_furnace","disassembler"};
 					if (Arrays.asList(cases).contains(recipe.getKey().getKey())) {
-						convert(dr, recipe.getKey().getKey());
+						convert(dr, recipe.getKey().getKey(), p);
 					}
 				}
 				int amount = dr.getInventory().getItem(0).getAmount();
@@ -42,11 +40,15 @@ public class RecipeHandler {
 				ItemStack result = recipe.getResult();
 				int max = result.getMaxStackSize();
 				int totAmount = result.getAmount() * amount;
-				if (totAmount == max) {
+				if (totAmount < max) {
 					result.setAmount(totAmount);
 					results.add(result);
 				}
-				else if (totAmount > max) {
+				else if (totAmount == max) {
+					result.setAmount(totAmount);
+					results.add(result);
+				}
+				else {
 					while (totAmount > max) {
 						result.setAmount(max);
 						results.add(result);
@@ -57,17 +59,13 @@ public class RecipeHandler {
 						results.add(result);
 					}
 				}
-				else {
-					result.setAmount(totAmount);
-					results.add(result);
-				}
 				if (results.size() == 1) dr.getInventory().setItem(4, results.get(0));
 				else dr.getInventory().addItem(results.toArray(new ItemStack[]{}));
 				dr.getLocation().getWorld().playSound(dr.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 1);
 			}
 	}
 
-	public void convert(Dropper dr, String convert) {
+	public void convert(Dropper dr, String convert, Player p) {
 		for (Entity e : Helper.getNearbyEntities(dr.getLocation(), 1)) {
 			if (e instanceof ArmorStand && e.getCustomName().equalsIgnoreCase("CustomCrafter")) {
 				ArmorStand as = (ArmorStand) e;
@@ -84,14 +82,17 @@ public class RecipeHandler {
 						break;
 					case "blast_furnace":
 						Block block = dr.getBlock();
+						dr.getInventory().clear();
 						block.setType(Material.HOPPER);
 						Hopper hp = (Hopper) block.getState();
 						hp.setCustomName("Blast Furnace Output");
+						hp.update();
+						p.openInventory(hp.getInventory());
 						as.setCustomName("blastFurnace");
 						helmet.setType(Material.AIR);
 						break;
 					case "disassembler":
-						dr.setCustomName("Blast Furnace");
+						dr.setCustomName("Disassembler");
 						as.setCustomName("disassembler");
 						helmet.setType(Material.PISTON);
 						pose.setX(180f);
@@ -121,7 +122,7 @@ public class RecipeHandler {
 			for (String character : chars.split("(?!^)")) {
 				char c = character.charAt(0);
 				ItemStack item = recipe.getIngredientMap().get(c);
-				if (recipe.getIngredientMap().get(c).equals(new ItemStack(Material.PLAYER_HEAD))) {
+				if (item != null && item.getType() == Material.PLAYER_HEAD) {
 					if (recipe.getKey().equals(new NamespacedKey(mc, "HEART_CANISTER_TIER_2"))) item = CustomItems.HEART_CANISTER_TIER_1(1);
 				}
 				recipeItems.add(item);
