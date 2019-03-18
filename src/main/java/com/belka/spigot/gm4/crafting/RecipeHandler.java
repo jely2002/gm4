@@ -95,6 +95,7 @@ public class RecipeHandler {
 						loc.setY(0f);
 						break;
 				}
+				dr.update();
 				as.setHelmet(helmet);
 				as.setHeadPose(pose);
 				Location asLoc = as.getLocation().add(loc);
@@ -102,7 +103,6 @@ public class RecipeHandler {
 			}
 		}
 	}
-
 
 	public boolean equalsRecipe(Dropper dr, ShapedRecipe recipe) {
 		ArrayList<ItemStack> singleDropperItems = new ArrayList<>();

@@ -23,7 +23,7 @@ public class CustomRecipes implements Initializable {
 
 	public void init(MainClass mc) {
 		if (mc.getConfig().getBoolean("CustomCrafter.StandardCrafting")) {
-			add(shapedRecipes, GRAVEL(), RED_SAND(), COBWEB(), IRON_HORSE_ARMOR(), GOLDEN_HORSE_ARMOR(), DIAMOND_HORSE_ARMOR(),
+			add(shapedRecipes, master_crafter(), blast_furnace(), disassembler(), GRAVEL(), RED_SAND(), COBWEB(), IRON_HORSE_ARMOR(), GOLDEN_HORSE_ARMOR(), DIAMOND_HORSE_ARMOR(),
 					OAK_PLANKS(), SPRUCE_PLANKS(), BIRCH_PLANKS(), JUNGLE_PLANKS(), ACACIA_PLANKS(), DARK_OAK_PLANKS(),
 					ENCHANTED_GOLDEN_APPLE(), SMOOTH_STONE(), SMOOTH_SANDSTONE(), SMOOTH_RED_SANDSTONE(), SMOOTH_QUARTZ());
 			add(shapelessRecipes, SAND(), SAND_2());
@@ -47,10 +47,10 @@ public class CustomRecipes implements Initializable {
 	public static ShapedRecipe master_crafter() {
 		ItemStack returnItem = new ItemStack(Material.AIR, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "master_crafter"), returnItem);
-		recipe.shape("CPC","P P","CFC");
+		recipe.shape("CPC","P P","RFR");
 		recipe.setIngredient('C', Material.COBBLESTONE);
 		recipe.setIngredient('P', Material.PISTON);
-		recipe.setIngredient('C', Material.COMPARATOR);
+		recipe.setIngredient('R', Material.COMPARATOR);
 		recipe.setIngredient('F', Material.FURNACE);
 		return recipe;
 	}
