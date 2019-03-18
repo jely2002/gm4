@@ -1,6 +1,5 @@
 package com.belka.spigot.gm4;
 
-import api.Stats;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomRecipes;

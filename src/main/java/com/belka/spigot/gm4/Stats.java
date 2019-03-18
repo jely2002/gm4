@@ -1,8 +1,7 @@
-package api;
+package com.belka.spigot.gm4;
 
-import com.belka.spigot.gm4.MainClass;
+import api.Metrics;
 import com.belka.spigot.gm4.interfaces.Initializable;
-import org.bstats.bukkit.Metrics;
 
 import java.util.HashMap;
 import java.util.Map;
