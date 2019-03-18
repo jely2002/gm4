@@ -20,6 +20,8 @@ public class MainClass extends JavaPlugin {
     private ConfigManager storage;
     private MainCommands mCmds;
 
+    public SpeedPaths speedPaths;
+
     @Override
     public void onEnable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
@@ -38,8 +40,9 @@ public class MainClass extends JavaPlugin {
 
         Stats stats = new Stats();
 
+        speedPaths = new SpeedPaths(this);
+
 		Advancements advancements = new Advancements(this);
-        SpeedPaths speedPaths = new SpeedPaths(this);
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
         CustomRecipes customRecipes = new CustomRecipes(this);
