@@ -24,9 +24,9 @@ public class DesireLines implements Listener {
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
-		if(mc.getConfig().getBoolean("modules.DesireLines.enabled")) {
-			int max = mc.getConfig().getInt("modules.DesireLines.max");
-			int amount = mc.getConfig().getInt("modules.DesireLines.amount");
+		if(mc.getConfig().getBoolean("DesireLines.enabled")) {
+			int max = mc.getConfig().getInt("DesireLines.max");
+			int amount = mc.getConfig().getInt("DesireLines.amount");
 			final Player p = e.getPlayer();
 			if(e.getFrom().getBlock() == e.getTo().getBlock()) {
 				return;
