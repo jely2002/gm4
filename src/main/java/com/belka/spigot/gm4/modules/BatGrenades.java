@@ -34,10 +34,7 @@ public class BatGrenades implements Initializable {
 							for (Entity e : Helper.getNearbyEntities(entity.getLocation(), 3)) {
 								if (e instanceof Bat && !e.isDead()) {
 									if (p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL) {
-										double x = e.getLocation().getX();
-										double y = e.getLocation().getY();
-										double z = e.getLocation().getZ();
-										Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "minecraft:summon creeper " + x + " " + y + " " + z + " {ExplosionRadius:1b,Fuse:0s,Silent:1,NoAI:1,ActiveEffects:[{Id:14,Amplifier:0,Duration:999999}]}");
+										e.getWorld().createExplosion(e.getLocation(),1f);
 										Advancements.grantAdvancement("batboozled", p);
 									}
 								}

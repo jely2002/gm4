@@ -24,7 +24,7 @@ public class MainClass extends JavaPlugin {
     public void onEnable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println("Oo---------------oO " + ConsoleColor.CYAN + ConsoleColor.BOLD + "Gamemode 4" + ConsoleColor.RESET + " Oo---------------oO");
-		System.out.println(ConsoleColor.GREEN + ConsoleColor.BOLD + "		Version  V" + pdfFile.getVersion() + ConsoleColor.RESET);
+		System.out.println(ConsoleColor.GREEN + ConsoleColor.BOLD + "		Version " + pdfFile.getVersion() + ConsoleColor.RESET);
 		System.out.println(ConsoleColor.GREEN + ConsoleColor.BOLD + "		Author  MaximumFX & jely2002" + ConsoleColor.RESET);
 		System.out.println(ConsoleColor.GREEN + ConsoleColor.BOLD + "		Status  Enabled" + ConsoleColor.RESET);
 		System.out.println("Oo-----------------------oOo-----------------------oO");
