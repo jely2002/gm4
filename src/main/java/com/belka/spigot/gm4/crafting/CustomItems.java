@@ -1,29 +1,22 @@
 package com.belka.spigot.gm4.crafting;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import api.SkullCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class CustomItems {
-	
-    public static ItemStack VORPEL_SWORD() {
-    	ItemStack VORPEL_SWORD = new ItemStack(Material.DIAMOND_SWORD, 1);
-        ItemMeta meta = VORPEL_SWORD.getItemMeta();
-        meta.setDisplayName(ChatColor.AQUA + "Vorpel " + ChatColor.GOLD + "Sword");
-        meta.setLore(Arrays.asList(ChatColor.YELLOW + "Decapitates mobs and players"));
-        meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, 3, false);
-        meta.addEnchant(Enchantment.DURABILITY, 3, false);
-        VORPEL_SWORD.setItemMeta(meta);
-		return VORPEL_SWORD;
-    }
-    
+
+//	Heart Canisters
 	public static ItemStack HEART_CANISTER_TIER_1(int amount) {
     	ItemStack skull = getSkull("http://textures.minecraft.net/texture/53cf06d5b47b746d16ee631187cb857d8c16bfcd570a40f286b2c38867cfda", amount);
         ItemMeta meta = skull.getItemMeta();
@@ -40,6 +33,37 @@ public class CustomItems {
         skull.setItemMeta(meta);
 		return skull;
     }
+
+//  Equivalent Exchange
+	public static ItemStack MINIUM_DUST(int amount) {
+		ItemStack item = new ItemStack(Material.ROSE_RED, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Minium Dust");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack INERT_STONE(int amount) {
+		ItemStack item = new ItemStack(Material.FIREWORK_STAR, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Inert Stone");
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack PHILOSOPHERS_STONE(int amount) {
+		ItemStack item = new ItemStack(Material.REDSTONE_BLOCK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Philosopher's Stone");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Used to transmute things")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
     public static ItemStack BOOTS_OF_OSTARA(int amount) {
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, amount);
         LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
@@ -48,7 +72,8 @@ public class CustomItems {
         return boots;
     }
 
-	public static ItemStack getSkull(String skinURL, int amount) {
+
+	private static ItemStack getSkull(String skinURL, int amount) {
 		ItemStack skull = SkullCreator.itemFromUrl(skinURL);
 		skull.setAmount(amount);
 		return skull;

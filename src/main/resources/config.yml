@@ -6,6 +6,10 @@ CustomCrafter:
   enabled: true
   StandardCrafting: true
   RecordCrafting: true
+  MasterCrafting: true
+  BlastFurnace: true
+  Disassembler: true
+  EquivalentExchange: true
 DesireLines:
   enabled: true
   max: 50

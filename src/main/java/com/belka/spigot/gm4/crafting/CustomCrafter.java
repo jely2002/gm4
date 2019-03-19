@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,7 +10,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dropper;
-import org.bukkit.block.Hopper;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
@@ -19,20 +19,32 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class CustomCrafter implements Listener {
+public class CustomCrafter implements Listener, Initializable {
 
 	private MainClass mc;
 	private RecipeHandler rh;
+	private ArrayList<String> names = new ArrayList<>();
 
 	public CustomCrafter(MainClass mc, RecipeHandler rh) {
 		this.mc = mc;
 		this.rh = rh;
+	}
+
+	public void init(MainClass mc) {
+		names.add("CustomCrafter");
+		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) names.add("MasterCrafter");
+		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) names.add("BlastFurnace");
+		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) names.add("Disassembler");
+		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) names.add("AlchemicalCrafter");
 	}
 
 	@EventHandler
@@ -44,15 +56,12 @@ public class CustomCrafter implements Listener {
             if (i.isOnGround()) {
                 Bukkit.getScheduler().cancelTask(task[0]);
                 Location loc = i.getLocation();
-                e.getPlayer().sendMessage("Drop " + i.isOnGround());
                 if (i.getItemStack().getType() == Material.CRAFTING_TABLE) {
                     Block b = loc.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
                     if (b.getBlockData().getMaterial() == Material.DROPPER) {
                         Dropper dr = (Dropper) b.getState();
                         List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
-                        e.getPlayer().sendMessage("Dropper");
                         if (!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
-                            e.getPlayer().sendMessage("Contains");
                             if (rh.equalsRecipe(dr, CustomRecipes.create()) && dr.getInventory().getItem(0).getAmount() == 1) {
                                 Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
                                 ArmorStand as = (ArmorStand) dr.getWorld().spawnEntity(asLoc, EntityType.ARMOR_STAND);
@@ -62,6 +71,8 @@ public class CustomCrafter implements Listener {
                                 as.setCanPickupItems(false);
                                 as.setCustomNameVisible(false);
                                 as.setRemoveWhenFarAway(false);
+                                as.setFireTicks(Integer.MAX_VALUE);
+                                as.setMarker(true);
                                 as.setCustomName("CustomCrafter");
                                 as.setHelmet(new ItemStack(Material.CRAFTING_TABLE));
 
@@ -95,7 +106,25 @@ public class CustomCrafter implements Listener {
 			w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 7));
 			w.dropItem(loc, new ItemStack(Material.REDSTONE, 1));
 			w.dropItem(loc, new ItemStack(Material.CRAFTING_TABLE, 1));
-			if (b.getType() == Material.HOPPER) {
+			if (b.getType() == Material.DROPPER) {
+				Dropper dr = (Dropper) b.getState();
+				if (dr.getCustomName().equalsIgnoreCase("Master Crafter")) {
+					w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 2));
+					w.dropItem(loc, new ItemStack(Material.PISTON, 3));
+					w.dropItem(loc, new ItemStack(Material.COMPARATOR, 2));
+					w.dropItem(loc, new ItemStack(Material.FURNACE, 1));
+				}
+				else if (dr.getCustomName().equalsIgnoreCase("Disassembler")) {
+					w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 7));
+					w.dropItem(loc, new ItemStack(Material.REDSTONE, 1));
+					w.dropItem(loc, new ItemStack(Material.TNT, 1));
+				}
+				else if (dr.getCustomName().equalsIgnoreCase("Alchemical Crafter")) {
+					w.dropItem(loc, CustomItems.MINIUM_DUST(8));
+					w.dropItem(loc, new ItemStack(Material.CRAFTING_TABLE, 1));
+				}
+			}
+			else if (b.getType() == Material.HOPPER) {
 				w.dropItem(loc, new ItemStack(Material.IRON_BARS, 2));
 				w.dropItem(loc, new ItemStack(Material.IRON_BLOCK, 1));
 				w.dropItem(loc, new ItemStack(Material.PISTON, 1));
@@ -107,8 +136,7 @@ public class CustomCrafter implements Listener {
 			mc.storage().saveData();
 			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
-					String name = e.getCustomName();
-					if(name.equalsIgnoreCase("CustomCrafter") || name.equalsIgnoreCase("masterCrafter") || name.equalsIgnoreCase("blastFurnace") || name.equalsIgnoreCase("disassembler")) {
+					if(names.contains(e.getCustomName())) {
 						e.remove();
 					}
 				}
@@ -130,12 +158,21 @@ public class CustomCrafter implements Listener {
 			Block b = inv.getLocation().getBlock();
 			List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
 			if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
-				Bukkit.broadcastMessage("Custom Crafter");
 				mc.getServer().getScheduler().runTaskLater(mc, () -> {
 					Dropper dropper = (Dropper) b.getState();
 					rh.craft(dropper, (Player) inv.getViewers().get(0));
 				}, 1L);
 			}
+		}
+		else if (inv.getType().equals(InventoryType.HOPPER)) {
+
+		}
+	}
+
+	@EventHandler
+	public void onInteract(PlayerArmorStandManipulateEvent e) {
+		if (names.contains(e.getRightClicked().getCustomName())) {
+			e.setCancelled(true);
 		}
 	}
 }

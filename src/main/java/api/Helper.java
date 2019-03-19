@@ -39,4 +39,11 @@ public class Helper {
         }
         return players;
     }
+
+	public static float radToDeg(float radians) {
+		return (float) ((radians * 180) / Math.PI);
+	}
+	public static float degToRad(float degrees) {
+		return (float) ((degrees * Math.PI)/180);
+	}
 }
