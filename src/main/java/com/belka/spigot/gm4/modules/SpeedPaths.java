@@ -24,7 +24,7 @@ public class SpeedPaths implements Listener {
 
     public void loadValues() {
         this.pathBlock = Material.getMaterial(mc.storage().config().getString("SpeedPaths.pathBlock"));
-        this.speedFactor = mc.storage().config().getInt("SpeedPaths.speedFactor");
+        this.speedFactor = mc.storage().config().getInt("SpeedPaths.speedFactor") - 1;
     }
 
     @EventHandler
@@ -32,7 +32,7 @@ public class SpeedPaths implements Listener {
         if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
         Location player_feet = new Location(e.getPlayer().getWorld(), e.getPlayer().getLocation().getX(), e.getPlayer().getLocation().getY() -0.8, e.getPlayer().getLocation().getZ());
         if (player_feet.getBlock().getType() == pathBlock) {
-            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999,speedFactor));
+            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, speedFactor, true, false));
         }
         else if (e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) {
             e.getPlayer().removePotionEffect(PotionEffectType.SPEED);
