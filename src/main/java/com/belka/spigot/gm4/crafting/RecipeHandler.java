@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dropper;
@@ -19,7 +20,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RecipeHandler {
+public class RecipeHandler implements Initializable {
 
 	private static MainClass mc;
 	private ArrayList<String> cases = new ArrayList<>();
@@ -38,7 +39,9 @@ public class RecipeHandler {
 	public void craft(Dropper dr, Player p) {
 		for (ShapedRecipe recipe : CustomRecipes.shapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
+				Bukkit.broadcastMessage("Recipe");
 				if (dr.getCustomName().equalsIgnoreCase("Custom Crafter")) { // If it's a Custom Crafter
+					Bukkit.broadcastMessage("Recipe " + recipe.getKey().getKey() + " " + cases.toString());
 					if (cases.contains(recipe.getKey().getKey())) {
 						convert(dr, recipe.getKey().getKey(), p);
 					}
