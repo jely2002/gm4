@@ -20,8 +20,9 @@ import java.util.HashMap;
 public class BlastFurnaces implements Listener {
 
 	private static MainClass mc;
-	public HashMap<Furnace, ArmorStand> activeBlastFurnace = new HashMap<>();
-
+	public HashMap<Furnace, ArmorStand> activeBlastFurnaces = new HashMap<>();
+//	TODO: Save activeBlastFurnaces
+	
 	public BlastFurnaces(MainClass mc) {
 		this.mc = mc;
 	}
@@ -60,28 +61,28 @@ public class BlastFurnaces implements Listener {
 							south.getType() == Material.IRON_BLOCK && southUp.getType() == Material.IRON_BLOCK &&
 							west.getType() == Material.IRON_BLOCK && westUp.getType() == Material.IRON_BLOCK) {
 						Furnace furnace = (Furnace) north.getState();
-						activeBlastFurnace.put(furnace, as);
+						activeBlastFurnaces.put(furnace, as);
 					}
 					else if (east.getType() == Material.FURNACE && eastUp.getType() == Material.GLASS &&
 							south.getType() == Material.IRON_BLOCK && southUp.getType() == Material.IRON_BLOCK &&
 							west.getType() == Material.IRON_BLOCK && westUp.getType() == Material.IRON_BLOCK &&
 							north.getType() == Material.IRON_BLOCK && northUp.getType() == Material.IRON_BLOCK) {
 						Furnace furnace = (Furnace) east.getState();
-						activeBlastFurnace.put(furnace, as);
+						activeBlastFurnaces.put(furnace, as);
 					}
 					else if (south.getType() == Material.FURNACE && southUp.getType() == Material.GLASS &&
 							west.getType() == Material.IRON_BLOCK && westUp.getType() == Material.IRON_BLOCK &&
 							north.getType() == Material.IRON_BLOCK && northUp.getType() == Material.IRON_BLOCK &&
 							east.getType() == Material.IRON_BLOCK && eastUp.getType() == Material.IRON_BLOCK) {
 						Furnace furnace = (Furnace) south.getState();
-						activeBlastFurnace.put(furnace, as);
+						activeBlastFurnaces.put(furnace, as);
 					}
 					else if (west.getType() == Material.FURNACE && westUp.getType() == Material.GLASS &&
 							north.getType() == Material.IRON_BLOCK && northUp.getType() == Material.IRON_BLOCK &&
 							east.getType() == Material.IRON_BLOCK && eastUp.getType() == Material.IRON_BLOCK &&
 							south.getType() == Material.IRON_BLOCK && southUp.getType() == Material.IRON_BLOCK) {
 						Furnace furnace = (Furnace) west.getState();
-						activeBlastFurnace.put(furnace, as);
+						activeBlastFurnaces.put(furnace, as);
 					}
 				}
 			}
@@ -91,8 +92,8 @@ public class BlastFurnaces implements Listener {
 	@EventHandler
 	public void onSmelt(FurnaceSmeltEvent e) {
 		Furnace furnace = (Furnace) e.getBlock().getState();
-		if (activeBlastFurnace.containsKey(furnace)) {
-			ArmorStand as = activeBlastFurnace.get(furnace);
+		if (activeBlastFurnaces.containsKey(furnace)) {
+			ArmorStand as = activeBlastFurnaces.get(furnace);
 			Block asBlock = as.getLocation().getBlock();
 			if (asBlock.getType() == Material.HOPPER) {
 				Hopper hopper = (Hopper) asBlock.getState();
