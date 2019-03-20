@@ -13,7 +13,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
@@ -39,9 +38,7 @@ public class RecipeHandler implements Initializable {
 	public void craft(Dropper dr, Player p) {
 		for (ShapedRecipe recipe : CustomRecipes.shapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
-				Bukkit.broadcastMessage("Recipe");
 				if (dr.getCustomName().equalsIgnoreCase("Custom Crafter")) { // If it's a Custom Crafter
-					Bukkit.broadcastMessage("Recipe " + recipe.getKey().getKey() + " " + cases.toString());
 					if (cases.contains(recipe.getKey().getKey())) {
 						convert(dr, recipe.getKey().getKey(), p);
 					}
@@ -80,12 +77,12 @@ public class RecipeHandler implements Initializable {
 				Bukkit.broadcastMessage("Convert to " + convert);
 				ArmorStand as = (ArmorStand) e;
 				ItemStack helmet = new ItemStack(Material.AIR);
-				ItemMeta helmetMeta = helmet.getItemMeta();
 				EulerAngle pose = new EulerAngle(0f, 0f, 0f);
 				Vector loc = new Vector(0f, 0f, 0f);
 				switch (convert) {
 					case "master_crafter":
 						dr.setCustomName("Master Crafter");
+						dr.update();
 						as.setCustomName("MasterCrafter");
 						helmet.setType(Material.PISTON);
 						pose = new EulerAngle(Helper.degToRad(180f), 0f, 0f);
@@ -115,12 +112,11 @@ public class RecipeHandler implements Initializable {
 						dr.update();
 						as.setCustomName("AlchemicalCrafter");
 						helmet.setType(Material.REDSTONE_BLOCK);
-						helmetMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+						helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
 						dr.getWorld().strikeLightningEffect(dr.getBlock().getLocation().add(0.5f, 1f, 0.5f));
 						break;
 				}
 				p.closeInventory();
-				helmet.setItemMeta(helmetMeta);
 				as.setHelmet(helmet);
 				as.setHeadPose(pose);
 				Location asLoc = as.getLocation().add(loc);

@@ -23,9 +23,9 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CustomCrafter implements Listener, Initializable {
@@ -103,33 +103,14 @@ public class CustomCrafter implements Listener, Initializable {
 		World w = b.getWorld();
 		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName())) {
 			Location loc = b.getLocation().add(0.5, 0.5, 0.5);
-			w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 7));
-			w.dropItem(loc, new ItemStack(Material.REDSTONE, 1));
 			w.dropItem(loc, new ItemStack(Material.CRAFTING_TABLE, 1));
+			dropRecipe(loc, "");
 			if (b.getType() == Material.DROPPER) {
 				Dropper dr = (Dropper) b.getState();
-				if (dr.getCustomName().equalsIgnoreCase("Master Crafter")) {
-					w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 2));
-					w.dropItem(loc, new ItemStack(Material.PISTON, 3));
-					w.dropItem(loc, new ItemStack(Material.COMPARATOR, 2));
-					w.dropItem(loc, new ItemStack(Material.FURNACE, 1));
-				}
-				else if (dr.getCustomName().equalsIgnoreCase("Disassembler")) {
-					w.dropItem(loc, new ItemStack(Material.COBBLESTONE, 7));
-					w.dropItem(loc, new ItemStack(Material.REDSTONE, 1));
-					w.dropItem(loc, new ItemStack(Material.TNT, 1));
-				}
-				else if (dr.getCustomName().equalsIgnoreCase("Alchemical Crafter")) {
-					w.dropItem(loc, CustomItems.MINIUM_DUST(8));
-					w.dropItem(loc, new ItemStack(Material.CRAFTING_TABLE, 1));
-				}
+				dropRecipe(loc, dr.getCustomName());
 			}
 			else if (b.getType() == Material.HOPPER) {
-				w.dropItem(loc, new ItemStack(Material.IRON_BARS, 2));
-				w.dropItem(loc, new ItemStack(Material.IRON_BLOCK, 1));
-				w.dropItem(loc, new ItemStack(Material.PISTON, 1));
-				w.dropItem(loc, new ItemStack(Material.COMPARATOR, 2));
-				w.dropItem(loc, new ItemStack(Material.REDSTONE_TORCH, 1));
+				dropRecipe(loc, "Blast Furnace Output");
 			}
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
 			mc.storage().data().set("CustomCrafter.customCrafters", active);
@@ -139,6 +120,33 @@ public class CustomCrafter implements Listener, Initializable {
 					if(names.contains(e.getCustomName())) {
 						e.remove();
 					}
+				}
+			}
+		}
+	}
+
+	private void dropRecipe(Location loc, String name) {
+		ShapedRecipe recipe = CustomRecipes.create();
+		switch (name) {
+			case "Master Crafter":
+				recipe = CustomRecipes.master_crafter();
+				break;
+			case "Disassembler":
+				recipe = CustomRecipes.disassembler();
+				break;
+			case "Blast Furnace Output":
+				recipe = CustomRecipes.blast_furnace();
+				break;
+			case "Alchemical Crafter":
+				recipe = CustomRecipes.alchemical_crafter();
+				break;
+		}
+		for (String chars : recipe.getShape()) {
+			for (String character : chars.split("(?!^)")) {
+				char c = character.charAt(0);
+				ItemStack item = recipe.getIngredientMap().get(c);
+				if (item != null) {
+					loc.getWorld().dropItem(loc, item);
 				}
 			}
 		}

@@ -1,9 +1,5 @@
 package com.belka.spigot.gm4.crafting;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import api.SkullCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -13,6 +9,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CustomItems {
 
