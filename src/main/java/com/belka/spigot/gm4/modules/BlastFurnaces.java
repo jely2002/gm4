@@ -97,7 +97,9 @@ public class BlastFurnaces implements Listener {
 			Block asBlock = as.getLocation().getBlock();
 			if (asBlock.getType() == Material.HOPPER) {
 				Hopper hopper = (Hopper) asBlock.getState();
-				hopper.getInventory().addItem(e.getResult());
+				Material resultType = e.getResult().getType();
+				if (resultType == Material.IRON_INGOT || resultType == Material.GOLD_INGOT || resultType == Material.DIAMOND || resultType == Material.EMERALD || resultType == Material.LAPIS_LAZULI || resultType == Material.REDSTONE)
+					hopper.getInventory().addItem(e.getResult());
 			}
 		}
 	}
