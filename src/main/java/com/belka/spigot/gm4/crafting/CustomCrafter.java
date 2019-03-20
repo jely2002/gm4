@@ -32,7 +32,7 @@ public class CustomCrafter implements Listener, Initializable {
 
 	private MainClass mc;
 	private RecipeHandler rh;
-	private ArrayList<String> names = new ArrayList<>();
+	private ArrayList<String> asNames = new ArrayList<>();
 
 	public CustomCrafter(MainClass mc, RecipeHandler rh) {
 		this.mc = mc;
@@ -40,11 +40,11 @@ public class CustomCrafter implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
-		names.add("CustomCrafter");
-		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) names.add("MasterCrafter");
-		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) names.add("BlastFurnace");
-		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) names.add("Disassembler");
-		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) names.add("AlchemicalCrafter");
+		asNames.add("CustomCrafter");
+		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) asNames.add("MasterCrafter");
+		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) asNames.add("BlastFurnace");
+		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) asNames.add("Disassembler");
+		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) asNames.add("AlchemicalCrafter");
 	}
 
 	@EventHandler
@@ -97,7 +97,7 @@ public class CustomCrafter implements Listener, Initializable {
 	}
 
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
+	public void onBlockBreak(BlockBreakEvent event) { // Remove Custom Crafter
 		Block b = event.getBlock();
 		List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
 		World w = b.getWorld();
@@ -117,7 +117,7 @@ public class CustomCrafter implements Listener, Initializable {
 			mc.storage().saveData();
 			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
-					if(names.contains(e.getCustomName())) {
+					if(asNames.contains(e.getCustomName())) {
 						e.remove();
 					}
 				}
@@ -125,7 +125,8 @@ public class CustomCrafter implements Listener, Initializable {
 		}
 	}
 
-	private void dropRecipe(Location loc, String name) {
+	private void dropRecipe(Location loc, String name) { // Drop creation items
+		if (name.equalsIgnoreCase("Custom Crafter")) return;
 		ShapedRecipe recipe = CustomRecipes.create();
 		switch (name) {
 			case "Master Crafter":
@@ -160,7 +161,6 @@ public class CustomCrafter implements Listener, Initializable {
 	public void onDrag(InventoryDragEvent e) {
 		updateInv(e.getInventory());
 	}
-
 	private void updateInv(Inventory inv) {
 		if (inv.getType().equals(InventoryType.DROPPER)) {
 			Block b = inv.getLocation().getBlock();
@@ -178,8 +178,8 @@ public class CustomCrafter implements Listener, Initializable {
 	}
 
 	@EventHandler
-	public void onInteract(PlayerArmorStandManipulateEvent e) {
-		if (names.contains(e.getRightClicked().getCustomName())) {
+	public void onInteract(PlayerArmorStandManipulateEvent e) { // Disable item removal armor stand
+		if (e.getRightClicked().getCustomName() != null && asNames.contains(e.getRightClicked().getCustomName())) {
 			e.setCancelled(true);
 		}
 	}

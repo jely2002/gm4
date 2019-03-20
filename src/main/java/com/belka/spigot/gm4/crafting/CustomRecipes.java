@@ -14,8 +14,13 @@ import java.util.Arrays;
 public class CustomRecipes implements Initializable {
 
 	private static MainClass mc;
-	public static ArrayList<ShapedRecipe> shapedRecipes = new ArrayList<>();
-	public static ArrayList<ShapelessRecipe> shapelessRecipes = new ArrayList<>();
+	public static ArrayList<ShapedRecipe> allShapedRecipes = new ArrayList<>();
+	public static ArrayList<ShapelessRecipe> allShapelessRecipes = new ArrayList<>();
+	public static ArrayList<ShapedRecipe> ccShapedRecipes = new ArrayList<>();
+	public static ArrayList<ShapedRecipe> mcShapedRecipes = new ArrayList<>();
+	public static ArrayList<ShapedRecipe> bfShapedRecipes = new ArrayList<>();
+	public static ArrayList<ShapedRecipe> daShapedRecipes = new ArrayList<>();
+	public static ArrayList<ShapedRecipe> acShapedRecipes = new ArrayList<>();
 
 	public CustomRecipes(MainClass mc) {
 		this.mc = mc;
@@ -24,25 +29,35 @@ public class CustomRecipes implements Initializable {
 	public void init(MainClass mc) {
 //		Custom Crafter
 		if (mc.getConfig().getBoolean("CustomCrafter.StandardCrafting")) {
-			add(shapedRecipes, GRAVEL(), RED_SAND(), COBWEB(), IRON_HORSE_ARMOR(), GOLDEN_HORSE_ARMOR(), DIAMOND_HORSE_ARMOR(),
+			add(ccShapedRecipes, GRAVEL(), RED_SAND(), COBWEB(), IRON_HORSE_ARMOR(), GOLDEN_HORSE_ARMOR(), DIAMOND_HORSE_ARMOR(),
 					OAK_PLANKS(), SPRUCE_PLANKS(), BIRCH_PLANKS(), JUNGLE_PLANKS(), ACACIA_PLANKS(), DARK_OAK_PLANKS(),
 					ENCHANTED_GOLDEN_APPLE(), SMOOTH_STONE(), SMOOTH_SANDSTONE(), SMOOTH_RED_SANDSTONE(), SMOOTH_QUARTZ());
-			add(shapelessRecipes, SAND(), SAND_2());
+			add(allShapelessRecipes, SAND(), SAND_2());
 		}
 		if (mc.getConfig().getBoolean("CustomCrafter.RecordCrafting"))
-			add(shapedRecipes, MUSIC_DISC_11(), MUSIC_DISC_13(), MUSIC_DISC_BLOCKS(), MUSIC_DISC_CAT(), MUSIC_DISC_CHIRP(), MUSIC_DISC_FAR(), MUSIC_DISC_MALL(), MUSIC_DISC_MELLOHI(), MUSIC_DISC_STAL(), MUSIC_DISC_STRAD(), MUSIC_DISC_WAIT(), MUSIC_DISC_WARD());
+			add(ccShapedRecipes, MUSIC_DISC_11(), MUSIC_DISC_13(), MUSIC_DISC_BLOCKS(), MUSIC_DISC_CAT(), MUSIC_DISC_CHIRP(),MUSIC_DISC_FAR(),
+					MUSIC_DISC_MALL(), MUSIC_DISC_MELLOHI(), MUSIC_DISC_STAL(), MUSIC_DISC_STRAD(), MUSIC_DISC_WAIT(), MUSIC_DISC_WARD());
+
 		if (mc.getConfig().getBoolean("HeartCanisters.enabled"))
-			add(shapedRecipes, HEART_CANISTER_TIER_1(), HEART_CANISTER_TIER_2());
+			add(ccShapedRecipes, HEART_CANISTER_TIER_1(), HEART_CANISTER_TIER_2());
 
 //		Other Crafters
-		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting"))
-			add(shapedRecipes, master_crafter());
-		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace"))
-			add(shapedRecipes, blast_furnace());
-		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler"))
-			add(shapedRecipes, disassembler());
-		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange"))
-			add(shapedRecipes, alchemical_crafter(), MINIUM_DUST(), INERT_STONE(), PHILOSOPHERS_STONE());
+		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) {
+			add(ccShapedRecipes, master_crafter());
+			add(mcShapedRecipes, STONE_BRICKS(), COAL_BLOCK_OAK(), COAL_BLOCK_SPRUCE(), COAL_BLOCK_BIRCH(), COAL_BLOCK_JUNGLE(), COAL_BLOCK_ACACIA(), COAL_BLOCK_DARK_OAK(), BRICKS(), LAVA_BUCKET());
+		}
+		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) {
+			add(ccShapedRecipes, blast_furnace());
+			add(bfShapedRecipes);
+		}
+		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) {
+			add(ccShapedRecipes, disassembler());
+			add(daShapedRecipes);
+		}
+		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) {
+			add(ccShapedRecipes, alchemical_crafter(), MINIUM_DUST(), INERT_STONE(), PHILOSOPHERS_STONE());
+			add(acShapedRecipes);
+		}
 	}
 
 //	CREATION
@@ -146,42 +161,42 @@ public class CustomRecipes implements Initializable {
 		return recipe;
 	}
 	private static ShapedRecipe OAK_PLANKS() {
-		ItemStack returnItem = new ItemStack(Material.OAK_PLANKS, 6);
+		ItemStack returnItem = new ItemStack(Material.OAK_PLANKS, 3);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "OAK_PLANKS"), returnItem);
 		recipe.shape("SS ","SS ","   ");
 		recipe.setIngredient('S', Material.OAK_STAIRS);
 		return recipe;
 	}
 	private static ShapedRecipe SPRUCE_PLANKS() {
-		ItemStack returnItem = new ItemStack(Material.SPRUCE_PLANKS, 6);
+		ItemStack returnItem = new ItemStack(Material.SPRUCE_PLANKS, 3);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SPRUCE_PLANKS"), returnItem);
 		recipe.shape("SS ","SS ","   ");
 		recipe.setIngredient('S', Material.SPRUCE_STAIRS);
 		return recipe;
 	}
 	private static ShapedRecipe BIRCH_PLANKS() {
-		ItemStack returnItem = new ItemStack(Material.BIRCH_PLANKS, 6);
+		ItemStack returnItem = new ItemStack(Material.BIRCH_PLANKS, 3);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "BIRCH_PLANKS"), returnItem);
 		recipe.shape("SS ","SS ","   ");
 		recipe.setIngredient('S', Material.BIRCH_STAIRS);
 		return recipe;
 	}
 	private static ShapedRecipe JUNGLE_PLANKS() {
-		ItemStack returnItem = new ItemStack(Material.JUNGLE_PLANKS, 6);
+		ItemStack returnItem = new ItemStack(Material.JUNGLE_PLANKS, 3);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "JUNGLE_PLANKS"), returnItem);
 		recipe.shape("SS ","SS ","   ");
 		recipe.setIngredient('S', Material.JUNGLE_STAIRS);
 		return recipe;
 	}
 	private static ShapedRecipe ACACIA_PLANKS() {
-		ItemStack returnItem = new ItemStack(Material.ACACIA_PLANKS, 6);
+		ItemStack returnItem = new ItemStack(Material.ACACIA_PLANKS, 3);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "ACACIA_PLANKS"), returnItem);
 		recipe.shape("SS ","SS ","   ");
 		recipe.setIngredient('S', Material.ACACIA_STAIRS);
 		return recipe;
 	}
 	private static ShapedRecipe DARK_OAK_PLANKS() {
-		ItemStack returnItem = new ItemStack(Material.DARK_OAK_PLANKS, 6);
+		ItemStack returnItem = new ItemStack(Material.DARK_OAK_PLANKS, 3);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "DARK_OAK_PLANKS"), returnItem);
 		recipe.shape("SS ","SS ","   ");
 		recipe.setIngredient('S', Material.DARK_OAK_STAIRS);
@@ -334,7 +349,75 @@ public class CustomRecipes implements Initializable {
 		return recipe;
 	}
 
-//	Equivalent Exchange
+//	Master Crafter
+	private static ShapedRecipe STONE_BRICKS() {
+		ItemStack returnItem = new ItemStack(Material.STONE_BRICKS, 16);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "STONE_BRICKS"), returnItem);
+		recipe.shape("SSS","SCS","SSS");
+		recipe.setIngredient('S', Material.STONE);
+		recipe.setIngredient('C', Material.CLAY_BALL);
+		return recipe;
+	}
+	private static ShapedRecipe COAL_BLOCK_OAK() {
+		ItemStack returnItem = new ItemStack(Material.COAL_BLOCK, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COAL_BLOCK_OAK"), returnItem);
+		recipe.shape("LLL","LLL","LLL");
+		recipe.setIngredient('L', Material.OAK_LOG);
+		return recipe;
+	}
+	private static ShapedRecipe COAL_BLOCK_SPRUCE() {
+		ItemStack returnItem = new ItemStack(Material.COAL_BLOCK, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COAL_BLOCK_SPRUCE"), returnItem);
+		recipe.shape("LLL","LLL","LLL");
+		recipe.setIngredient('L', Material.SPRUCE_LOG);
+		return recipe;
+	}
+	private static ShapedRecipe COAL_BLOCK_BIRCH() {
+		ItemStack returnItem = new ItemStack(Material.COAL_BLOCK, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COAL_BLOCK_BIRCH"), returnItem);
+		recipe.shape("LLL","LLL","LLL");
+		recipe.setIngredient('L', Material.BIRCH_LOG);
+		return recipe;
+	}
+	private static ShapedRecipe COAL_BLOCK_JUNGLE() {
+		ItemStack returnItem = new ItemStack(Material.COAL_BLOCK, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COAL_BLOCK_JUNGLE"), returnItem);
+		recipe.shape("LLL","LLL","LLL");
+		recipe.setIngredient('L', Material.JUNGLE_LOG);
+		return recipe;
+	}
+	private static ShapedRecipe COAL_BLOCK_ACACIA() {
+		ItemStack returnItem = new ItemStack(Material.COAL_BLOCK, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COAL_BLOCK_ACACIA"), returnItem);
+		recipe.shape("LLL","LLL","LLL");
+		recipe.setIngredient('L', Material.ACACIA_LOG);
+		return recipe;
+	}
+	private static ShapedRecipe COAL_BLOCK_DARK_OAK() {
+		ItemStack returnItem = new ItemStack(Material.COAL_BLOCK, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "COAL_BLOCK_DARK_OAK"), returnItem);
+		recipe.shape("LLL","LLL","LLL");
+		recipe.setIngredient('L', Material.DARK_OAK_LOG);
+		return recipe;
+	}
+	private static ShapedRecipe BRICKS() {
+		ItemStack returnItem = new ItemStack(Material.BRICKS, 12);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "BRICKS"), returnItem);
+		recipe.shape("CCC","CLC","CCC");
+		recipe.setIngredient('C', Material.CLAY);
+		recipe.setIngredient('L', Material.LADDER);
+		return recipe;
+	}
+	private static ShapedRecipe LAVA_BUCKET() {
+		ItemStack returnItem = new ItemStack(Material.LAVA_BUCKET, 1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "LAVA_BUCKET"), returnItem);
+		recipe.shape("NNN","NBN","NNN");
+		recipe.setIngredient('N', Material.NETHER_BRICK);
+		recipe.setIngredient('B', Material.BUCKET);
+		return recipe;
+	}
+
+//	Equivalent Exchange (Custom Crafter)
 	private static ShapedRecipe MINIUM_DUST() {
 		ItemStack returnItem = CustomItems.MINIUM_DUST(4);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MINIUM_DUST"), returnItem);
@@ -360,6 +443,8 @@ public class CustomRecipes implements Initializable {
 		recipe.setIngredient('F', Material.FIREWORK_STAR);
 		return recipe;
 	}
+//	Equivalent Exchange (Alchemical Crafter)
+
 
 //	OTHER MODULES
 //	HeartCanisters
@@ -387,9 +472,11 @@ public class CustomRecipes implements Initializable {
 	}
 
 	private void add(ArrayList<ShapedRecipe> arr, ShapedRecipe... recipes) {
+		allShapedRecipes.addAll(new ArrayList<>(Arrays.asList(recipes)));
 		arr.addAll(new ArrayList<>(Arrays.asList(recipes)));
 	}
 	private void add(ArrayList<ShapelessRecipe> arr, ShapelessRecipe... recipes) {
+		allShapelessRecipes.addAll(new ArrayList<>(Arrays.asList(recipes)));
 		arr.addAll(new ArrayList<>(Arrays.asList(recipes)));
 	}
 }
