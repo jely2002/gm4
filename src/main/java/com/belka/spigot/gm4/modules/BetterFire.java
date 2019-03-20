@@ -12,6 +12,7 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.BlockIterator;
 
@@ -27,71 +28,70 @@ public class BetterFire implements Listener, Initializable {
 		this.mc = mc;
 	}
 
-	ArrayList<Arrow> fireArrows = new ArrayList<>();
-	HashMap<UUID, Integer> checkArrow = new HashMap<>();
-	ArrayList<Arrow> deleteArrows = new ArrayList<>();
+	private ArrayList<Arrow> fireArrows = new ArrayList<>();
+	private HashMap<UUID, Integer> checkArrow = new HashMap<>();
+	private ArrayList<Arrow> deleteArrows = new ArrayList<>();
 
 	public void init(MainClass mc) {
+		if(!mc.getConfig().getBoolean("BetterFire.enabled")) return;
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			if(mc.getConfig().getBoolean("modules.BetterFire.enabled")) {
-				for (Arrow arrow : fireArrows) {
-					if (checkArrow.containsKey(arrow.getUniqueId())) {
-						if (checkArrow.get(arrow.getUniqueId()).intValue() == arrow.getTicksLived()) {
-							deleteArrows.add(arrow);
-							checkArrow.remove(arrow.getUniqueId());
-						} else {
-							checkArrow.put(arrow.getUniqueId(), arrow.getTicksLived());
-						}
+			for (Arrow arrow : fireArrows) {
+				if (checkArrow.containsKey(arrow.getUniqueId())) {
+					if (checkArrow.get(arrow.getUniqueId()) == arrow.getTicksLived()) {
+						deleteArrows.add(arrow);
+						checkArrow.remove(arrow.getUniqueId());
 					} else {
 						checkArrow.put(arrow.getUniqueId(), arrow.getTicksLived());
 					}
-					Location loc = arrow.getLocation();
-					if(loc.getBlock().getType() == Material.AIR) {
-						arrow.getLocation().getBlock().setType(Material.FIRE);
-					}
+				} else {
+					checkArrow.put(arrow.getUniqueId(), arrow.getTicksLived());
 				}
-				if(deleteArrows.size() > 0) {
-					for(Arrow arrow : deleteArrows) {
-						fireArrows.remove(arrow);
-					}
+				Location loc = arrow.getLocation();
+				if(loc.getBlock().getType() == Material.AIR) {
+					arrow.getLocation().getBlock().setType(Material.FIRE);
 				}
 			}
+			if(deleteArrows.size() > 0) {
+				for(Arrow arrow : deleteArrows) {
+					fireArrows.remove(arrow);
+				}
+			}
+
 		}, 0, 10L);
 	}
 
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent e) {
-		if (e.getEntity() instanceof Arrow && mc.getConfig().getBoolean("BetterFire")) {
+		if(!mc.getConfig().getBoolean("BetterFire.enabled")) return;
+		if (e.getEntity() instanceof Arrow) {
 			final Arrow arrow = (Arrow)e.getEntity();
 			if (arrow.getFireTicks() == 0) {
 				return;
 			}
 			World world = arrow.getWorld();
 			BlockIterator iterator = new BlockIterator(world, arrow.getLocation().toVector(), arrow.getVelocity().normalize(), 0.0, 4);
-			Block hitBlock = null;
+			Block hitBlock;
 			while (iterator.hasNext()) {
 				hitBlock = iterator.next();
 				if (hitBlock.getType() != Material.AIR) break;
 			}
-			Bukkit.getScheduler().scheduleSyncDelayedTask(mc, new Runnable(){
-				@Override
-				public void run() {
-					Location loc = arrow.getLocation();
-					if (arrow.getFireTicks() == 0) {
-						return;
-					}
-					if (loc.getBlock().getType() == Material.AIR) {
-						arrow.getLocation().getBlock().setType(Material.FIRE);
-						fireArrows.add(arrow);
-					}
+			Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
+				Location loc = arrow.getLocation();
+				if (arrow.getFireTicks() == 0) {
+					return;
 				}
-			}, (long) 0.25 * 20L);
+				if (loc.getBlock().getType() == Material.AIR) {
+					arrow.getLocation().getBlock().setType(Material.FIRE);
+					fireArrows.add(arrow);
+				}
+			}, 10L);
 		}
 	}
 
 	@EventHandler
 	public void onCreeperTakeDamage(EntityDamageEvent e) {
-		if (e.getEntity() instanceof Creeper && e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK && mc.getConfig().getBoolean("BetterFire")) {
+		if(!mc.getConfig().getBoolean("BetterFire.enabled")) return;
+		if (e.getEntity() instanceof Creeper && e.getCause() == DamageCause.FIRE_TICK) {
 			Creeper c = (Creeper)e.getEntity();
 			c.getWorld().createExplosion(c.getLocation(), 2.5f, true);
 			c.setHealth(0.0);
