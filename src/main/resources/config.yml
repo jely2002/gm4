@@ -10,6 +10,8 @@ CustomCrafter:
   BlastFurnace: true
   Disassembler: true
   EquivalentExchange: true
+BlastFurnaces:
+  enabled: true
 DesireLines:
   enabled: true
   max: 50

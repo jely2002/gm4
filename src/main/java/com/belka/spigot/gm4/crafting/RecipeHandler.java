@@ -31,7 +31,7 @@ public class RecipeHandler implements Initializable {
 
 	public void init(MainClass mc) {
 		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) recipeKeys.add("master_crafter");
-		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) recipeKeys.add("blast_furnace");
+		if (mc.getConfig().getBoolean("BlastFurnaces.enabled")) recipeKeys.add("blast_furnace");
 		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) recipeKeys.add("disassembler");
 		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) recipeKeys.add("alchemical_crafter");
 	}
