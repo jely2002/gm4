@@ -114,14 +114,16 @@ public class CustomCrafter implements Listener, Initializable {
 			}
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
 			mc.storage().data().set("CustomCrafter.customCrafters", active);
-			mc.storage().saveData();
 			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
 					if(asNames.contains(e.getCustomName())) {
+						if (b.getType() == Material.HOPPER)
+							mc.storage().data().set("BlastFurnaces." + e.getUniqueId().toString(), null);
 						e.remove();
 					}
 				}
 			}
+			mc.storage().saveData();
 		}
 	}
 
