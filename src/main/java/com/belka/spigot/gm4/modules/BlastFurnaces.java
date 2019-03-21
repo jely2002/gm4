@@ -27,8 +27,7 @@ import java.util.UUID;
 public class BlastFurnaces implements Listener, Initializable {
 
 	private static MainClass mc;
-	public HashMap<Furnace, ArmorStand> activeBlastFurnaces = new HashMap<>();
-//	TODO: Save activeBlastFurnaces
+	private HashMap<Furnace, ArmorStand> activeBlastFurnaces = new HashMap<>();
 	
 	public BlastFurnaces(MainClass mc) {
 		this.mc = mc;
