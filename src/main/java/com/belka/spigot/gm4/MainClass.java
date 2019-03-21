@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4;
 
 import com.belka.spigot.gm4.config.ConfigManager;
+import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
@@ -34,7 +35,9 @@ public class MainClass extends JavaPlugin {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
-        cmdMgmt = new CommandManager(this);
+        SettingsGUI gui = new SettingsGUI(this);
+
+        cmdMgmt = new CommandManager(this, gui);
         storage = new ConfigManager(this);
         mCmds = new MainCommands(this);
 
@@ -57,7 +60,7 @@ public class MainClass extends JavaPlugin {
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, mCmds, stats, advancements, speedPaths, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
+        registerClasses(this, storage, cmdMgmt, mCmds, gui, stats, advancements, speedPaths, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override
