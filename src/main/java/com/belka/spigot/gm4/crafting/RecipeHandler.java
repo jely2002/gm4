@@ -165,6 +165,11 @@ public class RecipeHandler implements Initializable {
 					if (item.getType() == Material.PLAYER_HEAD && recipe.getKey().equals(new NamespacedKey(mc, "HEART_CANISTER_TIER_2"))) item = CustomItems.HEART_CANISTER_TIER_1(1);
 					else if (item.getType() == Material.ROSE_RED && (recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE")) || recipe.getKey().equals(new NamespacedKey(mc, "alchemical_crafter")))) item = CustomItems.MINIUM_DUST(1);
 					else if (item.getType() == Material.FIREWORK_STAR && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE"))) item = CustomItems.INERT_STONE(1);
+					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe) && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKII"))) item = CustomItems.PHILOSOPHERS_STONE(1);
+					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe) && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKIII"))) item = CustomItems.PHILOSOPHERS_STONE_MKII(1);
+					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe) && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKIV"))) item = CustomItems.PHILOSOPHERS_STONE_MKIII(1);
+					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe) && recipe.getKey().equals(new NamespacedKey(mc, "AC_ERROR"))) item = CustomItems.PHILOSOPHERS_STONE_MKIV(1);
+					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe)) item = CustomItems.PHILOSOPHERS_STONE(1);
 				}
 				recipeItems.add(item);
 			}

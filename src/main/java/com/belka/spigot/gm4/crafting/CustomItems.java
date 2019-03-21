@@ -62,6 +62,44 @@ public class CustomItems {
 		item.setItemMeta(meta);
 		return item;
 	}
+	public static ItemStack PHILOSOPHERS_STONE_MKII(int amount) {
+		ItemStack item = new ItemStack(Material.REDSTONE_BLOCK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Philosopher's Stone MkII");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Why not have more philosophy!")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack PHILOSOPHERS_STONE_MKIII(int amount) {
+		ItemStack item = new ItemStack(Material.REDSTONE_BLOCK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Philosopher's Stone MkIII");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "I think this is going a little far...")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack PHILOSOPHERS_STONE_MKIV(int amount) {
+		ItemStack item = new ItemStack(Material.REDSTONE_BLOCK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Philosopher's Stone MkIIII");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "TOO MUCH PHILOSOPHY!!!")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack AC_ERROR(int amount) {
+		ItemStack skull = getSkull("http://textures.minecraft.net/texture/967a2f218a6e6e38f2b545f6c17733f4ef9bbb288e75402949c052189ee", amount);
+		ItemMeta meta = skull.getItemMeta();
+		meta.setDisplayName(ChatColor.WHITE + "ERROR");
+		meta.setLore(Arrays.asList(ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + ")@(^%%!)$)(&@%^&@"));
+		skull.setItemMeta(meta);
+		return skull;
+	}
 
     public static ItemStack BOOTS_OF_OSTARA(int amount) {
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, amount);

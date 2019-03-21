@@ -56,7 +56,7 @@ public class CustomRecipes implements Initializable {
 		}
 		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) {
 			add(ccShapedRecipes, alchemical_crafter(), MINIUM_DUST(), INERT_STONE(), PHILOSOPHERS_STONE());
-			add(acShapedRecipes);
+			add(acShapedRecipes, PHILOSOPHERS_STONE_MKII(), PHILOSOPHERS_STONE_MKIII(), PHILOSOPHERS_STONE_MKIV(), AC_ERROR());
 		}
 	}
 
@@ -102,7 +102,7 @@ public class CustomRecipes implements Initializable {
 		recipe.setIngredient('R', Material.REDSTONE);
 		return recipe;
 	}
-	//	Disassembler
+	//	Alchemical Crafter
 	public static ShapedRecipe alchemical_crafter() {
 		ItemStack returnItem = new ItemStack(Material.AIR, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "alchemical_crafter"), returnItem);
@@ -444,6 +444,38 @@ public class CustomRecipes implements Initializable {
 		return recipe;
 	}
 //	Equivalent Exchange (Alchemical Crafter)
+	private static ShapedRecipe PHILOSOPHERS_STONE_MKII() {
+		ItemStack returnItem = CustomItems.PHILOSOPHERS_STONE_MKII(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKII"), returnItem);
+		recipe.shape("R R"," I ","R R");
+		recipe.setIngredient('I', Material.IRON_INGOT);
+		recipe.setIngredient('R', Material.REDSTONE_BLOCK);
+		return recipe;
+	}
+	private static ShapedRecipe PHILOSOPHERS_STONE_MKIII() {
+		ItemStack returnItem = CustomItems.PHILOSOPHERS_STONE_MKIII(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKIII"), returnItem);
+		recipe.shape("R R"," G ","R R");
+		recipe.setIngredient('G', Material.GOLD_INGOT);
+		recipe.setIngredient('R', Material.REDSTONE_BLOCK);
+		return recipe;
+	}
+	private static ShapedRecipe PHILOSOPHERS_STONE_MKIV() {
+		ItemStack returnItem = CustomItems.PHILOSOPHERS_STONE_MKIV(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKIV"), returnItem);
+		recipe.shape("R R"," D ","R R");
+		recipe.setIngredient('D', Material.DIAMOND);
+		recipe.setIngredient('R', Material.REDSTONE_BLOCK);
+		return recipe;
+	}
+	private static ShapedRecipe AC_ERROR() {
+		ItemStack returnItem = CustomItems.AC_ERROR(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "AC_ERROR"), returnItem);
+		recipe.shape("R R"," O ","R R");
+		recipe.setIngredient('O', Material.OBSIDIAN);
+		recipe.setIngredient('R', Material.REDSTONE_BLOCK);
+		return recipe;
+	}
 
 
 //	OTHER MODULES
