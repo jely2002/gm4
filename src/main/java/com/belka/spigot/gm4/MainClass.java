@@ -52,7 +52,7 @@ public class MainClass extends JavaPlugin {
         CustomRecipes customRecipes = new CustomRecipes(this);
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		BlastFurnaces blastFurnaces = new BlastFurnaces(this);
-
+		LightningRods lightningRods = new LightningRods(this);
 		DesireLines desireLines = new DesireLines(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
@@ -60,7 +60,7 @@ public class MainClass extends JavaPlugin {
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, mCmds, gui, stats, advancements, speedPaths, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
+        registerClasses(this, storage, cmdMgmt, mCmds, gui, lightningRods, stats, advancements, speedPaths, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override

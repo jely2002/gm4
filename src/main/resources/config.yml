@@ -28,6 +28,8 @@ SpeedPaths:
   speedFactor: 1
 BatGrenades:
   enabled: true
+LightningRods:
+  enabled: true
 WeightedArmour:
   enabled: true
   weight:
