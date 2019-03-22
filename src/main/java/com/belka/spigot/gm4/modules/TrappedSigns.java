@@ -14,12 +14,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TrappedSigns implements Listener {
 
     private MainClass mc;
-    private ArrayList<RedstoneWire> redstone = new ArrayList<>();
 
     public TrappedSigns(MainClass mc) {
         this.mc = mc;
@@ -29,7 +28,7 @@ public class TrappedSigns implements Listener {
     public void signInteract(PlayerInteractEvent e) {
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         if (!(e.getClickedBlock().getType() == Material.SIGN)) return;
-        if(!mc.storage().data().contains("TrappedSigns.0")) return;
+        if(!mc.storage().data().contains("TrappedSigns")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getClickedBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
                 if(e.getClickedBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
@@ -38,10 +37,16 @@ public class TrappedSigns implements Listener {
                             for(Block b : Helper.getNearbyBlocks(e.getClickedBlock().getLocation(), 2)) {
                                 if(b.getType() == Material.REDSTONE_WIRE) {
                                     RedstoneWire r = (RedstoneWire) b.getState();
-                                    Bukkit.getScheduler().
-                                    r.setPower(1);
-                                    redstone.add(r);
-                                    b.getState().update();
+                                    AtomicInteger count = new AtomicInteger();
+                                    final int[] task = new int[]{-1};
+                                    task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+                                        if(count.get() >= 15) {
+                                            Bukkit.getScheduler().cancelTask(task[0]);
+                                        }
+                                        r.setPower(1);
+                                        b.getState().update();
+                                        count.getAndIncrement();
+                                    }, 0, 1L);
                                 }
                             }
                         }
