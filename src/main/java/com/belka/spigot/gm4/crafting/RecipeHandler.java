@@ -23,26 +23,26 @@ import java.util.Arrays;
 public class RecipeHandler implements Initializable {
 
 	private static MainClass mc;
-	private ArrayList<String> recipeKeys = new ArrayList<>();
+	private ArrayList<String> convertKeys = new ArrayList<>();
 
 	public RecipeHandler(MainClass mc) {
 		this.mc = mc;
 	}
 
 	public void init(MainClass mc) {
-		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) recipeKeys.add("master_crafter");
-		if (mc.getConfig().getBoolean("BlastFurnaces.enabled")) recipeKeys.add("blast_furnace");
-		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) recipeKeys.add("disassembler");
-		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) recipeKeys.add("alchemical_crafter");
+		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) convertKeys.add("master_crafter");
+		if (mc.getConfig().getBoolean("BlastFurnaces.enabled")) convertKeys.add("blast_furnace");
+		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) convertKeys.add("disassembler");
+		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) convertKeys.add("alchemical_crafter");
 	}
 
 	public void craft(Dropper dr, Player p) {
 		for (ShapedRecipe recipe : CustomRecipes.allShapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
 				if (dr.getCustomName().equalsIgnoreCase("Custom Crafter")) { // If it's a Custom Crafter
-					if (recipeKeys.contains(recipe.getKey().getKey())) convert(dr, recipe.getKey().getKey(), p);
+					if (convertKeys.contains(recipe.getKey().getKey())) convert(dr, recipe.getKey().getKey(), p);
 				}
-				int amount = dr.getInventory().getItem(0).getAmount();
+				int amount = getFirstAmount(new ArrayList<>(Arrays.asList(dr.getInventory().getContents())));
 				dr.getInventory().clear();
 
 				ItemStack result = recipe.getResult();
@@ -109,7 +109,6 @@ public class RecipeHandler implements Initializable {
 	}
 
 	public boolean equalsRecipe(Dropper dr, ShapedRecipe recipe) {
-//		Recipe checking
 		String customName = dr.getCustomName();
 		String recipeName = recipe.getKey().getKey();
 		ArrayList<String> rNames = new ArrayList<>();
@@ -181,15 +180,19 @@ public class RecipeHandler implements Initializable {
 	}
 
 	private boolean equalAmount(ArrayList<ItemStack> items) {
-		int amount = items.get(0).getAmount();
+		int amount = getFirstAmount(items);
 		for (ItemStack item : items) {
 			if (item == null) continue;
-			if (item.getAmount() != amount) {
-				return false;
-			}
+			if (item.getAmount() != amount) return false;
 			amount = item.getAmount();
 		}
 		return true;
+	}
+
+	private int getFirstAmount(ArrayList<ItemStack> items) {
+		for (ItemStack item : items)
+			if (item != null) return item.getAmount();
+		return 0;
 	}
 }
 
