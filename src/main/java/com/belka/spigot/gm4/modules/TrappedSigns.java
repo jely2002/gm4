@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Powerable;
+import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -25,23 +26,17 @@ public class TrappedSigns implements Listener {
     public void signInteract(PlayerInteractEvent e) {
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         if (!(e.getClickedBlock().getType() == Material.SIGN)) return;
+        if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getClickedBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
                 if(e.getClickedBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
                     if(e.getClickedBlock().getLocation().getBlockZ() == mc.storage().data().getInt("TrappedSigns." + id + ".z")) {
                         if(e.getClickedBlock().getWorld().getName() == mc.storage().data().getString("TrappedSigns." + id + ".world")) {
                             for(Block b : Helper.getNearbyBlocks(e.getClickedBlock().getLocation(), 2)) {
-                                switch(b.getType()) {
-                                    case LEVER:
-                                    case REDSTONE:
-                                    case DISPENSER:
-                                    case POWERED_RAIL:
-                                    case DROPPER:
-                                    {
-                                        Powerable p = (Powerable) b.getState();
-                                        p.setPowered(true);
-                                        b.getState().update();
-                                    } }
+                                if(b.getType() == Material.REDSTONE_WIRE) {
+                                    RedstoneWire r = (RedstoneWire) b.getState();
+                                    r.setPower(r.getMaximumPower());
+                                }
                             }
                         }
                     }
@@ -57,14 +52,7 @@ public class TrappedSigns implements Listener {
         if(!e.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("§b Trapped Sign")) return;
         if(!e.getItemInHand().getItemMeta().getLore().get(0).contains("trapped")) return;
         Sign sign = (Sign) e.getBlockPlaced().getState();
-        if(e.getItemInHand().getItemMeta().getLore().get(0).contains("hidden")) {
-            //It is a hidden sign
-            addSign(sign.getLocation());
-        } else {
-            //It is a normal trapped sign
-            addSign(sign.getLocation());
-        }
-
+        addSign(sign.getLocation());
     }
 
     private void addSign(Location loc) {
