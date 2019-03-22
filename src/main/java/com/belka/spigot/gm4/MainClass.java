@@ -62,7 +62,27 @@ public class MainClass extends JavaPlugin {
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 		speedPaths = new SpeedPaths(this);
 
-        registerClasses(this, storage, cmdMgmt, mCmds, gui, stats, advancements, batGrenades, betterArmorStands, betterFire, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, lightningRods, trappedSigns, desireLines, endermanSupportClass, inkSpittingSquid, speedPaths);
+        registerClasses(this,
+                storage,
+                cmdMgmt,
+                mCmds,
+                gui,
+                stats,
+                trappedSigns,
+                advancements,
+                batGrenades,
+                betterArmorStands,
+                betterFire,
+                recipeHandler,
+                customCrafter,
+                customRecipes,
+                heartCanisters,
+                blastFurnaces,
+                lightningRods,
+                desireLines,
+                endermanSupportClass,
+                inkSpittingSquid,
+                speedPaths);
     }
 
     @Override
