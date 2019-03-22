@@ -1,6 +1,10 @@
 Advancements:
   enabled: true
+BatGrenades:
+  enabled: true
 BetterArmorStands:
+  enabled: true
+BlastFurnaces:
   enabled: true
 CustomCrafter:
   enabled: true
@@ -10,8 +14,6 @@ CustomCrafter:
   BlastFurnace: true
   Disassembler: true
   EquivalentExchange: true
-BlastFurnaces:
-  enabled: true
 DesireLines:
   enabled: true
   max: 50
@@ -22,13 +24,13 @@ HeartCanisters:
   enabled: true
 InkSpittingSquid:
   enabled: true
+LightningRods:
+  enabled: true
 SpeedPaths:
   enabled: true
   pathBlock: GRASS_PATH
   speedFactor: 1
-BatGrenades:
-  enabled: true
-LightningRods:
+TrappedSigns:
   enabled: true
 WeightedArmour:
   enabled: true
