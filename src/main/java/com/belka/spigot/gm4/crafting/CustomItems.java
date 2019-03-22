@@ -109,6 +109,40 @@ public class CustomItems {
         return boots;
     }
 
+	//Trapped Signs
+	private static ItemStack TRAPPED_SIGN(int amount) {
+		ItemStack item = new ItemStack(Material.SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	private static ItemStack TRAPPED_SIGN_HIDDEN(int amount) {
+		ItemStack item = new ItemStack(Material.SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign", "Symbol is hidden")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	//Lightning rods
+	private static ItemStack LIGHTNING_ROD(int amount) {
+		ItemStack item = new ItemStack(Material.BLAZE_ROD, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Lightning rod");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Throw for boom!")));
+		item.setItemMeta(meta);
+		return item;
+	}
 
 	private static ItemStack getSkull(String skinURL, int amount) {
 		ItemStack skull = SkullCreator.itemFromUrl(skinURL);
