@@ -41,6 +41,9 @@ public class CustomRecipes implements Initializable {
 		if (mc.getConfig().getBoolean("HeartCanisters.enabled"))
 			add(ccShapedRecipes, HEART_CANISTER_TIER_1(), HEART_CANISTER_TIER_2());
 
+		if (mc.getConfig().getBoolean("TrappedSigns.enabled"))
+			add(ccShapedRecipes, TRAPPED_SIGN());
+
 //		Other Crafters
 		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) {
 			add(ccShapedRecipes, master_crafter());
@@ -502,6 +505,18 @@ public class CustomRecipes implements Initializable {
 		recipe.setIngredient('N', Material.NETHER_STAR);
 		return recipe;
 	}
+
+//	Trapped Signs
+	private static ShapedRecipe TRAPPED_SIGN() {
+		ItemStack returnItem = CustomItems.TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN"), returnItem);
+		recipe.shape("   ","TST","RRR");
+		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
+		recipe.setIngredient('S', Material.SIGN);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+
 
 	private void add(ArrayList<ShapedRecipe> arr, ShapedRecipe... recipes) {
 		allShapedRecipes.addAll(new ArrayList<>(Arrays.asList(recipes)));

@@ -101,6 +101,7 @@ public class CustomItems {
 		return skull;
 	}
 
+//	Boots of Ostara
     public static ItemStack BOOTS_OF_OSTARA(int amount) {
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, amount);
         LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
@@ -110,7 +111,7 @@ public class CustomItems {
     }
 
 	//Trapped Signs
-	private static ItemStack TRAPPED_SIGN(int amount) {
+	public static ItemStack TRAPPED_SIGN(int amount) {
 		ItemStack item = new ItemStack(Material.SIGN, amount);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "Trapped Sign");
@@ -120,7 +121,7 @@ public class CustomItems {
 	}
 
 	//Lightning rods
-	private static ItemStack LIGHTNING_ROD(int amount) {
+	public static ItemStack LIGHTNING_ROD(int amount) {
 		ItemStack item = new ItemStack(Material.BLAZE_ROD, amount);
 		ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
