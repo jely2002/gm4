@@ -2,11 +2,11 @@ package com.belka.spigot.gm4.modules;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,9 +14,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.ArrayList;
+
 public class TrappedSigns implements Listener {
 
     private MainClass mc;
+    private ArrayList<RedstoneWire> redstone = new ArrayList<>();
 
     public TrappedSigns(MainClass mc) {
         this.mc = mc;
@@ -35,7 +38,10 @@ public class TrappedSigns implements Listener {
                             for(Block b : Helper.getNearbyBlocks(e.getClickedBlock().getLocation(), 2)) {
                                 if(b.getType() == Material.REDSTONE_WIRE) {
                                     RedstoneWire r = (RedstoneWire) b.getState();
-                                    r.setPower(r.getMaximumPower());
+                                    Bukkit.getScheduler().
+                                    r.setPower(1);
+                                    redstone.add(r);
+                                    b.getState().update();
                                 }
                             }
                         }
