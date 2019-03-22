@@ -43,8 +43,6 @@ public class MainClass extends JavaPlugin {
 
         Stats stats = new Stats();
 
-        speedPaths = new SpeedPaths(this);
-
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
@@ -62,6 +60,7 @@ public class MainClass extends JavaPlugin {
 		DesireLines desireLines = new DesireLines(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
+		speedPaths = new SpeedPaths(this);
 
         registerClasses(this, storage, cmdMgmt, mCmds, gui, stats, advancements, batGrenades, betterArmorStands, betterFire, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, lightningRods, trappedSigns, desireLines, endermanSupportClass, inkSpittingSquid);
     }
