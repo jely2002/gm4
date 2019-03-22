@@ -32,19 +32,6 @@ public class LightningRods implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-            ItemStack item = new ItemStack(Material.BLAZE_ROD, 12);
-            ItemMeta meta = item.getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            meta.addEnchant(Enchantment.DURABILITY, 1, true);
-            meta.setDisplayName(ChatColor.AQUA + "Lightning rod");
-            meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Throw for boom!")));
-            item.setItemMeta(meta);
-            e.getPlayer().getInventory().addItem(item);
-
-    }
-
-    @EventHandler
     public void onItemPickup(EntityPickupItemEvent e) {
         if(!(e.getItem().getItemStack().getType() == Material.BLAZE_ROD)) return;
         if(!(e.getItem().getItemStack().getItemMeta().getLore().get(0).contains("boom"))) return;
