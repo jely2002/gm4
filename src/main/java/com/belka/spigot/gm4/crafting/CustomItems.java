@@ -87,7 +87,7 @@ public class CustomItems {
 		ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
-		meta.setDisplayName(ChatColor.AQUA + "Philosopher's Stone MkIIII");
+		meta.setDisplayName(ChatColor.AQUA + "Philosopher's Stone MkIV");
 		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "TOO MUCH PHILOSOPHY!!!")));
 		item.setItemMeta(meta);
 		return item;
