@@ -46,21 +46,24 @@ public class MainClass extends JavaPlugin {
         speedPaths = new SpeedPaths(this);
 
 		Advancements advancements = new Advancements(this);
+		BatGrenades batGrenades = new BatGrenades(this);
+		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
+		BetterFire betterFire = new BetterFire(this);
 //		Custom Crafting
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
         CustomRecipes customRecipes = new CustomRecipes(this);
+//      With Craftable Items
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		BlastFurnaces blastFurnaces = new BlastFurnaces(this);
 		LightningRods lightningRods = new LightningRods(this);
+		TrappedSigns trappedSigns = new TrappedSigns(this);
+
 		DesireLines desireLines = new DesireLines(this);
-		BatGrenades batGrenades = new BatGrenades(this);
-		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
-		BetterFire betterFire = new BetterFire(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 
-        registerClasses(this, storage, cmdMgmt, mCmds, gui, lightningRods, stats, advancements, speedPaths, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, desireLines, batGrenades, betterArmorStands, betterFire, endermanSupportClass, inkSpittingSquid);
+        registerClasses(this, storage, cmdMgmt, mCmds, gui, stats, advancements, batGrenades, betterArmorStands, betterFire, recipeHandler, customCrafter, customRecipes, heartCanisters, blastFurnaces, lightningRods, trappedSigns, desireLines, endermanSupportClass, inkSpittingSquid);
     }
 
     @Override
