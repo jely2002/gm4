@@ -9,6 +9,8 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -92,6 +94,11 @@ public class MainClass extends JavaPlugin {
 		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
 		saveConfig();
     	storage().saveAll();
+
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			Advancements.manager.saveProgress(p, "gm4");
+		}
+		Advancements.manager.setAnnounceAdvancementMessages(true);
     }
 
     public ConfigManager storage() {
