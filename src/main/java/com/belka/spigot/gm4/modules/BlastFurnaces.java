@@ -50,7 +50,7 @@ public class BlastFurnaces implements Listener, Initializable {
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) { // Create Blast Furnace
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled")) return;
+		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled") || !mc.storage().data().contains("BlastFurnaces")) return;
 		Block b = event.getBlock();
 		Material mat = b.getType();
 		if (mat != Material.IRON_BLOCK && mat != Material.FURNACE && mat != Material.GLASS) return;
