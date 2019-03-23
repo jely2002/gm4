@@ -1,6 +1,5 @@
 package com.belka.spigot.gm4.modules;
 
-import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -18,6 +17,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TrappedSigns implements Listener {
@@ -79,22 +79,21 @@ public class TrappedSigns implements Listener {
                 if(e.getClickedBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
                     if(e.getClickedBlock().getLocation().getBlockZ() == mc.storage().data().getInt("TrappedSigns." + id + ".z")) {
                         if(e.getClickedBlock().getWorld().getName().equals(mc.storage().data().getString("TrappedSigns." + id + ".world"))) {
-                            for(Block b : Helper.getNearbyBlocks(e.getClickedBlock().getLocation(), 2)) {
-                                if(b.getType() == Material.REDSTONE_WIRE) {
-                                    AnaloguePowerable r = (AnaloguePowerable) b.getBlockData();
-                                    AtomicInteger count = new AtomicInteger();
-                                    final int[] task = new int[]{-1};
-                                    task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-                                        r.setPower(1);
-                                        b.setBlockData(r);
-                                        if(count.get() >= 15) {
-                                            Bukkit.getScheduler().cancelTask(task[0]);
-                                            r.setPower(0);
-                                            b.setBlockData(r);
-                                        }
-                                        count.getAndIncrement();
-                                    }, 0, 1L);
-                                }
+                            for(Block b : getRedstone(e.getClickedBlock())) {
+								AnaloguePowerable r = (AnaloguePowerable) b.getBlockData();
+								if (r.getPower() != 0) continue;
+								AtomicInteger count = new AtomicInteger();
+								final int[] task = new int[]{-1};
+								task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+									r.setPower(1);
+									b.setBlockData(r);
+									if(count.get() >= 15) {
+										Bukkit.getScheduler().cancelTask(task[0]);
+										r.setPower(0);
+										b.setBlockData(r);
+									}
+									count.getAndIncrement();
+								}, 0, 1L);
                             }
                         }
                     }
@@ -127,4 +126,39 @@ public class TrappedSigns implements Listener {
         mc.storage().saveData();
     }
 
+    private ArrayList<Block> getRedstone(Block b) {
+    	ArrayList<Block> blocks = new ArrayList<>();
+		ArrayList<Block> redstone = new ArrayList<>();
+		if (b.getType() == Material.SIGN) {
+			blocks.add(b.getRelative(0, -2, 0));
+			blocks.add(b.getRelative(1, 0, 0));
+			blocks.add(b.getRelative(1, -1, 0));
+			blocks.add(b.getRelative(-1, 0, 0));
+			blocks.add(b.getRelative(-1, -1, 0));
+			blocks.add(b.getRelative(0, 0, 1));
+			blocks.add(b.getRelative(0, -1, 1));
+			blocks.add(b.getRelative(0, 0, -1));
+			blocks.add(b.getRelative(0, -1, -1));
+		}
+		else if (b.getType() == Material.WALL_SIGN) {
+			org.bukkit.material.Sign ws = (org.bukkit.material.Sign) b.getState().getData();
+			Block att = b.getRelative(ws.getAttachedFace());
+			blocks.add(b.getRelative(0, -1, 0));
+			blocks.add(att.getRelative(0, 1, 0));
+			blocks.add(att.getRelative(0, -1, 0));
+
+			blocks.add(b.getRelative(1, 0, 0));
+			blocks.add(b.getRelative(-1, 0, 0));
+			blocks.add(b.getRelative(0, 0, 1));
+			blocks.add(b.getRelative(0, 0, -1));
+			blocks.add(att.getRelative(1, 0, 0));
+			blocks.add(att.getRelative(-1, 0, 0));
+			blocks.add(att.getRelative(0, 0, 1));
+			blocks.add(att.getRelative(0, 0, -1));
+		}
+		for (Block block : blocks) {
+			if (block.getType() == Material.REDSTONE_WIRE) redstone.add(block);
+		}
+		return redstone;
+	}
 }
