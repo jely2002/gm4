@@ -3,6 +3,7 @@ package com.belka.spigot.gm4.crafting;
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dropper;
@@ -70,6 +71,7 @@ public class RecipeHandler implements Initializable {
 						helmet.setType(Material.PISTON);
 						pose = new EulerAngle(Helper.degToRad(180f), 0f, 0f);
 						loc.setY(0.595f);
+						Advancements.grantAdvancement("clever_crafting", p);
 						break;
 					case "blast_furnace":
 						dr.getInventory().clear();
@@ -81,6 +83,7 @@ public class RecipeHandler implements Initializable {
 						hp.update();
 						as.setCustomName("BlastFurnace");
 						helmet.setType(Material.AIR);
+						Advancements.grantAdvancement("clever_smelting", p);
 						break;
 					case "disassembler":
 						dr.setCustomName("Disassembler");
@@ -89,6 +92,7 @@ public class RecipeHandler implements Initializable {
 						helmet.setType(Material.TNT);
 						dr.getWorld().spawnParticle(Particle.LAVA, dr.getBlock().getLocation().add(0.5f, 0.75f, 0.5f), 10);
 						dr.getWorld().playSound(dr.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
+						Advancements.grantAdvancement("clever_decrafting", p);
 						break;
 					case "alchemical_crafter":
 						dr.setCustomName("Alchemical Crafter");

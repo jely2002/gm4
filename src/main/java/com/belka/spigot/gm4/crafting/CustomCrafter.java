@@ -3,6 +3,7 @@ package com.belka.spigot.gm4.crafting;
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -88,6 +89,7 @@ public class CustomCrafter implements Listener, Initializable {
                                 active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
                                 mc.storage().data().set("CustomCrafter.customCrafters", active);
                                 mc.storage().saveData();
+								Advancements.grantAdvancement("clever_crafting", e.getPlayer());
                             }
                         }
                     }
