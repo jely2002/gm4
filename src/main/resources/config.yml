@@ -34,6 +34,9 @@ TrappedSigns:
   enabled: true
 WeightedArmour:
   enabled: true
+  level-0: 8
+  level-1: 16
+  level-2: 20
   weight:
     leather:
       boots: 1

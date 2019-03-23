@@ -61,6 +61,7 @@ public class MainClass extends JavaPlugin {
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 		speedPaths = new SpeedPaths(this);
+		WeightedArmour weightedArmour = new WeightedArmour(this);
 
         registerClasses(this,
                 storage,
@@ -82,7 +83,8 @@ public class MainClass extends JavaPlugin {
                 desireLines,
                 endermanSupportClass,
                 inkSpittingSquid,
-                speedPaths);
+                speedPaths,
+				weightedArmour);
     }
 
     @Override

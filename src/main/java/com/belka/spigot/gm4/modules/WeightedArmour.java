@@ -1,28 +1,24 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class WeightedArmour implements Listener {
+public class WeightedArmour implements Listener, Initializable {
 
 	private MainClass mc;
 
 	public WeightedArmour(MainClass mc){
 		this.mc = mc;
 	}
-
-    public int weight = 0;
-    
-    public int boots = 0;
-    public int leggings = 0;
-    public int chestplate = 0;
-    public int helmet = 0;
     
     public int leatherBoots = 1;
     public int leatherLeggings = 2;
@@ -48,190 +44,156 @@ public class WeightedArmour implements Listener {
     public int diamondLeggings = 6;
     public int diamondChestplate = 8;
     public int diamondHelmet = 3;
-    
-	public void start() {
-		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			if(mc.getConfig().getBoolean("modules.WeightedArmour.enabled")) {
-				loadArmorWeight();
-				for(Player p : Bukkit.getOnlinePlayers()) {
-					weight = getArmorWeight(p);
-					if(weight >= 8 && weight < 16) {
-						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, 0), false);
-					}
-					else if(weight >= 16 && weight < 20) {
-						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, 1), false);
-					}
-					else if(weight >= 20) {
-						p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, 2), false);
-					}
-				}
+
+	public int level0 = 8;
+	public int level1 = 16;
+	public int level2 = 20;
+
+	public void init(MainClass mc) {
+		if(!mc.getConfig().getBoolean("WeightedArmour.enabled")) return;
+		
+		leatherBoots = mc.getConfig().getInt("WeightedArmour.weight.leather.boots");
+		leatherLeggings = mc.getConfig().getInt("WeightedArmour.weight.leather.leggings");
+		leatherChestplate = mc.getConfig().getInt("WeightedArmour.weight.leather.chestplate");
+		leatherHelmet = mc.getConfig().getInt("WeightedArmour.weight.leather.helmet");
+
+		chainBoots = mc.getConfig().getInt("WeightedArmour.weight.chain.boots");
+		chainLeggings = mc.getConfig().getInt("WeightedArmour.weight.chain.leggings");
+		chainChestplate = mc.getConfig().getInt("WeightedArmour.weight.chain.chestplate");
+		chainHelmet = mc.getConfig().getInt("WeightedArmour.weight.chain.helmet");
+
+		goldBoots = mc.getConfig().getInt("WeightedArmour.weight.gold.boots");
+		goldLeggings = mc.getConfig().getInt("WeightedArmour.weight.gold.leggings");
+		goldChestplate = mc.getConfig().getInt("WeightedArmour.weight.gold.chestplate");
+		goldHelmet = mc.getConfig().getInt("WeightedArmour.weight.gold.helmet");
+
+		ironBoots = mc.getConfig().getInt("WeightedArmour.weight.iron.boots");
+		ironLeggings = mc.getConfig().getInt("WeightedArmour.weight.iron.leggings");
+		ironChestplate = mc.getConfig().getInt("WeightedArmour.weight.iron.chestplate");
+		ironHelmet = mc.getConfig().getInt("WeightedArmour.weight.iron.helmet");
+
+		diamondBoots = mc.getConfig().getInt("WeightedArmour.weight.diamond.boots");
+		diamondLeggings = mc.getConfig().getInt("WeightedArmour.weight.diamond.leggings");
+		diamondChestplate = mc.getConfig().getInt("WeightedArmour.weight.diamond.chestplate");
+		diamondHelmet = mc.getConfig().getInt("WeightedArmour.weight.diamond.helmet");
+
+		level0 = mc.getConfig().getInt("WeightedArmour.level-0");
+		level1 = mc.getConfig().getInt("WeightedArmour.level-1");
+		level2 = mc.getConfig().getInt("WeightedArmour.level-2");
+	}
+
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent e) {
+		if(!mc.getConfig().getBoolean("WeightedArmour.enabled")) return;
+		if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
+		Player p = e.getPlayer();
+		int weight = getArmorWeight(p);
+		if(weight >= level0 && weight < level1) {
+			if (e.getPlayer().hasPotionEffect(PotionEffectType.SLOW) && p.getPotionEffect(PotionEffectType.SLOW).getAmplifier() != 0) {
+				e.getPlayer().removePotionEffect(PotionEffectType.SLOW);
 			}
-		}, 0, 10L); // Seconds * 20L
+			p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0, true, false));
+		}
+		else if(weight >= level1 && weight < level2) {
+			if (e.getPlayer().hasPotionEffect(PotionEffectType.SLOW) && p.getPotionEffect(PotionEffectType.SLOW).getAmplifier() != 1) {
+				e.getPlayer().removePotionEffect(PotionEffectType.SLOW);
+			}
+			p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 1, true, false));
+		}
+		else if(weight >= level2) {
+			if (e.getPlayer().hasPotionEffect(PotionEffectType.SLOW) && p.getPotionEffect(PotionEffectType.SLOW).getAmplifier() != 2) {
+				e.getPlayer().removePotionEffect(PotionEffectType.SLOW);
+			}
+			p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 2, true, false));
+		}
+		else if (e.getPlayer().hasPotionEffect(PotionEffectType.SLOW)) {
+			e.getPlayer().removePotionEffect(PotionEffectType.SLOW);
+		}
 	}
 	
 	public int getArmorWeight(Player p) {
-		PlayerInventory inv = p.getInventory();
-		if(inv.getBoots() != null) {
-			boots = getBootsWeight(p);
-		}
-		if(inv.getLeggings() != null) {
-			leggings = getLeggingsWeight(p);
-		}
-		if(inv.getChestplate() != null) {
-			chestplate = getChestplateWeight(p);
-		}
-		if(inv.getHelmet() != null) {
-			helmet = getHelmetWeight(p);
-		}
-		if(inv.getBoots() == null) {
-			boots = 0;
-		}
-		if(inv.getLeggings() == null) {
-			leggings = 0;
-		}
-		if(inv.getChestplate() == null) {
-			chestplate = 0;
-		}
-		if(inv.getHelmet() == null) {
-			helmet = 0;
-		}
-		weight = boots + leggings + chestplate + helmet;
+		int weight = getBootsWeight(p) + getLeggingsWeight(p) + getChestplateWeight(p) + getHelmetWeight(p);
 		return weight;
 	}
 	
 	public int getBootsWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getBoots() != null) {
-			if(inv.getBoots().getType().equals(Material.LEATHER_BOOTS)) {
-				boots = leatherBoots;
-			}
-			else if(inv.getBoots().getType().equals(Material.CHAINMAIL_BOOTS)) {
-				boots = chainBoots;
-			}
-			else if(inv.getBoots().getType().equals(Material.GOLDEN_BOOTS)) {
-				boots = goldBoots;
-			}
-			else if(inv.getBoots().getType().equals(Material.IRON_BOOTS)) {
-				boots = ironBoots;
-			}
-			else if(inv.getBoots().getType().equals(Material.DIAMOND_BOOTS)) {
-				boots = diamondBoots;
-			}
-			else {
-				boots = 0;
+			switch (inv.getBoots().getType()) {
+				case LEATHER_BOOTS:
+					return leatherBoots;
+				case CHAINMAIL_BOOTS:
+					return chainBoots;
+				case GOLDEN_BOOTS:
+					return goldBoots;
+				case IRON_BOOTS:
+					return ironBoots;
+				case DIAMOND_BOOTS:
+					return diamondBoots;
+				default:
+					return 0;
 			}
 		}
-		else {
-			boots = 0;
-		}
-		return boots;
+		return 0;
 	}
 	public int getLeggingsWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getLeggings() != null) {
-			if(inv.getLeggings().getType().equals(Material.LEATHER_LEGGINGS)) {
-				return leatherLeggings;
-			}
-			else if(inv.getLeggings().getType().equals(Material.CHAINMAIL_LEGGINGS)) {
-				leggings = chainLeggings;
-			}
-			else if(inv.getLeggings().getType().equals(Material.GOLDEN_LEGGINGS)) {
-				leggings = goldLeggings;
-			}
-			else if(inv.getLeggings().getType().equals(Material.IRON_LEGGINGS)) {
-				leggings = ironLeggings;
-			}
-			else if(inv.getLeggings().getType().equals(Material.DIAMOND_LEGGINGS)) {
-				leggings = diamondLeggings;
-			}
-			else {
-				leggings = 0;
+			switch (inv.getLeggings().getType()) {
+				case LEATHER_LEGGINGS:
+					return leatherLeggings;
+				case CHAINMAIL_LEGGINGS:
+					return chainLeggings;
+				case GOLDEN_LEGGINGS:
+					return goldLeggings;
+				case IRON_LEGGINGS:
+					return ironLeggings;
+				case DIAMOND_LEGGINGS:
+					return diamondLeggings;
+				default:
+					return 0;
 			}
 		}
-		else {
-			leggings = 0;
-		}
-		return leggings;
+		return 0;
 	}
 	public int getChestplateWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getChestplate() != null) {
-			if(inv.getChestplate().getType().equals(Material.LEATHER_CHESTPLATE)) {
-				chestplate = leatherChestplate;
-			}
-			else if(inv.getChestplate().getType().equals(Material.CHAINMAIL_CHESTPLATE)) {
-				chestplate = chainChestplate;
-			}
-			else if(inv.getChestplate().getType().equals(Material.GOLDEN_CHESTPLATE)) {
-				chestplate = goldChestplate;
-			}
-			else if(inv.getChestplate().getType().equals(Material.IRON_CHESTPLATE)) {
-				chestplate = ironChestplate;
-			}
-			else if(inv.getChestplate().getType().equals(Material.DIAMOND_CHESTPLATE)) {
-				chestplate = diamondChestplate;
-			}
-			else {
-				chestplate = 0;
+			switch (inv.getChestplate().getType()) {
+				case LEATHER_CHESTPLATE:
+					return leatherChestplate;
+				case CHAINMAIL_CHESTPLATE:
+					return chainChestplate;
+				case GOLDEN_CHESTPLATE:
+					return goldChestplate;
+				case IRON_CHESTPLATE:
+					return ironChestplate;
+				case DIAMOND_CHESTPLATE:
+					return diamondChestplate;
+				default:
+					return 0;
 			}
 		}
-		else {
-			chestplate = 0;
-		}
-		return chestplate;
+		return 0;
 	}
 	public int getHelmetWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getHelmet() != null) {
-			if(inv.getHelmet().getType().equals(Material.LEATHER_HELMET)) {
-				helmet = leatherHelmet;
-			}
-			else if(inv.getHelmet().getType().equals(Material.CHAINMAIL_HELMET)) {
-				helmet = chainHelmet;
-			}
-			else if(inv.getHelmet().getType().equals(Material.GOLDEN_HELMET)) {
-				helmet = goldHelmet;
-			}
-			else if(inv.getHelmet().getType().equals(Material.IRON_HELMET)) {
-				helmet = ironHelmet;
-			}
-			else if(inv.getHelmet().getType().equals(Material.DIAMOND_HELMET)) {
-				helmet = diamondHelmet;
-			}
-			else {
-				helmet = 0;
+			switch (inv.getHelmet().getType()) {
+				case LEATHER_HELMET:
+					return leatherHelmet;
+				case CHAINMAIL_HELMET:
+					return chainHelmet;
+				case GOLDEN_HELMET:
+					return goldHelmet;
+				case IRON_HELMET:
+					return ironHelmet;
+				case DIAMOND_HELMET:
+					return diamondHelmet;
+				default:
+					return 0;
 			}
 		}
-		else {
-			helmet = 0;
-		}
-		return helmet;
-	}
-	
-	public void loadArmorWeight() {
-		leatherBoots = mc.getConfig().getInt("modules.WeightedArmour.weight.leather.boots");
-		leatherLeggings = mc.getConfig().getInt("modules.WeightedArmour.weight.leather.leggings");
-		leatherChestplate = mc.getConfig().getInt("modules.WeightedArmour.weight.leather.chestplate");
-		leatherHelmet = mc.getConfig().getInt("modules.WeightedArmour.weight.leather.helmet");
-					
-		chainBoots = mc.getConfig().getInt("modules.WeightedArmour.weight.chain.boots");
-		chainLeggings = mc.getConfig().getInt("modules.WeightedArmour.weight.chain.leggings");
-		chainChestplate = mc.getConfig().getInt("modules.WeightedArmour.weight.chain.chestplate");
-		chainHelmet = mc.getConfig().getInt("modules.WeightedArmour.weight.chain.helmet");
-					
-		goldBoots = mc.getConfig().getInt("modules.WeightedArmour.weight.gold.boots");
-		goldLeggings = mc.getConfig().getInt("modules.WeightedArmour.weight.gold.leggings");
-		goldChestplate = mc.getConfig().getInt("modules.WeightedArmour.weight.gold.chestplate");
-		goldHelmet = mc.getConfig().getInt("modules.WeightedArmour.weight.gold.helmet");
-					
-		ironBoots = mc.getConfig().getInt("modules.WeightedArmour.weight.iron.boots");
-		ironLeggings = mc.getConfig().getInt("modules.WeightedArmour.weight.iron.leggings");
-		ironChestplate = mc.getConfig().getInt("modules.WeightedArmour.weight.iron.chestplate");
-		ironHelmet = mc.getConfig().getInt("modules.WeightedArmour.weight.iron.helmet");
-					
-		diamondBoots = mc.getConfig().getInt("modules.WeightedArmour.weight.diamond.boots");
-		diamondLeggings = mc.getConfig().getInt("modules.WeightedArmour.weight.diamond.leggings");
-		diamondChestplate = mc.getConfig().getInt("modules.WeightedArmour.weight.diamond.chestplate");
-		diamondHelmet = mc.getConfig().getInt("modules.WeightedArmour.weight.diamond.helmet");
+		return 0;
 	}
 }
