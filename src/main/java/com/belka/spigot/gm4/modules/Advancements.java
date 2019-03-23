@@ -12,8 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionType;
 public class Advancements implements Listener, Initializable {
 
     private MainClass mc;
-    private static AdvancementManager manager;
+    public static AdvancementManager manager;
 
     public Advancements(MainClass mc) {
         this.mc = mc;
@@ -82,65 +82,64 @@ public class Advancements implements Listener, Initializable {
 		addAdvancement(gm4, "dont_go_breaking_my_cart", "Don't go breaking my cart", "Capture a Monster Spawner", Material.SPAWNER, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 6f);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-            manager.addPlayer(p);
-            manager.setAnnounceAdvancementMessages(false);
-            manager.grantAdvancement(p, gm4);
-            manager.loadProgress(p, "gm4");
-            manager.saveProgress(p, "gm4");
-            manager.setAnnounceAdvancementMessages(true);
+			manager.grantAdvancement(p, gm4);
+			manager.saveProgress(p, "gm4");
+			manager.addPlayer(p);
         }
     }
 
-    public void addAdvancement(Advancement parent, String key, String title, String description, Material icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
+    private void addAdvancement(Advancement parent, String key, String title, String description, Material icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
         AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
         display.setCoordinates(x, y);
         Advancement child = new Advancement(parent, new NameKey("gm4", key), display);
+        child.setCriteria(1);
         manager.addAdvancement(child);
     }
-
-    public void addAdvancement(Advancement parent, String key, String title, String description, ItemStack icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
+	private void addAdvancement(Advancement parent, String key, String title, String description, ItemStack icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
         AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
         display.setCoordinates(x, y);
         Advancement child = new Advancement(parent, new NameKey("gm4", key), display);
+		child.setCriteria(1);
         manager.addAdvancement(child);
     }
-
-    public Advancement getParentAdvancement(Advancement parent, String key, String title, String description, Material icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
+	private Advancement getParentAdvancement(Advancement parent, String key, String title, String description, Material icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
         AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
         display.setCoordinates(x, y);
         Advancement child = new Advancement(parent, new NameKey("gm4", key), display);
+		child.setCriteria(1);
         manager.addAdvancement(child);
         return child;
     }
-
-    public Advancement getParentAdvancement(Advancement parent, String key, String title, String description, ItemStack icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
+	private Advancement getParentAdvancement(Advancement parent, String key, String title, String description, ItemStack icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
         AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
         display.setCoordinates(x, y);
         Advancement child = new Advancement(parent, new NameKey("gm4", key), display);
+		child.setCriteria(1);
         manager.addAdvancement(child);
         return child;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-		manager.addPlayer(p);
-		manager.setAnnounceAdvancementMessages(false);
-		manager.grantAdvancement(p, manager.getAdvancement(new NameKey("gm4", "root")));
-		manager.loadProgress(p, "gm4");
-		manager.saveProgress(p, "gm4");
-		manager.setAnnounceAdvancementMessages(true);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
+			Player p = e.getPlayer();
+			manager.grantAdvancement(p, manager.getAdvancement(new NameKey("gm4", "root")));
+			manager.saveProgress(p, "gm4");
+			manager.addPlayer(p);
+		}, 10L);
     }
-
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e) {
-        manager.addPlayer(e.getPlayer());
-        grantAdvancement("natural_defences", e.getPlayer());
-    }
+	public void onPlayerLeave(PlayerQuitEvent e) {
+		Player p = e.getPlayer();
+		manager.removePlayer(p);
+	}
 
     public static void grantAdvancement(String advName, Player p) {
         Advancement adv = manager.getAdvancement(new NameKey("gm4", advName));
-        manager.grantAdvancement(p, adv);
+
+//        manager.grantAdvancement(p, adv);
+		if (manager.getCriteriaProgress(p, adv) != 1)
+			manager.setCriteriaProgress(p, adv, 1);
         manager.saveProgress(p, "gm4");
     }
 }
