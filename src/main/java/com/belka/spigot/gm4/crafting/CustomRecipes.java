@@ -44,6 +44,9 @@ public class CustomRecipes implements Initializable {
 		if (mc.getConfig().getBoolean("TrappedSigns.enabled"))
 			add(ccShapedRecipes, TRAPPED_SIGN());
 
+		if (mc.getConfig().getBoolean("LightningRods.enabled"))
+			add(ccShapedRecipes, LIGHTNING_ROD());
+
 //		Other Crafters
 		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) {
 			add(ccShapedRecipes, master_crafter());
@@ -514,6 +517,16 @@ public class CustomRecipes implements Initializable {
 		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
 		recipe.setIngredient('S', Material.SIGN);
 		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+
+//	Lightning Rods
+	private static ShapedRecipe LIGHTNING_ROD() {
+		ItemStack returnItem = CustomItems.LIGHTNING_ROD(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "LIGHTNING_ROD"), returnItem);
+		recipe.shape("BBB","BSB","BBB");
+		recipe.setIngredient('B', Material.BLAZE_POWDER);
+		recipe.setIngredient('S', Material.STICK);
 		return recipe;
 	}
 

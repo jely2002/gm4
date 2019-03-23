@@ -2,24 +2,21 @@ package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LightningRods implements Listener {
 
@@ -33,6 +30,7 @@ public class LightningRods implements Listener {
 
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent e) {
+		if (!mc.getConfig().getBoolean("LightningRods.enabled")) return;
         if(!(e.getItem().getItemStack().getType() == Material.BLAZE_ROD)) return;
         if(!(e.getItem().getItemStack().getItemMeta().getLore().get(0).contains("boom"))) return;
         for(Location l : droppedRods.keySet()) {
@@ -62,12 +60,27 @@ public class LightningRods implements Listener {
         task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
             if (i.isOnGround()) {
                 Bukkit.getScheduler().cancelTask(task[0]);
-                int[] t = new int[]{-1};
-                Location locRound = new Location(i.getWorld(), i.getLocation().getBlockX(), i.getLocation().getBlockY(), i.getLocation().getBlockZ());
-                droppedRods.put(locRound, t);
-                t[0] = Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> i.getWorld().strikeLightning(i.getLocation()), 3*20L);
+                i.setCustomNameVisible(true);
+                i.setCustomName("<3>");
+                Block b = i.getLocation().getBlock();
+                Location locRound = new Location(i.getWorld(), b.getX(), b.getY(), b.getZ());
+				AtomicInteger count = new AtomicInteger();
+				final int[] t = new int[]{-1};
+				droppedRods.put(locRound, t);
+				t[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+					i.setCustomName("<" + (3 - count.get()) + ">");
+					if(count.get() >= 3) {
+						Bukkit.getScheduler().cancelTask(t[0]);
+						if (b.getRelative(BlockFace.DOWN).getType() == Material.PURPUR_BLOCK) {
+							Advancements.grantAdvancement("dr_frankenstein", event.getPlayer());
+							b.getRelative(BlockFace.DOWN).setType(Material.AIR);
+							i.getWorld().spawnEntity(b.getLocation().add(0.5, -1, 0.5), EntityType.SHULKER);
+						}
+						i.getWorld().strikeLightning(i.getLocation());
+					}
+					count.getAndIncrement();
+				}, 0, 20L);
             }
         }, 0, 10L);
     }
-
 }
