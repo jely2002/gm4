@@ -34,6 +34,7 @@ public class BlastFurnaces implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
+		if (!mc.storage().data().contains("BlastFurnaces")) return;
 		ArrayList<String> blastFurnaces = new ArrayList<>(mc.storage().data().getConfigurationSection("BlastFurnaces").getKeys(false));
 		for (String uuid : blastFurnaces) {
 			ArmorStand as = (ArmorStand) Bukkit.getEntity(UUID.fromString(uuid));
