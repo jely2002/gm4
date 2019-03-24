@@ -89,8 +89,10 @@ public class TrappedSigns implements Listener {
 									b.setBlockData(r);
 									if(count.get() >= 15) {
 										Bukkit.getScheduler().cancelTask(task[0]);
-										r.setPower(0);
-										b.setBlockData(r);
+//										r.setPower(0);
+//										b.setBlockData(r);
+										b.setType(Material.AIR);
+										b.setType(Material.REDSTONE_WIRE);
 									}
 									count.getAndIncrement();
 								}, 0, 1L);
