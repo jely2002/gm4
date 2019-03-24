@@ -20,11 +20,15 @@ import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.material.PoweredRail;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpawnerMinecarts implements Listener {
 
@@ -95,6 +99,9 @@ public class SpawnerMinecarts implements Listener {
 											System.out.println("Position: " + pe.getPosition());
 											System.out.println(pe);
 										}
+										List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
+										stored.add(mms.getUniqueId().toString());
+										mc.storage().data().set("SpawnerMinecarts.", stored);
                                     }
                                 }
                             }
@@ -123,6 +130,9 @@ public class SpawnerMinecarts implements Listener {
 					spawner.setSpawnedType(Helper.getEntityByName(mob));
 					blockState.update();
 
+					List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
+					stored.remove(sm.getUniqueId().toString());
+					mc.storage().data().set("SpawnerMinecarts.", stored);
 
 					Minecart mic = (Minecart) sm.getWorld().spawnEntity(sm.getLocation(), EntityType.MINECART);
 					mic.setVelocity(sm.getVelocity());
@@ -132,4 +142,15 @@ public class SpawnerMinecarts implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onDamage(EntityDamageEvent e) {
+		if (!mc.getConfig().getBoolean("SpawnerMinecarts.enabled")) return;
+		if (e.getEntityType() == EntityType.MINECART_MOB_SPAWNER) {
+			List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
+			if (stored.contains(e.getEntity().getUniqueId().toString())) {
+				e.setCancelled(true);
+			}
+		}
+	}
+//	Check WIKI
 }
