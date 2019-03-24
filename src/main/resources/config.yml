@@ -26,6 +26,8 @@ InkSpittingSquid:
   enabled: true
 LightningRods:
   enabled: true
+SpawnerMinecarts:
+  enabled: true
 SpeedPaths:
   enabled: true
   pathBlock: GRASS_PATH

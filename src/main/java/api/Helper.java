@@ -53,10 +53,36 @@ public class Helper {
         return blocks;
     }
 
+    public static EntityType getEntityByName(String name) {
+		for (EntityType type : EntityType.values()) {
+			if(type.name().equalsIgnoreCase(name)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
 	public static float radToDeg(float radians) {
 		return (float) ((radians * 180) / Math.PI);
 	}
 	public static float degToRad(float degrees) {
 		return (float) ((degrees * Math.PI)/180);
 	}
+
+	public static String capitalize(String str) {
+		char ch[] = str.toCharArray();
+		for (int i = 0; i < str.length(); i++) {
+			if (i == 0 && ch[i] != ' ' ||
+					ch[i] != ' ' && ch[i - 1] == ' ') {
+				if (ch[i] >= 'a' && ch[i] <= 'z') {
+					ch[i] = (char)(ch[i] - 'a' + 'A');
+				}
+			}
+			else if (ch[i] >= 'A' && ch[i] <= 'Z')
+				ch[i] = (char)(ch[i] + 'a' - 'A');
+		}
+		return new String(ch);
+	}
+
+
 }
