@@ -49,13 +49,11 @@ public class SpawnerMinecarts implements Listener {
                     if (e.getBlockAgainst().getRelative(BlockFace.DOWN).getType() == Material.SPAWNER) {
                         Block sp = e.getBlockAgainst().getRelative(BlockFace.DOWN);
                         CreatureSpawner spawner = (CreatureSpawner) sp.getState();
-                        Bukkit.broadcastMessage("spawner " + sp.getLocation().subtract(0,1,0).getBlock().getType().toString());
                         for (Entity entity : Helper.getNearbyEntities(sp.getLocation().subtract(0, 1, 0), 1)) {
                             if (entity instanceof Minecart) {
                                 Minecart m = (Minecart) entity;
                                 if (m.getPassengers().size() == 0) {
                                     if (m.getDisplayBlock().getItemType() == Material.AIR || m.getDisplayBlock().getItemType() == Material.LEGACY_AIR) {
-										Bukkit.broadcastMessage("Mob " + spawner.getSpawnedType().toString());
 										String mob = spawner.getSpawnedType().toString().toLowerCase();
                                         sp.setType(Material.AIR);
 
@@ -101,7 +99,8 @@ public class SpawnerMinecarts implements Listener {
 										}
 										List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
 										stored.add(mms.getUniqueId().toString());
-										mc.storage().data().set("SpawnerMinecarts.", stored);
+										mc.storage().data().set("SpawnerMinecarts", stored);
+										mc.storage().saveData();
                                     }
                                 }
                             }
@@ -132,7 +131,8 @@ public class SpawnerMinecarts implements Listener {
 
 					List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
 					stored.remove(sm.getUniqueId().toString());
-					mc.storage().data().set("SpawnerMinecarts.", stored);
+					mc.storage().data().set("SpawnerMinecarts", stored);
+					mc.storage().saveData();
 
 					Minecart mic = (Minecart) sm.getWorld().spawnEntity(sm.getLocation(), EntityType.MINECART);
 					mic.setVelocity(sm.getVelocity());
