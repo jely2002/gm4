@@ -32,6 +32,7 @@ public class TrappedSigns implements Listener {
     public void signDestroy(BlockBreakEvent e) {
         if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
         if(!(e.getBlock().getType() == Material.SIGN || e.getBlock().getType() == Material.WALL_SIGN)) return;
+		if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
                 if (e.getBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
@@ -53,6 +54,8 @@ public class TrappedSigns implements Listener {
 
     @EventHandler
     public void signTextEdit(SignChangeEvent e) {
+		if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
+		if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
                 if (e.getBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
@@ -71,9 +74,10 @@ public class TrappedSigns implements Listener {
 
     @EventHandler
     public void signInteract(PlayerInteractEvent e) {
+		if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         if (!(e.getClickedBlock().getType() == Material.SIGN || e.getClickedBlock().getType() == Material.WALL_SIGN)) return;
-        if(!mc.storage().data().contains("TrappedSigns")) return;
+        if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getClickedBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
                 if(e.getClickedBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
@@ -89,8 +93,6 @@ public class TrappedSigns implements Listener {
 									b.setBlockData(r);
 									if(count.get() >= 15) {
 										Bukkit.getScheduler().cancelTask(task[0]);
-//										r.setPower(0);
-//										b.setBlockData(r);
 										b.setType(Material.AIR);
 										b.setType(Material.REDSTONE_WIRE);
 									}
@@ -116,9 +118,10 @@ public class TrappedSigns implements Listener {
 
     private void addSign(Location loc) {
         int id;
-        if(!mc.storage().data().contains("TrappedSigns")) {
+        if(!mc.storage().data().contains("TrappedSigns.0")) {
             id = 0;
-        } else {
+        }
+        else {
             id = mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false).size();
         }
         mc.storage().data().set("TrappedSigns." + id + ".x", loc.getBlockX());
