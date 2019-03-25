@@ -65,3 +65,5 @@ WeightedArmour:
       leggings: 6
       chestplate: 8
       helmet: 3
+XPStorage:
+  enabled: true
