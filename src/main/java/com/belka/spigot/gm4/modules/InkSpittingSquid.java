@@ -21,21 +21,20 @@ public class InkSpittingSquid implements Initializable {
 	}
 
 	public void init(MainClass mc) {
+		if(!mc.getConfig().getBoolean("InkSpittingSquid.enabled")) return;
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			if(mc.getConfig().getBoolean("InkSpittingSquid.enabled")) {
-				for(World w : Bukkit.getWorlds()) {
-					for(Entity entity : w.getEntities()) {
-						if(entity instanceof Player) {
-							Player p = (Player) entity;
-							for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 3)) {
-								if(e instanceof Squid) {
-									p.removePotionEffect(PotionEffectType.CONFUSION);
-									p.removePotionEffect(PotionEffectType.BLINDNESS);
-									p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5 * 20, 1, true));// Seconds * 20
-									p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, true));// Seconds * 20
-									p.playSound(p.getLocation(), Sound.ENTITY_SPIDER_DEATH, 1, 0);
-									Advancements.grantAdvancement("natural_defences", p);
-								}
+			for(World w : Bukkit.getWorlds()) {
+				for(Entity entity : w.getEntities()) {
+					if(entity instanceof Player) {
+						Player p = (Player) entity;
+						for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 3)) {
+							if(e instanceof Squid) {
+								p.removePotionEffect(PotionEffectType.CONFUSION);
+								p.removePotionEffect(PotionEffectType.BLINDNESS);
+								p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5 * 20, 1, true));// Seconds * 20
+								p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, true));// Seconds * 20
+								p.playSound(p.getLocation(), Sound.ENTITY_SPIDER_DEATH, 1, 0);
+								Advancements.grantAdvancement("natural_defences", p);
 							}
 						}
 					}
