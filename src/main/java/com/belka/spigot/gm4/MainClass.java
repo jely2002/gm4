@@ -65,6 +65,7 @@ public class MainClass extends JavaPlugin {
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
 		speedPaths = new SpeedPaths(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
+		XPStorage xpStorage = new XPStorage(this);
 
         registerClasses(this,
                 storage,
@@ -88,7 +89,8 @@ public class MainClass extends JavaPlugin {
                 inkSpittingSquid,
 				spawnerMinecarts,
                 speedPaths,
-				weightedArmour);
+				weightedArmour,
+				xpStorage);
     }
 
     @Override
