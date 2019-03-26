@@ -34,6 +34,8 @@ SpeedPaths:
   speedFactor: 1
 TrappedSigns:
   enabled: true
+EnderHoppers:
+  enabled: true
 WeightedArmour:
   enabled: true
   level-0: 8
