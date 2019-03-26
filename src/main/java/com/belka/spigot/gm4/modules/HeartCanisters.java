@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -14,10 +15,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class HeartCanisters implements Listener, Initializable {
 
 	private MainClass mc;
 	private boolean enabled = true;
+	private HashMap<UUID, Integer> t1 = new HashMap<>();
 
 	public HeartCanisters(MainClass mc) {
 		this.mc = mc;
@@ -27,6 +32,8 @@ public class HeartCanisters implements Listener, Initializable {
 		if(!mc.getConfig().getBoolean("HeartCanisters.enabled")) enabled = false;
 		if(!mc.getConfig().getBoolean("CustomCrafter.enabled")) {
 			System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for HeartCanisters to work!");
+			mc.getConfig().set("HeartCanisters.enabled", false);
+			mc.saveConfig();
 			enabled = false;
 		}
 	}
@@ -34,6 +41,12 @@ public class HeartCanisters implements Listener, Initializable {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		updateCanisters(e.getPlayer());
+	}
+	@EventHandler
+	public void onItemPickup(EntityPickupItemEvent e) {
+		if (e.getEntity() instanceof Player)
+			if (isCanister(e.getItem().getItemStack()))
+				updateCanisters((Player) e.getEntity());
 	}
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
@@ -73,15 +86,23 @@ public class HeartCanisters implements Listener, Initializable {
 						if (amount2 >= 5) amount2 = 5;
 						levels = levels + amount2;
 					}
+					t1.put(p.getUniqueId(), amount);
 				}
 
 				if (hasCansiter) {
 					Bukkit.broadcastMessage(levels + "");
-					int level = levels - 1;
-					p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
-					p.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 99999, level, true, false));
+					if (levels != t1.get(p.getUniqueId())) {
+						int level = levels - 1;
+						p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+						p.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 99999, level, true, false));
+					}
 				}
-				else p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+				else {
+					if (t1.containsKey(p.getUniqueId())) {
+						p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+						t1.remove(p.getUniqueId());
+					}
+				}
 			}
 		}, 1L);
 	}
