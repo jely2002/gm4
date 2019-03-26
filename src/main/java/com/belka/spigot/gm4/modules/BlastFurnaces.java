@@ -27,14 +27,22 @@ import java.util.UUID;
 public class BlastFurnaces implements Listener, Initializable {
 
 	private static MainClass mc;
+	private boolean enabled = true;
 	private HashMap<Furnace, ArmorStand> activeBlastFurnaces = new HashMap<>();
-	
+
 	public BlastFurnaces(MainClass mc) {
 		this.mc = mc;
 	}
 
 	public void init(MainClass mc) {
-		if (!mc.storage().data().contains("BlastFurnaces")) return;
+		if(!mc.getConfig().getBoolean("BlastFurnaces.enabled")) enabled = false;
+		if(!mc.getConfig().getBoolean("CustomCrafter.enabled")) {
+			System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for BlastFurnaces to work!");
+			mc.getConfig().set("BlastFurnaces.enabled", false);
+			mc.saveConfig();
+			enabled = false;
+			return;
+		}
 		ArrayList<String> blastFurnaces = new ArrayList<>(mc.storage().data().getConfigurationSection("BlastFurnaces").getKeys(false));
 		for (String uuid : blastFurnaces) {
 			ArmorStand as = (ArmorStand) Bukkit.getEntity(UUID.fromString(uuid));
@@ -51,7 +59,8 @@ public class BlastFurnaces implements Listener, Initializable {
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) { // Create Blast Furnace
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled") || !mc.storage().data().contains("BlastFurnaces")) return;
+		if (!enabled) return;
+		if (!mc.storage().data().contains("BlastFurnaces")) return;
 		Block b = event.getBlock();
 		Material mat = b.getType();
 		if (mat != Material.IRON_BLOCK && mat != Material.FURNACE && mat != Material.GLASS) return;
@@ -123,7 +132,7 @@ public class BlastFurnaces implements Listener, Initializable {
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) { // Disable Blast Furnace
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled")) return;
+		if (!enabled) return;
 		Block b = event.getBlock();
 		if (b.getType() != Material.IRON_BLOCK && b.getType() != Material.FURNACE && b.getType() != Material.GLASS) return;
 		for (Entity e : Helper.getNearbyEntities(b.getLocation(), 3)) {
@@ -156,7 +165,7 @@ public class BlastFurnaces implements Listener, Initializable {
 
 	@EventHandler
 	public void onSmelt(FurnaceSmeltEvent e) {
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled")) return;
+		if (!enabled) return;
 		Furnace furnace = (Furnace) e.getBlock().getState();
 		if (activeBlastFurnaces.containsKey(furnace)) {
 			checkFurnace(furnace);
@@ -173,19 +182,20 @@ public class BlastFurnaces implements Listener, Initializable {
 	}
 	@EventHandler
 	public void onFurnaceBurn(FurnaceBurnEvent e) {
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled")) return;
+		if (!enabled) return;
 		checkFurnace((Furnace) e.getBlock().getState());
 	}
 
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled") || e.getClickedInventory() == null) return;
+		if (!enabled) return;
+		if (e.getClickedInventory() == null) return;
 		if (e.getClickedInventory().getType().equals(InventoryType.FURNACE))
 			checkFurnace((Furnace) e.getClickedInventory().getLocation().getBlock().getState());
 	}
 	@EventHandler
 	public void onDrag(InventoryDragEvent e) {
-		if (!mc.getConfig().getBoolean("BlastFurnaces.enabled")) return;
+		if (!enabled) return;
 		if (e.getInventory().getType().equals(InventoryType.FURNACE))
 			checkFurnace((Furnace) e.getInventory().getLocation().getBlock().getState());
 	}

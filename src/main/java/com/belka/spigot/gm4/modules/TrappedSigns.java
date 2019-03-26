@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -20,17 +21,28 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TrappedSigns implements Listener {
+public class TrappedSigns implements Listener, Initializable {
 
     private MainClass mc;
+    private boolean enabled = true;
 
     public TrappedSigns(MainClass mc) {
         this.mc = mc;
     }
 
+    public void init(MainClass mc) {
+        if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) enabled = false;
+        if(!mc.getConfig().getBoolean("CustomCrafter.enabled")) {
+            System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for TrappedSigns to work!");
+            mc.getConfig().set("TrappedSigns.enabled", false);
+            mc.saveConfig();
+            enabled = false;
+        }
+    }
+
     @EventHandler
     public void signDestroy(BlockBreakEvent e) {
-        if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
+        if(!enabled) return;
         if(!(e.getBlock().getType() == Material.SIGN || e.getBlock().getType() == Material.WALL_SIGN)) return;
 		if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
@@ -54,7 +66,7 @@ public class TrappedSigns implements Listener {
 
     @EventHandler
     public void signTextEdit(SignChangeEvent e) {
-		if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
+        if (!enabled) return;
 		if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
@@ -74,7 +86,7 @@ public class TrappedSigns implements Listener {
 
     @EventHandler
     public void signInteract(PlayerInteractEvent e) {
-		if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
+        if (!enabled) return;
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         if (!(e.getClickedBlock().getType() == Material.SIGN || e.getClickedBlock().getType() == Material.WALL_SIGN)) return;
         if(!mc.storage().data().contains("TrappedSigns.0")) return;
@@ -108,7 +120,7 @@ public class TrappedSigns implements Listener {
 
     @EventHandler
     public void onSignPlace(BlockPlaceEvent e) {
-        if(!mc.getConfig().getBoolean("TrappedSigns.enabled")) return;
+        if (!enabled) return;
         if(!(e.getBlockPlaced().getType() == Material.SIGN || e.getBlockPlaced().getType() == Material.WALL_SIGN)) return;
         if(!e.getItemInHand().hasItemMeta()) return;
         if(!e.getItemInHand().getItemMeta().getLore().get(0).contains("trapped")) return;

@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LightningRods implements Listener {
+public class LightningRods implements Listener, Initializable {
 
     private MainClass mc;
+    private boolean enabled = true;
     private HashMap<Location, int[]> droppedRods = new HashMap<>();
     private ArrayList<String> players = new ArrayList<>();
 
@@ -28,13 +30,23 @@ public class LightningRods implements Listener {
         this.mc = mc;
     }
 
+    public void init(MainClass mc) {
+        if(!mc.getConfig().getBoolean("LightningRods.enabled")) enabled = false;
+        if(!mc.getConfig().getBoolean("CustomCrafter.enabled")) {
+            System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for LightningRods to work!");
+            mc.getConfig().set("LightningRods.enabled", false);
+            mc.saveConfig();
+            enabled = false;
+        }
+    }
+
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent e) {
-		if (!mc.getConfig().getBoolean("LightningRods.enabled")) return;
-        if(!(e.getItem().getItemStack().getType() == Material.BLAZE_ROD)) return;
-        if(!(e.getItem().getItemStack().getItemMeta().getLore().get(0).contains("boom"))) return;
-        for(Location l : droppedRods.keySet()) {
-            if(l.getBlockX() == e.getItem().getLocation().getBlockX() && l.getBlockZ() == e.getItem().getLocation().getBlockZ() && l.getBlockY() == e.getItem().getLocation().getBlockY()) {
+		if (!enabled) return;
+        if (!(e.getItem().getItemStack().getType() == Material.BLAZE_ROD)) return;
+        if (!(e.getItem().getItemStack().getItemMeta().getLore().get(0).contains("boom"))) return;
+        for (Location l : droppedRods.keySet()) {
+            if (l.getBlockX() == e.getItem().getLocation().getBlockX() && l.getBlockZ() == e.getItem().getLocation().getBlockZ() && l.getBlockY() == e.getItem().getLocation().getBlockY()) {
                 int[] task = new int[]{-1};
                 Location itemRound = new Location(e.getItem().getWorld(), e.getItem().getLocation().getBlockX(), e.getItem().getLocation().getBlockY(), e.getItem().getLocation().getBlockZ());
                 task[0] = droppedRods.get(itemRound)[0];
@@ -44,7 +56,7 @@ public class LightningRods implements Listener {
     }
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
-        if (!mc.getConfig().getBoolean("LightningRods.enabled")) return;
+        if (!enabled) return;
         Item i = event.getItemDrop();
         ItemStack is = i.getItemStack();
         if(!(is.getType() == Material.BLAZE_ROD)) return;
