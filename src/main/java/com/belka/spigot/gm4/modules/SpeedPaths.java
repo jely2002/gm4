@@ -23,15 +23,17 @@ public class SpeedPaths implements Listener {
     }
 
     public void loadValues() {
-        this.pathBlock = Material.getMaterial(mc.storage().config().getString("SpeedPaths.pathBlock"));
-        this.speedFactor = mc.storage().config().getInt("SpeedPaths.speedFactor");
+        pathBlock = Material.getMaterial(mc.storage().config().getString("SpeedPaths.pathBlock"));
+        speedFactor = mc.storage().config().getInt("SpeedPaths.speedFactor");
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
-        Location player_feet = new Location(e.getPlayer().getWorld(), e.getPlayer().getLocation().getX(), e.getPlayer().getLocation().getY() -0.8, e.getPlayer().getLocation().getZ());
-        if (player_feet.getBlock().getType() == pathBlock) {
+        Location pLoc = e.getPlayer().getLocation().getBlock().getLocation();
+        Location block1 = new Location(pLoc.getWorld(), pLoc.getX(), pLoc.getY() - 1, pLoc.getZ());
+		Location block2 = new Location(pLoc.getWorld(), pLoc.getX(), pLoc.getY() - 2, pLoc.getZ());
+        if (pLoc.getBlock().getType() == pathBlock || block1.getBlock().getType() == pathBlock || block2.getBlock().getType() == pathBlock) {
             e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, speedFactor, true, false));
         }
         else if (e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) {
