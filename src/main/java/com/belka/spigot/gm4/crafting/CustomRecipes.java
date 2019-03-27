@@ -47,6 +47,9 @@ public class CustomRecipes implements Initializable {
 		if (mc.getConfig().getBoolean("LightningRods.enabled"))
 			add(ccShapedRecipes, LIGHTNING_ROD());
 
+		if (mc.getConfig().getBoolean("SoulProbes.enabled"))
+			add(ccShapedRecipes, SOUL_PROBES_BOOK());
+
 //		Other Crafters
 		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) {
 			add(ccShapedRecipes, master_crafter());
@@ -530,6 +533,16 @@ public class CustomRecipes implements Initializable {
 		return recipe;
 	}
 
+//	Soul Probes
+	private static ShapedRecipe SOUL_PROBES_BOOK() {
+		ItemStack returnItem = CustomItems.SOUL_PROBES_BOOK(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "SOUL_PROBES_BOOK"), returnItem);
+		recipe.shape(" E "," B "," N ");
+		recipe.setIngredient('E', Material.EXPERIENCE_BOTTLE);
+		recipe.setIngredient('B', Material.BOOK);
+		recipe.setIngredient('N', Material.NETHER_STAR);
+		return recipe;
+	}
 
 	private void add(ArrayList<ShapedRecipe> arr, ShapedRecipe... recipes) {
 		allShapedRecipes.addAll(new ArrayList<>(Arrays.asList(recipes)));
