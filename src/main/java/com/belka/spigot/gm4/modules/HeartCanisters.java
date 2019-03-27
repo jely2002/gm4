@@ -73,7 +73,6 @@ public class HeartCanisters implements Listener, Initializable {
 
 				ItemStack tier1 = getCanisterT1(inv);
 				if (tier1 != null) {
-					Bukkit.broadcastMessage("HC1");
 					hasCansiter = true;
 					int amount = tier1.getAmount();
 					if (amount >= 5) amount = 5;
@@ -81,7 +80,6 @@ public class HeartCanisters implements Listener, Initializable {
 
 					ItemStack tier2 = getCanisterT2(inv);
 					if (tier2 != null) {
-						Bukkit.broadcastMessage("HC2");
 						int amount2 = tier2.getAmount();
 						if (amount2 >= 5) amount2 = 5;
 						levels = levels + amount2;
@@ -90,7 +88,6 @@ public class HeartCanisters implements Listener, Initializable {
 				}
 
 				if (hasCansiter) {
-					Bukkit.broadcastMessage(levels + "");
 					if (levels != t1.get(p.getUniqueId())) {
 						int level = levels - 1;
 						p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
@@ -116,7 +113,6 @@ public class HeartCanisters implements Listener, Initializable {
 	private ItemStack getCanisterT1(ItemStack[] inv) {
 		for (ItemStack item : inv) {
 			if (item == null) continue;
-			Bukkit.broadcastMessage(item.toString());
 			ItemStack is = item.clone();
 			is.setAmount(1);
 			if (is.equals(CustomItems.HEART_CANISTER_TIER_1(1))) {
