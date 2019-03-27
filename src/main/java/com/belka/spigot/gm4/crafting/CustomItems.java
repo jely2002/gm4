@@ -1,14 +1,22 @@
 package com.belka.spigot.gm4.crafting;
 
 import api.SkullCreator;
+import de.tr7zw.itemnbtapi.NBTItem;
+import net.minecraft.server.v1_13_R1.NBTTagCompound;
+import net.minecraft.server.v1_13_R1.NBTTagList;
+import net.minecraft.server.v1_13_R1.NBTTagString;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -110,7 +118,7 @@ public class CustomItems {
         return boots;
     }
 
-	//Trapped Signs
+//	Trapped Signs
 	public static ItemStack TRAPPED_SIGN(int amount) {
 		ItemStack item = new ItemStack(Material.SIGN, amount);
 		ItemMeta meta = item.getItemMeta();
@@ -122,7 +130,7 @@ public class CustomItems {
 		return item;
 	}
 
-	//Lightning rods
+//	Lightning rods
 	public static ItemStack LIGHTNING_ROD(int amount) {
 		ItemStack item = new ItemStack(Material.BLAZE_ROD, amount);
 		ItemMeta meta = item.getItemMeta();
@@ -132,6 +140,33 @@ public class CustomItems {
 		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Throw for boom!")));
 		item.setItemMeta(meta);
 		return item;
+	}
+
+//	Soul Probes
+	public static ItemStack SOUL_PROBES_BOOK(int amount) {
+		ItemStack book = new ItemStack(Material.WRITTEN_BOOK, amount);
+		net.minecraft.server.v1_13_R1.ItemStack stack = CraftItemStack.asNMSCopy(book);
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("title", "someBookTitle");
+		tag.setString("author", "someAuthor");
+		NBTTagList pages = new NBTTagList();
+		pages.add(new NBTTagString("{text:\"Hello there!\",color:blue}"));
+		pages.add(new NBTTagString("{text:\"Another page :O\"}"));
+		tag.set("pages", pages);
+		stack.setTag(tag);
+
+		NBTItem nbtBook = new NBTItem(book);
+		JSONParser parser = new JSONParser();
+		String s = "[{\"Entity\":{\"id\":\"minecraft:\"}, \"Weight\":1}]";
+		try {
+			Object obj = parser.parse(s);
+			JSONArray data = (JSONArray)obj;
+			nbtBook.setObject("pages", data);
+		} catch(ParseException pe) {
+			System.out.println("Position: " + pe.getPosition());
+		}
+
+		return CraftItemStack.asCraftMirror(stack);
 	}
 
 	private static ItemStack getSkull(String skinURL, int amount) {

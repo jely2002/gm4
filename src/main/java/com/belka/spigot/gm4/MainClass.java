@@ -62,6 +62,7 @@ public class MainClass extends JavaPlugin {
 		DesireLines desireLines = new DesireLines(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
+		SoulProbes soulProbes = new SoulProbes();
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
 		speedPaths = new SpeedPaths(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
@@ -87,6 +88,7 @@ public class MainClass extends JavaPlugin {
                 desireLines,
                 endermanSupportClass,
                 inkSpittingSquid,
+				soulProbes,
 				spawnerMinecarts,
                 speedPaths,
 				weightedArmour,

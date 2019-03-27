@@ -8,18 +8,18 @@ import net.minecraft.server.v1_13_R1.IChatBaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftMetaBook;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SoulProbes {
 
     private TextComponent n = new TextComponent("\n");
 
-    public void giveBook(Player p) {
+    public ItemStack SOUL_PROBES_BOOK() {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
 
@@ -28,7 +28,7 @@ public class SoulProbes {
             pages = (List<IChatBaseComponent>) CraftMetaBook.class.getDeclaredField("pages").get(bookMeta);
         } catch (ReflectiveOperationException ex) {
             ex.printStackTrace();
-            return;
+            return book;
         }
 
         List<TextComponent> p1 = new ArrayList<>();
@@ -102,10 +102,11 @@ public class SoulProbes {
                 createPage(p5)
         );
 
-        bookMeta.setTitle(ChatColor.GOLD + "Statues V1");
-        bookMeta.setAuthor("MaximumFX");
+        bookMeta.setTitle(ChatColor.GOLD + "Soul Probes");
+        bookMeta.setAuthor(ChatColor.DARK_AQUA + "Gamemode 4");
 
         book.setItemMeta(bookMeta);
+        return book;
     }
 
     // BOOK GENERATION
@@ -135,8 +136,6 @@ public class SoulProbes {
     }
 
     private void addPages(List<IChatBaseComponent> book, IChatBaseComponent... pages) {
-        for (IChatBaseComponent page : pages) {
-            book.add(page);
-        }
+		Collections.addAll(book, pages);
     }
 }
