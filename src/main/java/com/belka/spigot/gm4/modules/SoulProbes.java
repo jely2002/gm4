@@ -1,141 +1,162 @@
 package com.belka.spigot.gm4.modules;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
-import net.minecraft.server.v1_13_R1.IChatBaseComponent;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftMetaBook;
+import api.InventoryCreator;
+import com.belka.spigot.gm4.MainClass;
+import org.bukkit.*;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class SoulProbes {
 
-    private TextComponent n = new TextComponent("\n");
+	private MainClass mc;
+	private InventoryCreator ic;
+	private HashMap<Player,Integer> paging = new HashMap<>();
 
-    public ItemStack SOUL_PROBES_BOOK() {
-        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-        BookMeta bookMeta = (BookMeta) book.getItemMeta();
+	public SoulProbes(MainClass mc, InventoryCreator ic) {
+		this.mc = mc;
+		this.ic = ic;
+	}
 
-        List<IChatBaseComponent> pages;
-        try {
-            pages = (List<IChatBaseComponent>) CraftMetaBook.class.getDeclaredField("pages").get(bookMeta);
-        } catch (ReflectiveOperationException ex) {
-            ex.printStackTrace();
-            return book;
-        }
+	private Inventory soulProbesMenu(Player p, int page) {
+		paging.put(p, page);
 
-        List<TextComponent> p1 = new ArrayList<>();
-        TextComponent p1m2 = new TextComponent("      " + ChatColor.DARK_GREEN + "Select target\n\n");
-        p1m2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc select"));
-        TextComponent p1m3 = new TextComponent("    " + ChatColor.RED + "Deselect target");
-        p1m3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc deselect"));
+		List<String> mobs = new ArrayList<>(mc.getConfig().getConfigurationSection("achievements").getKeys(false));
 
-        p1.add(new TextComponent("         " + ChatColor.GOLD + "" + ChatColor.BOLD + "Statues\n\n\n"));
-        p1.add(p1m2);
-        p1.add(p1m3);
-        p1.add(new TextComponent("\n\n\n\n\n" + ChatColor.GRAY + "" + ChatColor.ITALIC + "Original book from\n"));
-        p1.add(new TextComponent(ChatColor.GRAY + "" + ChatColor.ITALIC + "Xisumavoid's Vanilla\n"));
-        p1.add(new TextComponent(ChatColor.GRAY + "" + ChatColor.ITALIC + "Tweaks"));
+		String pagesStr = "";
+		double x = (double) mobs.size() / 45;
+		int pages = (int) Math.ceil(x);
 
-        List<TextComponent> p2 = new ArrayList<>();
-        p2.add(new TextComponent("    " + ChatColor.GOLD + "" + ChatColor.BOLD + "Style Settings\n\n"));
-        p2.add(createSetting("Show Base Plate", "/asc setting baseplate"));
-        p2.add(createSetting("Show Arms", "/asc setting arms"));
-        p2.add(createSetting("Small Stand", "/asc setting small"));
-        p2.add(createSetting("Apply Gravity", "/asc setting gravity"));
-        p2.add(createSetting("Stand Visible", "/asc setting visible"));
-        p2.add(createSetting("Display Name", "/asc setting name"));
+		List<String> has = new ArrayList<>();
+		for(String achievement : mobs) {
+			if(mc.getConfig().getStringList("players." + p.getName() + ".achievements").contains(achievement)) {
+				has.add(achievement);
+			}
+		}
+		double y = (double) has.size() / mobs.size() * 100;
+		double percent = round(y, 1);
 
-        List<TextComponent> p3 = new ArrayList<>();
-        p3.add(new TextComponent("    " + ChatColor.GOLD + "" + ChatColor.BOLD + "Nudge Position\n\n"));
-        String nudge = "/asc nudge ";
-//        p3.add(createNudge("X", nudge));
-//        p3.add(createNudge("Y", nudge));
-//        p3.add(createNudge("Z", nudge));
-        p3.add(new TextComponent("\nTurn gravity off before nudging Y-position\n\n"));
-        p3.add(new TextComponent("   " + ChatColor.GOLD + "" + ChatColor.BOLD + "Adjust Rotation\n\n"));
-//        p3.add(createRotation("/asc rotate "));
+		if(mobs.size() > 45) {
+			pagesStr = " (" + page + "/" + pages + ")";
+		}
 
-        List<TextComponent> p4 = new ArrayList<>();
-        p4.add(new TextComponent("     " + ChatColor.GOLD + "" + ChatColor.BOLD + "Pose: Adjust\n\n"));
-        p4.add(new TextComponent("          X     Y     Z\n"));
-        String pose = "/asc pose ";
-        String amount = "0.1";
-//        p4.add(createPose("Head", pose, amount));
-//        p4.add(createPose("Body", pose, amount));
-//        p4.add(createPose("RArm", pose, amount));
-//        p4.add(createPose("LArm", pose, amount));
-//        p4.add(createPose("RLeg", pose, amount));
-//        p4.add(createPose("LLeg", pose, amount));
+		Inventory inv = Bukkit.createInventory(null, 9*6, ChatColor.GOLD + "Achievements " + ChatColor.GRAY + percent + "%" + pagesStr);
 
-        List<TextComponent> p5 = new ArrayList<>();
-        p5.add(new TextComponent("    " + ChatColor.GOLD + "" + ChatColor.BOLD + "Locking/Sealing\n\n"));
-        p5.add(new TextComponent("Lock the armor stand to prevent accidental changes\n\n"));
-        TextComponent p5m1 = new TextComponent("      " + ChatColor.DARK_GREEN + "Lock");
-        p5m1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc lock true"));
-        TextComponent p5m2 = new TextComponent(ChatColor.RED + "Unlock");
-        p5m2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc lock false"));
-        p5.add(p5m1);
-        p5.add(new TextComponent(ChatColor.RESET + " / "));
-        p5.add(p5m2);
-        p5.add(new TextComponent("\n\nSealed armor stands are locked and invulnerable\n\n"));
-        TextComponent p5m3 = new TextComponent("       " + ChatColor.DARK_GREEN + "Seal");
-        p5m3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc seal true"));
-        TextComponent p5m4 = new TextComponent(ChatColor.RED + "Unseal");
-        p5m4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc seal false"));
-        p5.add(p5m3);
-        p5.add(new TextComponent(ChatColor.RESET + " / "));
-        p5.add(p5m4);
+		if(page > 1) {
+			inv.setItem(47, ic.createGuiItem(Material.SUNFLOWER, "Previous page", "Go back to page " + (page - 1)));
+		}
+		if(page < pages) {
+			inv.setItem(51, ic.createGuiItem(Material.SUNFLOWER, "Next page", "Go to page " + (page + 1)));
+		}
 
-        addPages(pages,
-                createPage(p1),
-                createPage(p2),
-                createPage(p3),
-                createPage(p4),
-                createPage(p5)
-        );
+		inv.setItem(49, ic.createGuiItem(Material.BARRIER, "Go back", "Click to go back to the main menu"));
 
-        bookMeta.setTitle(ChatColor.GOLD + "Soul Probes");
-        bookMeta.setAuthor(ChatColor.DARK_AQUA + "Gamemode 4");
+		if(page >= 2) {
+			for(int i = 0; i < 45 * (page - 1); i++) {
+				mobs.remove(0);
+			}
+		}
 
-        book.setItemMeta(bookMeta);
-        return book;
-    }
+		for(int i = 0; i < mobs.size(); i++) {
+			if(i == 45) {
+				return inv;
+			}
+			String achievement = mobs.get(i);
+			Material mat = Material.LIME_TERRACOTTA;
+			ChatColor override = null;
+			if(!has.contains(achievement)) {
+				mat = Material.CYAN_TERRACOTTA;
+				override = ChatColor.GRAY;
+			}
+			String name = mc.getConfig().getString("achievements." + achievement + ".name");
+			String lore = mc.getConfig().getString("achievements." + achievement + ".lore");
+			String reward = "Reward: " + mc.getConfig().getString("achievements." + achievement + ".reward");
+			inv.setItem(i, ic.createGuiItem(mat, override, name, lore, reward));
+		}
 
-    // BOOK GENERATION
-    public TextComponent createSetting(String name, String comm) {
-        TextComponent tot = new TextComponent(name + "\n      ");
+		return inv;
+	}
 
-        TextComponent yes = new TextComponent(ChatColor.DARK_GREEN + "Yes");
-        yes.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, comm + " true"));
-        TextComponent space = new TextComponent(ChatColor.RESET + " / ");
-        TextComponent no = new TextComponent(ChatColor.RED + "No");
-        no.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, comm + " false"));
+	@EventHandler
+	public void onClick(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		Action action = event.getAction();
+		if (action==Action.RIGHT_CLICK_BLOCK || action==Action.RIGHT_CLICK_AIR){
+			ItemStack hand = p.getInventory().getItemInMainHand();
+			if (hand != null && hand.getType() == Material.BOOK){
+				p.openInventory(soulProbesMenu(p, 1));
+				event.setCancelled(true);
+			}
+		}
+	}
+	@EventHandler
+	public void onClick(InventoryClickEvent e) {
+		HumanEntity entity = e.getWhoClicked();
+		if (entity instanceof Player) {
+			Player p = (Player) entity;
+			if (e.getInventory().getName().equals(ChatColor.GOLD + "MagicalParks")) {
+				e.setCancelled(true);
+				ItemStack clicked = e.getCurrentItem();
+				if (clicked != null) {
+					switch (clicked.getType()) {
+						case BEACON:
+							if (!p.isInsideVehicle()) {
+								World w = Bukkit.getWorld("world");
+								double x = mc.getConfig().getDouble("spawn.X");
+								double y = mc.getConfig().getDouble("spawn.Y");
+								double z = mc.getConfig().getDouble("spawn.Z");
+								Location l = new Location(w, x, y, z);
+								l.setYaw(0);
+								l.setPitch(0);
 
-        tot.addExtra(yes);
-        tot.addExtra(space);
-        tot.addExtra(no);
-        tot.addExtra(n);
-        return tot;
-    }
+								p.teleport(l);
+								p.sendMessage(ChatColor.GOLD + "You were teleported to " + ChatColor.BOLD + "Spawn!");
+								p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+								p.closeInventory();
+							}
+							break;
+						case PLAYER_HEAD:
+							p.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.STRIKETHROUGH + "-----------------------------------------------------");
+							p.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.STRIKETHROUGH + "-----------------------------------------------------");
+							p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
+							p.closeInventory();
+							break;
+					}
+				}
+			}
+			if (e.getInventory().getName().toLowerCase().contains("achievements")) {
+				e.setCancelled(true);
+				ItemStack clicked = e.getCurrentItem();
+				if (clicked != null) {
+					if (clicked.getType() == Material.BARRIER) {
+//						p.openInventory(mc.pm.mainMenu());
+						p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
+					}
+					else if (clicked.getType() == Material.SUNFLOWER) {
+						p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+						if(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase("previous page")) {
+//							p.openInventory(achievementMenu(p, paging.get(p) - 1));
+						}
+						if(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase("next page")) {
+//							p.openInventory(achievementMenu(p, paging.get(p) + 1));
+						}
+					}
+				}
+			}
+		}
+	}
 
-    private IChatBaseComponent createPage(List<TextComponent> p) {
-        BaseComponent tot = new TextComponent();
-        for (TextComponent txt : p) {
-            tot.addExtra(txt);
-        }
-        BaseComponent[] bc = new BaseComponent[]{tot};
-        return IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(bc));
-    }
-
-    private void addPages(List<IChatBaseComponent> book, IChatBaseComponent... pages) {
-		Collections.addAll(book, pages);
-    }
+	private double round(double value, int precision) {
+		int scale = (int) Math.pow(10, precision);
+		return (double) Math.round(value * scale) / scale;
+	}
 }
