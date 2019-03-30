@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4;
 
+import api.InventoryCreator;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
@@ -44,11 +45,8 @@ public class MainClass extends JavaPlugin {
         mCmds = new MainCommands(this);
 
         Stats stats = new Stats();
+		InventoryCreator inventoryCreator = new InventoryCreator(this);
 
-		Advancements advancements = new Advancements(this);
-		BatGrenades batGrenades = new BatGrenades(this);
-		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
-		BetterFire betterFire = new BetterFire(this);
 //		Custom Crafting
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
@@ -59,10 +57,15 @@ public class MainClass extends JavaPlugin {
 		LightningRods lightningRods = new LightningRods(this);
 		TrappedSigns trappedSigns = new TrappedSigns(this);
 
+		Advancements advancements = new Advancements(this);
+		BatGrenades batGrenades = new BatGrenades(this);
+		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
+		BetterFire betterFire = new BetterFire(this);
 		DesireLines desireLines = new DesireLines(this);
+		EnderHoppers enderHoppers = new EnderHoppers(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
-		SoulProbes soulProbes = new SoulProbes();
+		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
 		speedPaths = new SpeedPaths(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
@@ -74,18 +77,21 @@ public class MainClass extends JavaPlugin {
                 mCmds,
                 gui,
                 stats,
-                trappedSigns,
-                advancements,
-                batGrenades,
-                betterArmorStands,
-                betterFire,
+                
                 recipeHandler,
                 customCrafter,
                 customRecipes,
                 heartCanisters,
                 blastFurnaces,
                 lightningRods,
+				trappedSigns,
+
+				advancements,
+				batGrenades,
+				betterArmorStands,
+				betterFire,
                 desireLines,
+				enderHoppers,
                 endermanSupportClass,
                 inkSpittingSquid,
 				soulProbes,
