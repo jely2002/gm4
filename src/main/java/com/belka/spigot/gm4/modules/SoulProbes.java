@@ -3,6 +3,8 @@ package com.belka.spigot.gm4.modules;
 import api.InventoryCreator;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,75 +14,105 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class SoulProbes {
 
 	private MainClass mc;
 	private InventoryCreator ic;
-	private HashMap<Player,Integer> paging = new HashMap<>();
+	private HashMap<EntityType, Integer> hostileOverworld = new HashMap<EntityType, Integer>() {{
+        put(EntityType.CREEPER, 100);
+        put(EntityType.SKELETON, 100);
+        put(EntityType.SPIDER, 100);
+        put(EntityType.ZOMBIE, 100);
+        put(EntityType.SLIME, 100);
+        put(EntityType.ENDERMAN, 100);
+        put(EntityType.WITCH, 50);
+        put(EntityType.GUARDIAN, 50);
+        put(EntityType.CAVE_SPIDER, 100);
+        put(EntityType.SILVERFISH, 100);
+        put(EntityType.ENDERMITE, 25);
+    }};
+    private HashMap<EntityType, Integer> hostileNether = new HashMap<EntityType, Integer>() {{
+        put(EntityType.GHAST, 25);
+        put(EntityType.MAGMA_CUBE, 50);
+        put(EntityType.PIG_ZOMBIE, 100);
+        put(EntityType.BLAZE, 100);
+    }};
+    private HashMap<EntityType, Integer> passive = new HashMap<EntityType, Integer>() {{
+        put(EntityType.COW, 100);
+        put(EntityType.MUSHROOM_COW, 25);
+        put(EntityType.SHEEP, 100);
+        put(EntityType.PIG, 100);
+        put(EntityType.CHICKEN, 100);
+        put(EntityType.RABBIT, 25);
+        put(EntityType.HORSE, 25);
+        put(EntityType.OCELOT, 25);
+        put(EntityType.WOLF, 25);
+        put(EntityType.SQUID, 50);
+        put(EntityType.VILLAGER, 25);
+    }};
 
 	public SoulProbes(MainClass mc, InventoryCreator ic) {
 		this.mc = mc;
 		this.ic = ic;
 	}
 
-	private Inventory soulProbesMenu(Player p, int page) {
-		paging.put(p, page);
+	private Inventory soulProbesMenu() {
+		Inventory inv = Bukkit.createInventory(null, 9*3, ChatColor.GOLD + "Soul Probes Menu");
 
-		List<String> mobs = new ArrayList<>(mc.getConfig().getConfigurationSection("achievements").getKeys(false));
+		inv.setItem(2, ic.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED, "Hostile", "Overworld"));
+		inv.setItem(4, ic.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED, "Hostile", "Nether"));
+		inv.setItem(6, ic.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.DARK_GREEN, "Passive"));
 
-		String pagesStr = "";
-		double x = (double) mobs.size() / 45;
-		int pages = (int) Math.ceil(x);
+		inv.setItem(21, ic.createGuiItem(Material.BARRIER, ChatColor.DARK_AQUA, "Go back", "Click to close the main menu"));
 
-		List<String> has = new ArrayList<>();
-		for(String achievement : mobs) {
-			if(mc.getConfig().getStringList("players." + p.getName() + ".achievements").contains(achievement)) {
-				has.add(achievement);
-			}
+//		for(int i = 0; i < mobs.size(); i++) {
+//			if(i == 45) {
+//				return inv;
+//			}
+//			String achievement = mobs.get(i);
+//			Material mat = Material.LIME_TERRACOTTA;
+//			ChatColor override = null;
+//			if(!has.contains(achievement)) {
+//				mat = Material.CYAN_TERRACOTTA;
+//				override = ChatColor.GRAY;
+//			}
+//			String name = mc.getConfig().getString("achievements." + achievement + ".name");
+//			String lore = mc.getConfig().getString("achievements." + achievement + ".lore");
+//			String reward = "Reward: " + mc.getConfig().getString("achievements." + achievement + ".reward");
+//			inv.setItem(i, ic.createGuiItem(mat, override, name, lore, reward));
+//		}
+
+		return inv;
+	}
+
+	private Inventory mobMenu(Player p, String type) {
+		HashMap<EntityType, Integer> mobs = new HashMap<>();
+		String name = "";
+
+		switch (type) {
+			case "ho":
+				name += ChatColor.RED + "";
+				mobs = hostileOverworld;
+				break;
+			case "hn":
+				name += ChatColor.RED + "";
+				mobs = hostileNether;
+				break;
+			case "p":
+				name += ChatColor.DARK_GREEN + "";
+				mobs = passive;
+				break;
 		}
-		double y = (double) has.size() / mobs.size() * 100;
-		double percent = round(y, 1);
+		name += ChatColor.BOLD;
 
-		if(mobs.size() > 45) {
-			pagesStr = " (" + page + "/" + pages + ")";
-		}
+		Inventory inv = Bukkit.createInventory(null, 9*4, name);
 
-		Inventory inv = Bukkit.createInventory(null, 9*6, ChatColor.GOLD + "Achievements " + ChatColor.GRAY + percent + "%" + pagesStr);
+		inv.setItem(21, ic.createGuiItem(Material.BARRIER, ChatColor.DARK_AQUA, "Go back", "Click to go back to the main menu"));
 
-		if(page > 1) {
-			inv.setItem(47, ic.createGuiItem(Material.SUNFLOWER, "Previous page", "Go back to page " + (page - 1)));
-		}
-		if(page < pages) {
-			inv.setItem(51, ic.createGuiItem(Material.SUNFLOWER, "Next page", "Go to page " + (page + 1)));
-		}
-
-		inv.setItem(49, ic.createGuiItem(Material.BARRIER, "Go back", "Click to go back to the main menu"));
-
-		if(page >= 2) {
-			for(int i = 0; i < 45 * (page - 1); i++) {
-				mobs.remove(0);
-			}
-		}
-
-		for(int i = 0; i < mobs.size(); i++) {
-			if(i == 45) {
-				return inv;
-			}
-			String achievement = mobs.get(i);
-			Material mat = Material.LIME_TERRACOTTA;
-			ChatColor override = null;
-			if(!has.contains(achievement)) {
-				mat = Material.CYAN_TERRACOTTA;
-				override = ChatColor.GRAY;
-			}
-			String name = mc.getConfig().getString("achievements." + achievement + ".name");
-			String lore = mc.getConfig().getString("achievements." + achievement + ".lore");
-			String reward = "Reward: " + mc.getConfig().getString("achievements." + achievement + ".reward");
-			inv.setItem(i, ic.createGuiItem(mat, override, name, lore, reward));
+		for (Map.Entry<EntityType, Integer> mob : mobs.entrySet()) {
+			inv.addItem(ic.createGuiSkull(mob.getKey(), mob.getValue(), p));
 		}
 
 		return inv;
@@ -90,10 +122,10 @@ public class SoulProbes {
 	public void onClick(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		Action action = event.getAction();
-		if (action==Action.RIGHT_CLICK_BLOCK || action==Action.RIGHT_CLICK_AIR){
+		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
 			ItemStack hand = p.getInventory().getItemInMainHand();
-			if (hand != null && hand.getType() == Material.BOOK){
-				p.openInventory(soulProbesMenu(p, 1));
+			if (hand != null && hand.getType() == Material.BOOK) {
+				p.openInventory(soulProbesMenu());
 				event.setCancelled(true);
 			}
 		}
@@ -103,60 +135,20 @@ public class SoulProbes {
 		HumanEntity entity = e.getWhoClicked();
 		if (entity instanceof Player) {
 			Player p = (Player) entity;
-			if (e.getInventory().getName().equals(ChatColor.GOLD + "MagicalParks")) {
+			if (e.getInventory().getName().toLowerCase().contains("soul probes")) {
 				e.setCancelled(true);
 				ItemStack clicked = e.getCurrentItem();
 				if (clicked != null) {
 					switch (clicked.getType()) {
-						case BEACON:
-							if (!p.isInsideVehicle()) {
-								World w = Bukkit.getWorld("world");
-								double x = mc.getConfig().getDouble("spawn.X");
-								double y = mc.getConfig().getDouble("spawn.Y");
-								double z = mc.getConfig().getDouble("spawn.Z");
-								Location l = new Location(w, x, y, z);
-								l.setYaw(0);
-								l.setPitch(0);
-
-								p.teleport(l);
-								p.sendMessage(ChatColor.GOLD + "You were teleported to " + ChatColor.BOLD + "Spawn!");
-								p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-								p.closeInventory();
-							}
+						case BARRIER:
+							p.closeInventory();
+							p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
 							break;
 						case PLAYER_HEAD:
-							p.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.STRIKETHROUGH + "-----------------------------------------------------");
-							p.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.STRIKETHROUGH + "-----------------------------------------------------");
-							p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
-							p.closeInventory();
 							break;
-					}
-				}
-			}
-			if (e.getInventory().getName().toLowerCase().contains("achievements")) {
-				e.setCancelled(true);
-				ItemStack clicked = e.getCurrentItem();
-				if (clicked != null) {
-					if (clicked.getType() == Material.BARRIER) {
-//						p.openInventory(mc.pm.mainMenu());
-						p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
-					}
-					else if (clicked.getType() == Material.SUNFLOWER) {
-						p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
-						if(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase("previous page")) {
-//							p.openInventory(achievementMenu(p, paging.get(p) - 1));
-						}
-						if(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase("next page")) {
-//							p.openInventory(achievementMenu(p, paging.get(p) + 1));
-						}
 					}
 				}
 			}
 		}
-	}
-
-	private double round(double value, int precision) {
-		int scale = (int) Math.pow(10, precision);
-		return (double) Math.round(value * scale) / scale;
 	}
 }

@@ -2,42 +2,44 @@ package api;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class InventoryCreator {
 
-	public ItemStack createGuiItem(Material mat, String name, String... lores) {
+	public ItemStack createGuiItem(Material mat, ChatColor color, String name, String... lores) {
 		ItemStack item = new ItemStack(mat, 1);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.GOLD + name);
-		List<String> loreArr = new ArrayList<>();
-		ChatColor lcc = ChatColor.BLUE;
-		int i = 0;
+		meta.setDisplayName(color + "" + ChatColor.BOLD + name);
+		ArrayList<String> loreArr = new ArrayList<>();
+		ChatColor lcc = ChatColor.GRAY;
 		for(String lore : lores) {
-			if(i >= 1) lcc = ChatColor.GRAY;
 			loreArr.add(lcc + lore);
-			i++;
 		}
 		meta.setLore(loreArr);
 		item.setItemMeta(meta);
 		return item;
 	}
-	public ItemStack createGuiItem(Material mat, ChatColor override, String name, String... lores) {
-		ChatColor ccName = ChatColor.GOLD;
-		ChatColor ccLore = ChatColor.BLUE;
-		if(override != null) {
-			ccName = override;
-			ccLore = override;
+
+	public ItemStack createGuiSkull(EntityType mob, Integer amount, Player p) {
+		String name = "";
+		String url = "";
+		switch (mob) {
+			case CREEPER:
+				name = "Creeper";
+				url = "";
+				break;
 		}
-		ItemStack item = new ItemStack(mat, 1);
+		ItemStack item = SkullCreator.itemFromUrl(url);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ccName + name);
-		List<String> loreArr = new ArrayList<>();
-		for(String lore : lores) loreArr.add(ccLore + lore);
+		meta.setDisplayName(ChatColor.GOLD + "" + p.getStatistic(Statistic.MOB_KILLS) + "/" + amount);
+		ArrayList<String> loreArr = new ArrayList<>(Arrays.asList(ChatColor.DARK_GRAY + name, ChatColor.GRAY + "Create " + name + " Spawn Egg"));
 		meta.setLore(loreArr);
 		item.setItemMeta(meta);
 		return item;
