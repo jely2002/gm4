@@ -48,7 +48,7 @@ public class CustomRecipes implements Initializable {
 			add(ccShapedRecipes, LIGHTNING_ROD());
 
 		if (mc.getConfig().getBoolean("SoulProbes.enabled"))
-			add(ccShapedRecipes, SOUL_PROBES_BOOK());
+			add(ccShapedRecipes, SOUL_PROBES_BOOK(), EMPTY_SPAWN_EGG());
 
 //		Other Crafters
 		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) {
@@ -541,6 +541,17 @@ public class CustomRecipes implements Initializable {
 		recipe.setIngredient('E', Material.EXPERIENCE_BOTTLE);
 		recipe.setIngredient('B', Material.BOOK);
 		recipe.setIngredient('N', Material.NETHER_STAR);
+		return recipe;
+	}
+	private static ShapedRecipe EMPTY_SPAWN_EGG() {
+		ItemStack returnItem = CustomItems.EMPTY_SPAWN_EGG(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EMPTY_SPAWN_EGG"), returnItem);
+		recipe.shape("BIB","LEL","BDB");
+		recipe.setIngredient('B', Material.BONE_MEAL);
+		recipe.setIngredient('I', Material.IRON_INGOT);
+		recipe.setIngredient('L', Material.LIGHT_GRAY_DYE);
+		recipe.setIngredient('E', Material.EGG);
+		recipe.setIngredient('D', Material.DIAMOND);
 		return recipe;
 	}
 

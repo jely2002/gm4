@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -137,15 +136,21 @@ public class CustomItems {
 
 //	Soul Probes
 	public static ItemStack SOUL_PROBES_BOOK(int amount) {
-		ItemStack book = new ItemStack(Material.WRITTEN_BOOK, amount);
-		BookMeta bookMeta = (BookMeta) book.getItemMeta();
-
-		bookMeta.setTitle(ChatColor.GOLD + "Soul Probes");
-		bookMeta.setAuthor(ChatColor.DARK_AQUA + "Gamemode 4");
-
-		book.setItemMeta(bookMeta);
-
-		return book;
+		ItemStack item = new ItemStack(Material.BOOK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.GOLD + "Soul Probes");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.GRAY + "by " + ChatColor.DARK_AQUA + "Gamemode 4", ChatColor.GRAY + "Original")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack EMPTY_SPAWN_EGG(int amount) {
+		ItemStack item = new ItemStack(Material.GHAST_SPAWN_EGG, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Empty Spawn Egg");
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	private static ItemStack getSkull(String skinURL, int amount) {
