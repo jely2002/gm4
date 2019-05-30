@@ -18,6 +18,8 @@ DesireLines:
   enabled: true
   max: 50
   amount: 2
+EnderHoppers:
+  enabled: true
 EndermanSupportClass:
   enabled: true
 HeartCanisters:
@@ -26,6 +28,8 @@ InkSpittingSquid:
   enabled: true
 LightningRods:
   enabled: true
+SoulProbes:
+  enabled: true
 SpawnerMinecarts:
   enabled: true
 SpeedPaths:
@@ -33,8 +37,6 @@ SpeedPaths:
   pathBlock: GRASS_PATH
   speedFactor: 1
 TrappedSigns:
-  enabled: true
-EnderHoppers:
   enabled: true
 WeightedArmour:
   enabled: true

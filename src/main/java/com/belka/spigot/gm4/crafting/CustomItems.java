@@ -110,7 +110,7 @@ public class CustomItems {
         return boots;
     }
 
-	//Trapped Signs
+//	Trapped Signs
 	public static ItemStack TRAPPED_SIGN(int amount) {
 		ItemStack item = new ItemStack(Material.SIGN, amount);
 		ItemMeta meta = item.getItemMeta();
@@ -122,7 +122,7 @@ public class CustomItems {
 		return item;
 	}
 
-	//Lightning rods
+//	Lightning rods
 	public static ItemStack LIGHTNING_ROD(int amount) {
 		ItemStack item = new ItemStack(Material.BLAZE_ROD, amount);
 		ItemMeta meta = item.getItemMeta();
@@ -130,6 +130,25 @@ public class CustomItems {
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
 		meta.setDisplayName(ChatColor.AQUA + "Lightning rod");
 		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Throw for boom!")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+//	Soul Probes
+	public static ItemStack SOUL_PROBES_BOOK(int amount) {
+		ItemStack item = new ItemStack(Material.BOOK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.GOLD + "Soul Probes");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.GRAY + "by " + ChatColor.DARK_AQUA + "Gamemode 4", ChatColor.GRAY + "Original")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack EMPTY_SPAWN_EGG(int amount) {
+		ItemStack item = new ItemStack(Material.GHAST_SPAWN_EGG, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Empty Spawn Egg");
 		item.setItemMeta(meta);
 		return item;
 	}

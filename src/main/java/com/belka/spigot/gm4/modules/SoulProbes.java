@@ -1,142 +1,254 @@
 package com.belka.spigot.gm4.modules;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
-import net.minecraft.server.v1_13_R1.IChatBaseComponent;
+import api.InventoryCreator;
+import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.crafting.CustomItems;
+import com.belka.spigot.gm4.interfaces.Initializable;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftMetaBook;
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SoulProbes {
+public class SoulProbes implements Listener, Initializable {
 
-    private TextComponent n = new TextComponent("\n");
+	private MainClass mc;
+	private InventoryCreator ic;
+	private HashMap<EntityType, Integer> hostileOverworld = new HashMap<>();
+    private HashMap<EntityType, Integer> hostileNether = new HashMap<>();
+    private HashMap<EntityType, Integer> passive = new HashMap<>();
+	private HashMap<EntityType, Integer> mobs = new HashMap<>();
 
-    public void giveBook(Player p) {
-        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-        BookMeta bookMeta = (BookMeta) book.getItemMeta();
+	public SoulProbes(MainClass mc, InventoryCreator ic) {
+		this.mc = mc;
+		this.ic = ic;
+	}
 
-        List<IChatBaseComponent> pages;
-        try {
-            pages = (List<IChatBaseComponent>) CraftMetaBook.class.getDeclaredField("pages").get(bookMeta);
-        } catch (ReflectiveOperationException ex) {
-            ex.printStackTrace();
-            return;
-        }
+    public void init(MainClass mc) {
+		hostileOverworld.put(EntityType.CREEPER, 100);
+		hostileOverworld.put(EntityType.SKELETON, 100);
+		hostileOverworld.put(EntityType.SPIDER, 100);
+		hostileOverworld.put(EntityType.ZOMBIE, 100);
+		hostileOverworld.put(EntityType.SLIME, 100);
+		hostileOverworld.put(EntityType.ENDERMAN, 100);
+		hostileOverworld.put(EntityType.WITCH, 50);
+		hostileOverworld.put(EntityType.GUARDIAN, 50);
+		hostileOverworld.put(EntityType.CAVE_SPIDER, 100);
+		hostileOverworld.put(EntityType.SILVERFISH, 100);
+		hostileOverworld.put(EntityType.ENDERMITE, 25);
 
-        List<TextComponent> p1 = new ArrayList<>();
-        TextComponent p1m2 = new TextComponent("      " + ChatColor.DARK_GREEN + "Select target\n\n");
-        p1m2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc select"));
-        TextComponent p1m3 = new TextComponent("    " + ChatColor.RED + "Deselect target");
-        p1m3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc deselect"));
+		hostileNether.put(EntityType.GHAST, 25);
+		hostileNether.put(EntityType.MAGMA_CUBE, 50);
+		hostileNether.put(EntityType.PIG_ZOMBIE, 100);
+		hostileNether.put(EntityType.BLAZE, 100);
 
-        p1.add(new TextComponent("         " + ChatColor.GOLD + "" + ChatColor.BOLD + "Statues\n\n\n"));
-        p1.add(p1m2);
-        p1.add(p1m3);
-        p1.add(new TextComponent("\n\n\n\n\n" + ChatColor.GRAY + "" + ChatColor.ITALIC + "Original book from\n"));
-        p1.add(new TextComponent(ChatColor.GRAY + "" + ChatColor.ITALIC + "Xisumavoid's Vanilla\n"));
-        p1.add(new TextComponent(ChatColor.GRAY + "" + ChatColor.ITALIC + "Tweaks"));
+		passive.put(EntityType.COW, 100);
+		passive.put(EntityType.MUSHROOM_COW, 25);
+		passive.put(EntityType.SHEEP, 100);
+		passive.put(EntityType.PIG, 100);
+		passive.put(EntityType.CHICKEN, 100);
+		passive.put(EntityType.RABBIT, 25);
+		passive.put(EntityType.HORSE, 25);
+		passive.put(EntityType.OCELOT, 25);
+		passive.put(EntityType.WOLF, 25);
+		passive.put(EntityType.SQUID, 50);
+		passive.put(EntityType.VILLAGER, 25);
 
-        List<TextComponent> p2 = new ArrayList<>();
-        p2.add(new TextComponent("    " + ChatColor.GOLD + "" + ChatColor.BOLD + "Style Settings\n\n"));
-        p2.add(createSetting("Show Base Plate", "/asc setting baseplate"));
-        p2.add(createSetting("Show Arms", "/asc setting arms"));
-        p2.add(createSetting("Small Stand", "/asc setting small"));
-        p2.add(createSetting("Apply Gravity", "/asc setting gravity"));
-        p2.add(createSetting("Stand Visible", "/asc setting visible"));
-        p2.add(createSetting("Display Name", "/asc setting name"));
+		mobs.putAll(hostileOverworld);
+		mobs.putAll(hostileNether);
+		mobs.putAll(passive);
+	}
 
-        List<TextComponent> p3 = new ArrayList<>();
-        p3.add(new TextComponent("    " + ChatColor.GOLD + "" + ChatColor.BOLD + "Nudge Position\n\n"));
-        String nudge = "/asc nudge ";
-//        p3.add(createNudge("X", nudge));
-//        p3.add(createNudge("Y", nudge));
-//        p3.add(createNudge("Z", nudge));
-        p3.add(new TextComponent("\nTurn gravity off before nudging Y-position\n\n"));
-        p3.add(new TextComponent("   " + ChatColor.GOLD + "" + ChatColor.BOLD + "Adjust Rotation\n\n"));
-//        p3.add(createRotation("/asc rotate "));
+	private Inventory soulProbesMenu() {
+		Inventory inv = Bukkit.createInventory(null, 9*3, ChatColor.GOLD + "Soul Probes Menu");
 
-        List<TextComponent> p4 = new ArrayList<>();
-        p4.add(new TextComponent("     " + ChatColor.GOLD + "" + ChatColor.BOLD + "Pose: Adjust\n\n"));
-        p4.add(new TextComponent("          X     Y     Z\n"));
-        String pose = "/asc pose ";
-        String amount = "0.1";
-//        p4.add(createPose("Head", pose, amount));
-//        p4.add(createPose("Body", pose, amount));
-//        p4.add(createPose("RArm", pose, amount));
-//        p4.add(createPose("LArm", pose, amount));
-//        p4.add(createPose("RLeg", pose, amount));
-//        p4.add(createPose("LLeg", pose, amount));
+		inv.setItem(2, ic.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED, "Hostile", true, "Overworld"));
+		inv.setItem(4, ic.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED, "Hostile", true, "Nether"));
+		inv.setItem(6, ic.createGuiItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.DARK_GREEN, "Passive", true));
 
-        List<TextComponent> p5 = new ArrayList<>();
-        p5.add(new TextComponent("    " + ChatColor.GOLD + "" + ChatColor.BOLD + "Locking/Sealing\n\n"));
-        p5.add(new TextComponent("Lock the armor stand to prevent accidental changes\n\n"));
-        TextComponent p5m1 = new TextComponent("      " + ChatColor.DARK_GREEN + "Lock");
-        p5m1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc lock true"));
-        TextComponent p5m2 = new TextComponent(ChatColor.RED + "Unlock");
-        p5m2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc lock false"));
-        p5.add(p5m1);
-        p5.add(new TextComponent(ChatColor.RESET + " / "));
-        p5.add(p5m2);
-        p5.add(new TextComponent("\n\nSealed armor stands are locked and invulnerable\n\n"));
-        TextComponent p5m3 = new TextComponent("       " + ChatColor.DARK_GREEN + "Seal");
-        p5m3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc seal true"));
-        TextComponent p5m4 = new TextComponent(ChatColor.RED + "Unseal");
-        p5m4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/asc seal false"));
-        p5.add(p5m3);
-        p5.add(new TextComponent(ChatColor.RESET + " / "));
-        p5.add(p5m4);
+		inv.setItem(22, ic.createGuiItem(Material.BARRIER, ChatColor.RED, "Go back", false, "Click to close the main menu"));
 
-        addPages(pages,
-                createPage(p1),
-                createPage(p2),
-                createPage(p3),
-                createPage(p4),
-                createPage(p5)
-        );
+//		for(int i = 0; i < mobs.size(); i++) {
+//			if(i == 45) {
+//				return inv;
+//			}
+//			String achievement = mobs.get(i);
+//			Material mat = Material.LIME_TERRACOTTA;
+//			ChatColor override = null;
+//			if(!has.contains(achievement)) {
+//				mat = Material.CYAN_TERRACOTTA;
+//				override = ChatColor.GRAY;
+//			}
+//			String name = mc.getConfig().getString("achievements." + achievement + ".name");
+//			String lore = mc.getConfig().getString("achievements." + achievement + ".lore");
+//			String reward = "Reward: " + mc.getConfig().getString("achievements." + achievement + ".reward");
+//			inv.setItem(i, ic.createGuiItem(mat, override, name, lore, reward));
+//		}
+		return inv;
+	}
 
-        bookMeta.setTitle(ChatColor.GOLD + "Statues V1");
-        bookMeta.setAuthor("MaximumFX");
+	private Inventory mobMenu(Player p, String type) {
+		HashMap<EntityType, Integer> mobs = new HashMap<>();
+		String name = "";
 
-        book.setItemMeta(bookMeta);
-    }
+		switch (type) {
+			case "ho":
+				name += ChatColor.RED + "" + ChatColor.BOLD + "Hostile" + ChatColor.GRAY + " - Overworld";
+				mobs = hostileOverworld;
+				break;
+			case "hn":
+				name += ChatColor.RED + "" + ChatColor.BOLD + "Hostile" + ChatColor.GRAY + " - Nether";
+				mobs = hostileNether;
+				break;
+			case "p":
+				name += ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Passive";
+				mobs = passive;
+				break;
+		}
 
-    // BOOK GENERATION
-    public TextComponent createSetting(String name, String comm) {
-        TextComponent tot = new TextComponent(name + "\n      ");
+		Inventory inv = Bukkit.createInventory(null, 9*3, name);
 
-        TextComponent yes = new TextComponent(ChatColor.DARK_GREEN + "Yes");
-        yes.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, comm + " true"));
-        TextComponent space = new TextComponent(ChatColor.RESET + " / ");
-        TextComponent no = new TextComponent(ChatColor.RED + "No");
-        no.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, comm + " false"));
+		inv.setItem(22, ic.createGuiItem(Material.BARRIER, ChatColor.RED, "Go back", false, "Click to go back to the main menu"));
 
-        tot.addExtra(yes);
-        tot.addExtra(space);
-        tot.addExtra(no);
-        tot.addExtra(n);
-        return tot;
-    }
+		for (Map.Entry<EntityType, Integer> mob : mobs.entrySet()) {
+			inv.addItem(ic.createSPGuiSkull(mob.getKey(), mob.getValue(), p));
+		}
+		return inv;
+	}
 
-    private IChatBaseComponent createPage(List<TextComponent> p) {
-        BaseComponent tot = new TextComponent();
-        for (TextComponent txt : p) {
-            tot.addExtra(txt);
-        }
-        BaseComponent[] bc = new BaseComponent[]{tot};
-        return IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(bc));
-    }
+	@EventHandler
+	public void onClick(PlayerInteractEvent event) {
+    	if (!mc.getConfig().getBoolean("SoulProbes.enabled")) return;
+		Player p = event.getPlayer();
+		Action action = event.getAction();
+		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+			ItemStack hand = p.getInventory().getItemInMainHand();
+			if (hand != null) {
+				hand = hand.clone();
+				hand.setAmount(1);
+				if (hand.equals(CustomItems.SOUL_PROBES_BOOK(1))) {
+					p.openInventory(soulProbesMenu());
+					event.setCancelled(true);
+				}
+				else if (hand.equals(CustomItems.EMPTY_SPAWN_EGG(1))) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler
+	public void onClick(InventoryClickEvent e) {
+		if (!mc.getConfig().getBoolean("SoulProbes.enabled")) return;
+		HumanEntity entity = e.getWhoClicked();
+		if (entity instanceof Player) {
+			Player p = (Player) entity;
+			String invName = ChatColor.stripColor(e.getInventory().getName().toLowerCase());
+			if (invName.contains("soul probes")) {
+				e.setCancelled(true);
+				ItemStack clicked = e.getCurrentItem();
+				if (clicked != null) {
+					if (clicked.getType() == Material.BARRIER) {
+						p.closeInventory();
+						p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
+					}
+					else if (clicked.getType() == Material.RED_STAINED_GLASS_PANE) {
+						p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+						String lore = ChatColor.stripColor(clicked.getItemMeta().getLore().get(0).toLowerCase());
+						if (lore.contains("overworld")) {
+							p.openInventory(mobMenu(p, "ho"));
+						}
+						else if (lore.contains("nether")) {
+							p.openInventory(mobMenu(p, "hn"));
+						}
+					}
+					else if (clicked.getType() == Material.LIME_STAINED_GLASS_PANE) {
+						p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+						p.openInventory(mobMenu(p, "p"));
 
-    private void addPages(List<IChatBaseComponent> book, IChatBaseComponent... pages) {
-        for (IChatBaseComponent page : pages) {
-            book.add(page);
-        }
-    }
+					}
+				}
+			}
+			else if (invName.contains("hostile - overworld") || invName.contains("hostile - nether") || invName.contains("passive")) {
+				e.setCancelled(true);
+				ItemStack clicked = e.getCurrentItem();
+				if (clicked != null) {
+					if (clicked.getType() == Material.BARRIER) {
+						p.openInventory(soulProbesMenu());
+						p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
+					}
+					else if (clicked.getType() == Material.PLAYER_HEAD) {
+						String amount = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+						int x = Integer.parseInt(amount.split("/")[0]);
+						int y = Integer.parseInt(amount.split("/")[1]);
+						if (x >= y) {
+							if (hasEgg(p)) {
+								String eName = ChatColor.stripColor(clicked.getItemMeta().getLore().get(0)).toUpperCase().replace(' ', '_');
+								p.getInventory().addItem(new ItemStack(Material.getMaterial(eName + "_SPAWN_EGG")));
+								removeEgg(p);
+								p.closeInventory();
+								p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
+
+								String loc = "SoulProbes." + p.getUniqueId() + "." + eName.toUpperCase();
+								mc.storage().data().set(loc, x - y);
+								mc.storage().saveData();
+							}
+							else p.sendMessage(ChatColor.RED + "You don't have any empty spawn eggs!");
+						}
+						else p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+					}
+				}
+			}
+		}
+	}
+
+	private boolean hasEgg(Player p) {
+		ArrayList<ItemStack> inv = new ArrayList<>();
+		for (ItemStack is : p.getInventory().getContents()) {
+			if (is != null)  {
+				ItemStack item = is.clone();
+				item.setAmount(1);
+				inv.add(item);
+			}
+		}
+		return inv.contains(CustomItems.EMPTY_SPAWN_EGG(1));
+	}
+
+	private void removeEgg(Player p) {
+		for (ItemStack is : p.getInventory().getContents()) {
+			if (is != null)  {
+				ItemStack item = is.clone();
+				item.setAmount(1);
+				if (item.equals(CustomItems.EMPTY_SPAWN_EGG(1))) {
+					is.setAmount(is.getAmount() - 1);
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onKill(EntityDeathEvent e) {
+		if (!mc.getConfig().getBoolean("SoulProbes.enabled")) return;
+		Entity dead = e.getEntity();
+		Player p = e.getEntity().getKiller();
+		if (p != null) {
+			String loc = "SoulProbes." + p.getUniqueId() + "." + dead.getType().name();
+			mc.storage().data().set(loc, mc.storage().data().getInt(loc, 0) + 1);
+			mc.storage().saveData();
+		}
+	}
 }
