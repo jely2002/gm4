@@ -11,23 +11,23 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.13-R0.1-SNAPSHOT</version>
+            <artifactId>spigot-api</artifactId>
+            <version>1.14.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.endercentral.crazy_advancements</groupId>
             <artifactId>CrazyAdvancementAPI</artifactId>
-            <version>1.13.4</version>
+            <version>1.13.5</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>de.tr7zw.itemnbtapi</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>1.18.2-SNAPSHOT</version>
+            <version>1.18.3-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/item-nbt-api-plugin-1.8.2-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/item-nbt-api-plugin-1.8.3-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -35,6 +35,10 @@
         <repository>
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+        </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
