@@ -47,6 +47,7 @@ public class RecipeHandler implements Initializable {
 				dr.getInventory().clear();
 
 				ItemStack result = recipe.getResult();
+				if (result.getType() == Material.BARRIER) result.setType(Material.AIR);
 				int totAmount = result.getAmount() * amount;
 				result.setAmount(totAmount);
 				if (result.getAmount() <= result.getMaxStackSize()) dr.getInventory().setItem(4, result);
@@ -166,7 +167,7 @@ public class RecipeHandler implements Initializable {
 				ItemStack item = recipe.getIngredientMap().get(c);
 				if (item != null) {
 					if (item.getType() == Material.PLAYER_HEAD && recipe.getKey().equals(new NamespacedKey(mc, "HEART_CANISTER_TIER_2"))) item = CustomItems.HEART_CANISTER_TIER_1(1);
-					else if (item.getType() == Material.ROSE_RED && (recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE")) || recipe.getKey().equals(new NamespacedKey(mc, "alchemical_crafter")))) item = CustomItems.MINIUM_DUST(1);
+					else if (item.getType() == Material.RED_DYE && (recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE")) || recipe.getKey().equals(new NamespacedKey(mc, "alchemical_crafter")))) item = CustomItems.MINIUM_DUST(1);
 					else if (item.getType() == Material.FIREWORK_STAR && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE"))) item = CustomItems.INERT_STONE(1);
 					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe) && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKII"))) item = CustomItems.PHILOSOPHERS_STONE(1);
 					else if (item.getType() == Material.REDSTONE_BLOCK && CustomRecipes.acShapedRecipes.contains(recipe) && recipe.getKey().equals(new NamespacedKey(mc, "PHILOSOPHERS_STONE_MKIII"))) item = CustomItems.PHILOSOPHERS_STONE_MKII(1);

@@ -1,6 +1,8 @@
 package api;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -84,5 +86,12 @@ public class Helper {
 		return new String(ch);
 	}
 
-
+	public static Location locFromConfig(String line) {
+		String[] a = line.split(" ");
+		int x = Integer.parseInt(a[0].split(":")[1]);
+		int y = Integer.parseInt(a[1].split(":")[1]);
+		int z = Integer.parseInt(a[2].split(":")[1]);
+		World world = Bukkit.getWorld(a[3].split(":")[1]);
+		return new Location(world, x, y, z);
+	}
 }

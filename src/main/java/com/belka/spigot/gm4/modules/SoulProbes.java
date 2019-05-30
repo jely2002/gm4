@@ -157,7 +157,7 @@ public class SoulProbes implements Listener, Initializable {
 		HumanEntity entity = e.getWhoClicked();
 		if (entity instanceof Player) {
 			Player p = (Player) entity;
-			String invName = ChatColor.stripColor(e.getInventory().getName().toLowerCase());
+			String invName = ChatColor.stripColor(e.getView().getTitle().toLowerCase());
 			if (invName.contains("soul probes")) {
 				e.setCancelled(true);
 				ItemStack clicked = e.getCurrentItem();

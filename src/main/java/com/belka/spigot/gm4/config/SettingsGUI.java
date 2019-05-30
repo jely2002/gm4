@@ -97,11 +97,10 @@ public class SettingsGUI implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		if(e.getCurrentItem() == null) return;
-		if(e.getWhoClicked() == null) return;
 		Player p = (Player) e.getWhoClicked();
 		ItemStack clicked = e.getCurrentItem();
 		Inventory inventory = e.getInventory();
-		if (inventory.getName().contains("Gamemode 4 Modules")) {
+		if (e.getView().getTitle().contains("Gamemode 4 Modules")) {
 			if (clicked.getItemMeta() == null) return;
 			String displayName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
 			if (mc.getConfig().getConfigurationSection("").getKeys(false).contains(displayName.replaceAll("\\s+",""))) {

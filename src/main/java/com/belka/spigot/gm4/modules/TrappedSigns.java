@@ -43,7 +43,7 @@ public class TrappedSigns implements Listener, Initializable {
     @EventHandler
     public void signDestroy(BlockBreakEvent e) {
         if(!enabled) return;
-        if(!(e.getBlock().getType() == Material.SIGN || e.getBlock().getType() == Material.WALL_SIGN)) return;
+        if(!(e.getBlock().getType() == Material.OAK_SIGN || e.getBlock().getType() == Material.OAK_WALL_SIGN)) return;
 		if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
@@ -53,7 +53,7 @@ public class TrappedSigns implements Listener, Initializable {
                             mc.storage().data().set("TrappedSigns." + id, null);
                             mc.storage().saveData();
                             if(e.getPlayer().getGameMode() == GameMode.SURVIVAL || e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-                                e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.SIGN, 1));
+                                e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.OAK_SIGN, 1));
                                 e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.REDSTONE, 3));
                                 e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.TRIPWIRE_HOOK, 2));
                             }
@@ -88,7 +88,7 @@ public class TrappedSigns implements Listener, Initializable {
     public void signInteract(PlayerInteractEvent e) {
         if (!enabled) return;
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-        if (!(e.getClickedBlock().getType() == Material.SIGN || e.getClickedBlock().getType() == Material.WALL_SIGN)) return;
+        if (!(e.getClickedBlock().getType() == Material.OAK_SIGN || e.getClickedBlock().getType() == Material.OAK_WALL_SIGN)) return;
         if(!mc.storage().data().contains("TrappedSigns.0")) return;
         for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
             if (e.getClickedBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
@@ -121,7 +121,7 @@ public class TrappedSigns implements Listener, Initializable {
     @EventHandler
     public void onSignPlace(BlockPlaceEvent e) {
         if (!enabled) return;
-        if(!(e.getBlockPlaced().getType() == Material.SIGN || e.getBlockPlaced().getType() == Material.WALL_SIGN)) return;
+        if(!(e.getBlockPlaced().getType() == Material.OAK_SIGN || e.getBlockPlaced().getType() == Material.OAK_WALL_SIGN)) return;
         if(!e.getItemInHand().hasItemMeta()) return;
         if(!e.getItemInHand().getItemMeta().getLore().get(0).contains("trapped")) return;
         Sign sign = (Sign) e.getBlockPlaced().getState();
@@ -146,7 +146,7 @@ public class TrappedSigns implements Listener, Initializable {
     private ArrayList<Block> getRedstone(Block b) {
     	ArrayList<Block> blocks = new ArrayList<>();
 		ArrayList<Block> redstone = new ArrayList<>();
-		if (b.getType() == Material.SIGN) {
+		if (b.getType() == Material.OAK_SIGN) {
 			blocks.add(b.getRelative(0, -2, 0));
 			blocks.add(b.getRelative(1, 0, 0));
 			blocks.add(b.getRelative(1, -1, 0));
@@ -157,7 +157,7 @@ public class TrappedSigns implements Listener, Initializable {
 			blocks.add(b.getRelative(0, 0, -1));
 			blocks.add(b.getRelative(0, -1, -1));
 		}
-		else if (b.getType() == Material.WALL_SIGN) {
+		else if (b.getType() == Material.OAK_WALL_SIGN) {
 			org.bukkit.material.Sign ws = (org.bukkit.material.Sign) b.getState().getData();
 			Block att = b.getRelative(ws.getAttachedFace());
 			blocks.add(b.getRelative(0, -1, 0));

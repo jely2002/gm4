@@ -2,8 +2,10 @@ package com.belka.spigot.gm4.modules;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
+import com.sun.codemodel.internal.JArray;
 import de.tr7zw.itemnbtapi.NBTCompound;
 import de.tr7zw.itemnbtapi.NBTEntity;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,7 +14,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.type.Piston;
-import org.bukkit.block.data.type.RedstoneRail;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Minecart;
@@ -23,12 +24,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.material.PoweredRail;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class SpawnerMinecarts implements Listener {
 
@@ -87,16 +87,10 @@ public class SpawnerMinecarts implements Listener {
 										NBTCompound spawnData = nbtEntity.getCompound("SpawnData");
 										spawnData.setString("id", "minecraft:" + mob);
 
-										JSONParser parser = new JSONParser();
-										String s = "[{\"Entity\":{\"id\":\"minecraft:" + mob + "\"}, \"Weight\":1}]";
-										try {
-											Object obj = parser.parse(s);
-											JSONArray data = (JSONArray)obj;
-											nbtEntity.setObject("SpawnPotentials", data);
-										} catch(ParseException pe) {
-											System.out.println("Position: " + pe.getPosition());
-											System.out.println(pe);
-										}
+										JsonParser parser = new JsonParser();
+										JsonObject jsonObject = new JsonParser().parse("[{\"Entity\":{\"id\":\"minecraft:" + mob + "\"}, \"Weight\":1}]").getAsJsonObject();
+										JsonArray data = jsonObject.getAsJsonArray();
+										nbtEntity.setObject("SpawnPotentials", data);
 										List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
 										stored.add(mms.getUniqueId().toString());
 										mc.storage().data().set("SpawnerMinecarts", stored);

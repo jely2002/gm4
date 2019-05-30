@@ -35,7 +35,7 @@ public class CustomItems {
 
 //  Equivalent Exchange
 	public static ItemStack MINIUM_DUST(int amount) {
-		ItemStack item = new ItemStack(Material.ROSE_RED, amount);
+		ItemStack item = new ItemStack(Material.RED_DYE, amount);
 		ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -112,7 +112,7 @@ public class CustomItems {
 
 //	Trapped Signs
 	public static ItemStack TRAPPED_SIGN(int amount) {
-		ItemStack item = new ItemStack(Material.SIGN, amount);
+		ItemStack item = new ItemStack(Material.OAK_SIGN, amount);
 		ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);

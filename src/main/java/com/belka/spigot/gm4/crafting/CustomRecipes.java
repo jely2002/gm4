@@ -71,7 +71,7 @@ public class CustomRecipes implements Initializable {
 
 //	CREATION
 	public static ShapedRecipe create() {
-		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ItemStack returnItem = new ItemStack(Material.BARRIER, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "create"), returnItem);
 		recipe.shape("CCC","C C","CRC");
 		recipe.setIngredient('C', Material.COBBLESTONE);
@@ -80,7 +80,7 @@ public class CustomRecipes implements Initializable {
 	}
 	//	Mastercraftsman's Workbench
 	public static ShapedRecipe master_crafter() {
-		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ItemStack returnItem = new ItemStack(Material.BARRIER, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "master_crafter"), returnItem);
 		recipe.shape("CPC","P P","RFR");
 		recipe.setIngredient('C', Material.COBBLESTONE);
@@ -91,7 +91,7 @@ public class CustomRecipes implements Initializable {
 	}
 	//	Blast Furnace
 	public static ShapedRecipe blast_furnace() {
-		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ItemStack returnItem = new ItemStack(Material.BARRIER, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "blast_furnace"), returnItem);
 		recipe.shape("IBI"," P ","CTC");
 		recipe.setIngredient('I', Material.IRON_BARS);
@@ -103,7 +103,7 @@ public class CustomRecipes implements Initializable {
 	}
 	//	Disassembler
 	public static ShapedRecipe disassembler() {
-		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ItemStack returnItem = new ItemStack(Material.BARRIER, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "disassembler"), returnItem);
 		recipe.shape("CCC","CTC","CRC");
 		recipe.setIngredient('C', Material.COBBLESTONE);
@@ -113,10 +113,10 @@ public class CustomRecipes implements Initializable {
 	}
 	//	Alchemical Crafter
 	public static ShapedRecipe alchemical_crafter() {
-		ItemStack returnItem = new ItemStack(Material.AIR, 1);
+		ItemStack returnItem = new ItemStack(Material.BARRIER, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "alchemical_crafter"), returnItem);
 		recipe.shape("RRR","RCR","RRR");
-		recipe.setIngredient('R', Material.ROSE_RED);
+		recipe.setIngredient('R', Material.RED_DYE);
 		recipe.setIngredient('C', Material.CRAFTING_TABLE);
 		return recipe;
 	}
@@ -134,7 +134,7 @@ public class CustomRecipes implements Initializable {
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "RED_SAND"), returnItem);
 		recipe.shape("SSS","SRS","SSS");
 		recipe.setIngredient('S', Material.SAND);
-		recipe.setIngredient('R', Material.ROSE_RED);
+		recipe.setIngredient('R', Material.RED_DYE);
 		return recipe;
 	}
 	private static ShapedRecipe COBWEB() {
@@ -266,7 +266,7 @@ public class CustomRecipes implements Initializable {
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_13"), returnItem);
 		recipe.shape("FFF","FDF","FFF");
 		recipe.setIngredient('F', Material.FLINT);
-		recipe.setIngredient('D', Material.DANDELION_YELLOW);
+		recipe.setIngredient('D', Material.YELLOW_DYE);
 		return recipe;
 	}
 	private static ShapedRecipe MUSIC_DISC_CAT() {
@@ -274,7 +274,7 @@ public class CustomRecipes implements Initializable {
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_CAT"), returnItem);
 		recipe.shape("FFF","FDF","FFF");
 		recipe.setIngredient('F', Material.FLINT);
-		recipe.setIngredient('D', Material.CACTUS_GREEN);
+		recipe.setIngredient('D', Material.GREEN_DYE);
 		return recipe;
 	}
 	private static ShapedRecipe MUSIC_DISC_BLOCKS() {
@@ -290,7 +290,7 @@ public class CustomRecipes implements Initializable {
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "MUSIC_DISC_CHIRP"), returnItem);
 		recipe.shape("FFF","FDF","FFF");
 		recipe.setIngredient('F', Material.FLINT);
-		recipe.setIngredient('D', Material.ROSE_RED);
+		recipe.setIngredient('D', Material.RED_DYE);
 		return recipe;
 	}
 	private static ShapedRecipe MUSIC_DISC_FAR() {
@@ -448,7 +448,7 @@ public class CustomRecipes implements Initializable {
 		ItemStack returnItem = CustomItems.PHILOSOPHERS_STONE(1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "PHILOSOPHERS_STONE"), returnItem);
 		recipe.shape("RRR","RFR","RRR");
-		recipe.setIngredient('R', Material.ROSE_RED);
+		recipe.setIngredient('R', Material.RED_DYE);
 		recipe.setIngredient('F', Material.FIREWORK_STAR);
 		return recipe;
 	}
@@ -518,7 +518,7 @@ public class CustomRecipes implements Initializable {
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN"), returnItem);
 		recipe.shape("   ","TST","RRR");
 		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
-		recipe.setIngredient('S', Material.SIGN);
+		recipe.setIngredient('S', Material.OAK_SIGN);
 		recipe.setIngredient('R', Material.REDSTONE);
 		return recipe;
 	}

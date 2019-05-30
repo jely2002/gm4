@@ -70,6 +70,7 @@ public class MainClass extends JavaPlugin {
 		speedPaths = new SpeedPaths(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
+		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
 
         registerClasses(this,
                 storage,
@@ -77,7 +78,7 @@ public class MainClass extends JavaPlugin {
                 mCmds,
                 gui,
                 stats,
-                
+
                 recipeHandler,
                 customCrafter,
                 customRecipes,
@@ -98,7 +99,8 @@ public class MainClass extends JavaPlugin {
 				spawnerMinecarts,
                 speedPaths,
 				weightedArmour,
-				xpStorage);
+				xpStorage,
+				zauberCauldrons);
     }
 
     @Override

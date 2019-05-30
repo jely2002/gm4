@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Helper;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
@@ -40,12 +41,7 @@ public class EnderHoppers implements Listener, Initializable {
             	Item i = it.next();
 				List<String> active = mc.storage().data().getStringList("EnderHoppers");
                 for (String hopper : active) {
-                	String[] a = hopper.split(" ");
-                	int x = Integer.parseInt(a[0].split(":")[1]);
-					int y = Integer.parseInt(a[1].split(":")[1]);
-					int z = Integer.parseInt(a[2].split(":")[1]);
-					World world = Bukkit.getWorld(a[3].split(":")[1]);
-                    Location loc = new Location(world, x, y, z);
+					Location loc = Helper.locFromConfig(hopper);
                     Location item = i.getLocation();
                     Location min = loc.clone().subtract(4, 1, 4);
                     Location max = loc.clone().add(4, 1, 4);
