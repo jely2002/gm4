@@ -143,18 +143,18 @@ public class CustomCrafter implements Listener, Initializable {
 				recipe = CustomRecipes.blast_furnace();
 				break;
 			case "Alchemical Crafter":
-				recipe = CustomRecipes.alchemical_crafter();
+				recipe = null;
+				loc.getWorld().dropItem(loc, new ItemStack(Material.CRAFTING_TABLE));
+				loc.getWorld().dropItem(loc, CustomItems.MINIUM_DUST(8));
 				break;
 		}
-		for (String chars : recipe.getShape()) {
-			for (String character : chars.split("(?!^)")) {
-				char c = character.charAt(0);
-				ItemStack item = recipe.getIngredientMap().get(c);
-				if (item != null) {
-					loc.getWorld().dropItem(loc, item);
+		if (recipe != null)
+			for (String chars : recipe.getShape())
+				for (String character : chars.split("(?!^)")) {
+					char c = character.charAt(0);
+					ItemStack item = recipe.getIngredientMap().get(c);
+					if (item != null) loc.getWorld().dropItem(loc, item);
 				}
-			}
-		}
 	}
 
 	@EventHandler
