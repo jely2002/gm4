@@ -31,7 +31,7 @@ public class BlastFurnaces implements Listener, Initializable {
 	private HashMap<Furnace, ArmorStand> activeBlastFurnaces = new HashMap<>();
 
 	public BlastFurnaces(MainClass mc) {
-		this.mc = mc;
+		BlastFurnaces.mc = mc;
 	}
 
 	public void init(MainClass mc) {

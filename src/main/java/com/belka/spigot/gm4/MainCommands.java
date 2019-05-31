@@ -18,7 +18,7 @@ public class MainCommands implements PluginSubcommand {
 
 	@Override
 	public String[] getSubcommand() {
-		String commands[] = {"reload","version","advancement"};
+        String[] commands = {"reload", "version", "advancement"};
 		return commands;
 	}
 
