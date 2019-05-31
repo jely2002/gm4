@@ -84,7 +84,6 @@ public class SpawnerMinecarts implements Listener {
 										NBTCompound spawnData = nbtEntity.getCompound("SpawnData");
 										spawnData.setString("id", "minecraft:" + mob);
 
-										JsonParser parser = new JsonParser();
 										JsonObject jsonObject = new JsonParser().parse("[{\"Entity\":{\"id\":\"minecraft:" + mob + "\"}, \"Weight\":1}]").getAsJsonObject();
 										JsonArray data = jsonObject.getAsJsonArray();
 										nbtEntity.setObject("SpawnPotentials", data);
