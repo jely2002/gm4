@@ -37,8 +37,7 @@ public class ZauberCauldrons implements Listener, Initializable {
 					Levelled c = (Levelled) data;
 					if (c.getLevel() == c.getMaximumLevel()) {
 						for (Player p : Helper.getNearbyPlayers(loc, 10)) {
-//							p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc.add(0.5, 1, 0.5), 1, 0.05, 0, 0.05, 0);
-							p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc.add(0.5, 1, 0.5), 0, 0, 1, 0);
+							p.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc.add(0.5, 1, 0.5), 0, 0, 1, 0, 0.05, null);
 						}
 					}
 				}
