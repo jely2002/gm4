@@ -4,6 +4,7 @@ import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -99,7 +100,6 @@ public class SettingsGUI implements Listener {
 		if(e.getCurrentItem() == null) return;
 		Player p = (Player) e.getWhoClicked();
 		ItemStack clicked = e.getCurrentItem();
-		Inventory inventory = e.getInventory();
 		if (e.getView().getTitle().contains("Gamemode 4 Modules")) {
 			if (clicked.getItemMeta() == null) return;
 			String displayName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
@@ -117,6 +117,7 @@ public class SettingsGUI implements Listener {
 			}
 			else if (clicked.getType() == Material.BARRIER) {
 				p.closeInventory();
+				p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
 			}
 			e.setCancelled(true);
 		}
