@@ -61,9 +61,10 @@ public class MainClass extends JavaPlugin {
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
 		BetterFire betterFire = new BetterFire(this);
+		Chairs chairs = new Chairs(this);
 		DesireLines desireLines = new DesireLines(this);
 		EnderHoppers enderHoppers = new EnderHoppers(this);
-		EndermanSupportClass endermanSupportClass = new EndermanSupportClass(this);
+		EndermanSupportClass endermanSupportClass = new EndermanSupportClass();
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
@@ -91,6 +92,7 @@ public class MainClass extends JavaPlugin {
 				batGrenades,
 				betterArmorStands,
 				betterFire,
+				chairs,
                 desireLines,
 				enderHoppers,
                 endermanSupportClass,

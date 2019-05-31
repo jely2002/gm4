@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Helper {
-    public static List<Entity> getNearbyEntities(Location l, int size) {
+    public static List<Entity> getNearbyEntities(Location l, double size) {
         List<Entity> entities = new ArrayList<>();
 
         for(Entity e : l.getWorld().getEntities()) {
