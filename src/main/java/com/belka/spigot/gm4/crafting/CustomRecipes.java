@@ -23,7 +23,7 @@ public class CustomRecipes implements Initializable {
 	public static ArrayList<ShapedRecipe> acShapedRecipes = new ArrayList<>();
 
 	public CustomRecipes(MainClass mc) {
-		this.mc = mc;
+		CustomRecipes.mc = mc;
 	}
 
 	public void init(MainClass mc) {

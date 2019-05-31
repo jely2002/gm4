@@ -27,7 +27,7 @@ public class RecipeHandler implements Initializable {
 	private ArrayList<String> convertKeys = new ArrayList<>();
 
 	public RecipeHandler(MainClass mc) {
-		this.mc = mc;
+		RecipeHandler.mc = mc;
 	}
 
 	public void init(MainClass mc) {

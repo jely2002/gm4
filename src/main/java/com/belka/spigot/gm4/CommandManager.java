@@ -39,7 +39,7 @@ public class CommandManager implements PluginCommand {
     }
 
     public String[] getCommands() {
-        String commands[] = {"gm4","gamemode4"};
+        String[] commands = {"gm4", "gamemode4"};
         return commands;
     }
 
