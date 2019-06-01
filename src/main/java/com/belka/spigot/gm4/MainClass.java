@@ -4,6 +4,7 @@ import api.InventoryCreator;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
+import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.interfaces.Initializable;
@@ -39,10 +40,11 @@ public class MainClass extends JavaPlugin {
 		saveConfig();
 
         SettingsGUI gui = new SettingsGUI(this);
+		CustomItems customItems = new CustomItems();
 
         cmdMgmt = new CommandManager(this, gui);
         storage = new ConfigManager(this);
-        mCmds = new MainCommands(this);
+        mCmds = new MainCommands(this, customItems);
 
         Stats stats = new Stats();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
