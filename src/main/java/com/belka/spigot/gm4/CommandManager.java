@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CommandManager implements PluginCommand, TabCompleter {
 
@@ -69,16 +71,18 @@ public class CommandManager implements PluginCommand, TabCompleter {
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("gamemode4")) {
 			if (sender instanceof Player) {
-				if (args.length == 1) return Arrays.asList("reload", "version", "achievement", "give");
+				if (args.length == 1)
+					return Stream.of("reload", "version", "achievement", "give").filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).collect(Collectors.toList());
 				else if (args[0].equalsIgnoreCase("give")) {
 					if (args.length == 2) {
 						ArrayList<String> playerNames = new ArrayList<>();
 						for (Player p:  Bukkit.getOnlinePlayers())
 							playerNames.add(p.getDisplayName());
-						return playerNames;
+						return playerNames.stream().filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
 					}
 					else if (args.length == 3) {
-						return Arrays.asList("HEART_CANISTER_TIER_1", "HEART_CANISTER_TIER_2", "MINIUM_DUST", "INERT_STONE", "PHILOSOPHERS_STONE", "PHILOSOPHERS_STONE_MKII", "PHILOSOPHERS_STONE_MKIII", "PHILOSOPHERS_STONE_MKIV", "AC_ERROR", "BOOTS_OF_OSTARA", "TRAPPED_SIGN", "LIGHTNING_ROD", "SOUL_PROBES_BOOK", "EMPTY_SPAWN_EGG");
+						List<String> items = Arrays.asList("HEART_CANISTER_TIER_1", "HEART_CANISTER_TIER_2", "MINIUM_DUST", "INERT_STONE", "PHILOSOPHERS_STONE", "PHILOSOPHERS_STONE_MKII", "PHILOSOPHERS_STONE_MKIII", "PHILOSOPHERS_STONE_MKIV", "AC_ERROR", "BOOTS_OF_OSTARA", "TRAPPED_SIGN", "LIGHTNING_ROD", "SOUL_PROBES_BOOK", "EMPTY_SPAWN_EGG");
+						return items.stream().filter(s -> s.toLowerCase().startsWith(args[2].toLowerCase())).collect(Collectors.toList());
 					}
 				}
 			}

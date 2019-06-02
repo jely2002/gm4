@@ -53,7 +53,7 @@ public class EndermanSupportClass implements Initializable {
 								else if(e instanceof Player) {
 									List<EntityType> mobs = Helper.getNearbyEntityTypes(entity.getLocation(), 25);
 									if(mobs.contains(EntityType.CAVE_SPIDER) ||	mobs.contains(EntityType.CREEPER) || mobs.contains(EntityType.SILVERFISH) || mobs.contains(EntityType.SKELETON) || mobs.contains(EntityType.SPIDER) ||	mobs.contains(EntityType.ZOMBIE)) {
-										Advancements.grantAdvancement("gm4/ender_aid", (Player) e);
+										Advancements.grantAdvancement("ender_aid", (Player) e);
 									}
 								}
 							}
