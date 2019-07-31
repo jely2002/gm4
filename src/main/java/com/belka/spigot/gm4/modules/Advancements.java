@@ -30,7 +30,7 @@ public class Advancements implements Listener, Initializable {
 
     public void init(MainClass mc) {
         manager = CrazyAdvancements.getNewAdvancementManager();
-//        if (manager.getAdvancements("gm4").size() > 0 || !mc.getConfig().getBoolean("modules.Advancements.enabled")) return;
+//        if (manager.getAdvancements("gm4").size() > 0 || !mc.getConfig().getBoolean("Advancements.enabled")) return;
 
         AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.COMMAND_BLOCK, "Gamemode 4", "Vanilla Re-Imagined", AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
         rootDisplay.setBackgroundTexture("textures/block/cyan_concrete.png");
@@ -83,8 +83,9 @@ public class Advancements implements Listener, Initializable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 			manager.grantAdvancement(p, gm4);
-			manager.saveProgress(p, "gm4");
+//			manager.saveProgress(p, "gm4");
 			manager.addPlayer(p);
+			manager.loadProgress(p, "gm4");
         }
     }
 
@@ -124,19 +125,20 @@ public class Advancements implements Listener, Initializable {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
 			Player p = e.getPlayer();
 			manager.grantAdvancement(p, manager.getAdvancement(new NameKey("gm4", "root")));
-			manager.saveProgress(p, "gm4");
+//			manager.saveProgress(p, "gm4");
 			manager.addPlayer(p);
+			manager.loadProgress(p, "gm4");
 		}, 10L);
     }
     @EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
+		manager.saveProgress(p, "gm4");
 		manager.removePlayer(p);
 	}
 
     public static void grantAdvancement(String advName, Player p) {
         Advancement adv = manager.getAdvancement(new NameKey("gm4", advName));
-
 //        manager.grantAdvancement(p, adv);
 		if (manager.getCriteriaProgress(p, adv) != 1)
 			manager.setCriteriaProgress(p, adv, 1);
