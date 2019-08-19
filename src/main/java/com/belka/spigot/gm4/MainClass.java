@@ -74,6 +74,7 @@ public class MainClass extends JavaPlugin {
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
+		PigTractors pigTractors = new PigTractors(this);
 
         registerClasses(this,
                 storage,
@@ -95,6 +96,7 @@ public class MainClass extends JavaPlugin {
 				betterArmorStands,
 				betterFire,
 				chairs,
+                pigTractors,
                 desireLines,
 				enderHoppers,
                 endermanSupportClass,

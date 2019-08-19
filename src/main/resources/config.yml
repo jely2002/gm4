@@ -6,6 +6,8 @@ BetterArmorStands:
   enabled: true
 BlastFurnaces:
   enabled: true
+PigTractors:
+  enabled: true
 Chairs:
   enabled: true
 CustomCrafter:
