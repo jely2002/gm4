@@ -6,8 +6,6 @@ BetterArmorStands:
   enabled: true
 BlastFurnaces:
   enabled: true
-PigTractors:
-  enabled: true
 Chairs:
   enabled: true
 CustomCrafter:
@@ -31,6 +29,8 @@ HeartCanisters:
 InkSpittingSquid:
   enabled: true
 LightningRods:
+  enabled: true
+PigTractors:
   enabled: true
 SoulProbes:
   enabled: true

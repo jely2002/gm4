@@ -68,13 +68,13 @@ public class MainClass extends JavaPlugin {
 		EnderHoppers enderHoppers = new EnderHoppers(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass();
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
+        PigTractors pigTractors = new PigTractors(this);
 		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
 		speedPaths = new SpeedPaths(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
-		PigTractors pigTractors = new PigTractors(this);
 
         registerClasses(this,
                 storage,
@@ -96,11 +96,11 @@ public class MainClass extends JavaPlugin {
 				betterArmorStands,
 				betterFire,
 				chairs,
-                pigTractors,
                 desireLines,
 				enderHoppers,
                 endermanSupportClass,
                 inkSpittingSquid,
+                pigTractors,
 				soulProbes,
 				spawnerMinecarts,
                 speedPaths,
