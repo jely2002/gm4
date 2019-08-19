@@ -106,22 +106,27 @@ public class PigTractors implements Listener {
                         if (item.getType() == Material.POTATO) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.POTATOES);
+                            e.getPlayer().sendMessage("placed a crop");
                             return;
                         } else if (item.getType() == Material.CARROT) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.CARROTS);
+                            e.getPlayer().sendMessage("placed a crop");
                             return;
                         } else if (item.getType() == Material.BEETROOT_SEEDS) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.BEETROOTS);
+                            e.getPlayer().sendMessage("placed a crop");
                             return;
                         } else if (item.getType() == Material.WHEAT_SEEDS) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.WHEAT);
+                            e.getPlayer().sendMessage("placed a crop");
                             return;
                         } else if (item.getType() == Material.NETHER_WART) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.NETHER_WART_BLOCK);
+                            e.getPlayer().sendMessage("placed a crop");
                             return;
                         }
                     }
@@ -132,6 +137,7 @@ public class PigTractors implements Listener {
                             Ageable age = (Ageable) bdata;
                             if (age.getAge() == age.getMaximumAge()) {
                                 e.getTo().getBlock().breakNaturally();
+                                e.getPlayer().sendMessage("broken a crop");
                                 return;
                             }
                         }
@@ -141,6 +147,7 @@ public class PigTractors implements Listener {
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
                 removeDurability(e.getPlayer().getInventory());
+                e.getPlayer().sendMessage("made farmland");
             }
         }
     }
