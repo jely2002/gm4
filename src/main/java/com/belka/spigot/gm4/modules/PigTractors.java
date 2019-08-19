@@ -3,6 +3,8 @@ package com.belka.spigot.gm4.modules;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -82,8 +84,14 @@ public class PigTractors implements Listener {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
 			Location blockBelowFrom = new Location(e.getFrom().getWorld(), e.getFrom().getBlockX(), e.getFrom().getBlockY() - 1, e.getFrom().getBlockZ());
 			if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
-                e.getTo().getBlock().breakNaturally();
-                return;
+                BlockData bdata = e.getTo().getBlock().getBlockData();
+                if(bdata instanceof Ageable) {
+                    Ageable age = (Ageable) bdata;
+                    if (age.getAge() == age.getMaximumAge()) {
+                        e.getTo().getBlock().breakNaturally();
+                        return;
+                    }
+                }
             }
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
