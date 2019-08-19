@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.Ageable;
@@ -98,11 +99,15 @@ public class PigTractors implements Listener {
 
     @EventHandler
     public void isRiding(PlayerMoveEvent e) {
-        if(isDisabled()) return;
+        if (isDisabled()) return;
         if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
-        if(playersOnTractor.contains(e.getPlayer().getName())) {
+        if (playersOnTractor.contains(e.getPlayer().getName())) {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
+            blockBelow = e.getTo().subtract(0,1,0);
 			Location blockBelowFrom = new Location(e.getFrom().getWorld(), e.getFrom().getBlockX(), e.getFrom().getBlockY() - 1, e.getFrom().getBlockZ());
+			blockBelowFrom = e.getFrom().subtract(0,1,0);
+            Bukkit.broadcastMessage("blockBelow " + blockBelow.getBlock().getType());
+            Bukkit.broadcastMessage("blockBelowFrom " + blockBelowFrom.getBlock().getType());
             if(e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.BEETROOTS || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.CARROTS || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.POTATOES ||e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.WHEAT || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.NETHER_WART_BLOCK) {
                 BlockData bdata = e.getTo().getBlock().getBlockData();
                 if(bdata instanceof Ageable) {
