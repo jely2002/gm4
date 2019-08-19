@@ -12,7 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -30,6 +32,18 @@ public class PigTractors implements Listener {
 
     private boolean isDisabled() {
         return !mc.storage().config().getBoolean("PigTractors.enabled");
+    }
+
+    private void removeDurability(Inventory inv) {
+        for(int i = 0; i < 35; ++i) {
+            if(inv.getItem(i).getType() == Material.DIAMOND_HOE || inv.getItem(i).getType() == Material.GOLDEN_HOE || inv.getItem(i).getType() == Material.IRON_HOE || inv.getItem(i).getType() == Material.STONE_HOE || inv.getItem(i).getType() == Material.WOODEN_HOE) {
+                if(inv.getItem(i) instanceof  Damageable) {
+                    ((Damageable) inv.getItem(i)).setDamage(((Damageable) inv.getItem(i)).getDamage() + 1);
+                }
+                break;
+            }
+
+        }
     }
 
     @EventHandler
@@ -95,7 +109,7 @@ public class PigTractors implements Listener {
             }
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
-                //TODO Remove durability
+                removeDurability(e.getPlayer().getInventory());
             }
             if(blockBelowFrom.getBlock().getType() == Material.FARMLAND) {
                 if(e.getFrom().getBlock().getType() == Material.BEETROOTS || e.getFrom().getBlock().getType() == Material.CARROTS || e.getFrom().getBlock().getType() == Material.POTATOES ||e.getFrom().getBlock().getType() == Material.WHEAT || e.getFrom().getBlock().getType() == Material.NETHER_WART_BLOCK) return;
