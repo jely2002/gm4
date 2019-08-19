@@ -103,12 +103,13 @@ public class PigTractors implements Listener {
         if(playersOnTractor.contains(e.getPlayer().getName())) {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
 			Location blockBelowFrom = new Location(e.getFrom().getWorld(), e.getFrom().getBlockX(), e.getFrom().getBlockY() - 1, e.getFrom().getBlockZ());
-            if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
+            if(e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.BEETROOTS || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.CARROTS || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.POTATOES ||e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.WHEAT || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.NETHER_WART_BLOCK) {
                 BlockData bdata = e.getTo().getBlock().getBlockData();
                 if(bdata instanceof Ageable) {
                     Ageable age = (Ageable) bdata;
                     if (age.getAge() == age.getMaximumAge()) {
                         e.getTo().getBlock().breakNaturally();
+                        e.getPlayer().sendMessage("Broken crop");
                         return;
                     }
                 }
@@ -121,22 +122,27 @@ public class PigTractors implements Listener {
                         if (item.getType() == Material.POTATO) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.POTATOES);
+                            e.getPlayer().sendMessage("Placed crop");
                             break;
                         } else if (item.getType() == Material.CARROT) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.CARROTS);
+                            e.getPlayer().sendMessage("Placed crop");
                             break;
                         } else if (item.getType() == Material.BEETROOT_SEEDS) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.BEETROOTS);
+                            e.getPlayer().sendMessage("Placed crop");
                             break;
                         } else if (item.getType() == Material.WHEAT_SEEDS) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.WHEAT);
+                            e.getPlayer().sendMessage("Placed crop");
                             break;
                         } else if (item.getType() == Material.NETHER_WART) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.NETHER_WART_BLOCK);
+                            e.getPlayer().sendMessage("Placed crop");
                             break;
                         }
                     }
@@ -146,6 +152,7 @@ public class PigTractors implements Listener {
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
                 removeDurability(e.getPlayer().getInventory());
+                e.getPlayer().sendMessage("made farmland");
             }
         }
     }
