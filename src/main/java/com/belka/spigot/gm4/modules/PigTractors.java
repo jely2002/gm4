@@ -67,6 +67,7 @@ public class PigTractors implements Listener {
             Player p = (Player) e.getEntity();
             if(p.getInventory().contains(Material.WOODEN_HOE) || p.getInventory().contains(Material.STONE_HOE) || p.getInventory().contains(Material.IRON_HOE) || p.getInventory().contains(Material.GOLDEN_HOE) || p.getInventory().contains(Material.DIAMOND_HOE)) {
                 if(p.isInsideVehicle() && p.getVehicle() instanceof Pig) {
+                	if(playersOnTractor.contains(p.getName())) return;
                     playersOnTractor.add(p.getName());
                 }
             }
@@ -79,7 +80,8 @@ public class PigTractors implements Listener {
         if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
         if(playersOnTractor.contains(e.getPlayer().getName())) {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
-            if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
+			Location blockBelowFrom = new Location(e.getFrom().getWorld(), e.getFrom().getBlockX(), e.getFrom().getBlockY() - 1, e.getFrom().getBlockZ());
+			if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
                 e.getTo().getBlock().breakNaturally();
                 return;
             }
@@ -87,29 +89,29 @@ public class PigTractors implements Listener {
                 blockBelow.getBlock().setType(Material.FARMLAND);
                 //TODO Remove durability
             }
-            if(blockBelow.getBlock().getType() == Material.FARMLAND) {
-                if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) return;
+            if(blockBelowFrom.getBlock().getType() == Material.FARMLAND) {
+                if(e.getFrom().getBlock().getType() == Material.BEETROOTS || e.getFrom().getBlock().getType() == Material.CARROTS || e.getFrom().getBlock().getType() == Material.POTATOES ||e.getFrom().getBlock().getType() == Material.WHEAT || e.getFrom().getBlock().getType() == Material.NETHER_WART_BLOCK) return;
                 for(int i = 0; i < 35; ++i) {
                     ItemStack item = e.getPlayer().getInventory().getItem(i);
                     if(item.getType() == Material.POTATO) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.POTATOES);
+                        e.getFrom().add(0,0.0625, 0).getBlock().setType(Material.POTATOES);
                         break;
                     } else if(item.getType() == Material.CARROT) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.CARROTS);
+                        e.getFrom().add(0,0.0625, 0).getBlock().setType(Material.CARROTS);
                         break;
                     } else if(item.getType() == Material.BEETROOT_SEEDS) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.BEETROOTS);
+                        e.getFrom().add(0,0.0625, 0).getBlock().setType(Material.BEETROOTS);
                         break;
                     } else if(item.getType()== Material.WHEAT_SEEDS){
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.WHEAT);
+                        e.getFrom().add(0,0.0625, 0).getBlock().setType(Material.WHEAT);
                         break;
                     } else if(item.getType() == Material.NETHER_WART) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.NETHER_WART_BLOCK);
+                        e.getFrom().add(0,0.0625, 0).getBlock().setType(Material.NETHER_WART_BLOCK);
                         break;
                     }
                 }
