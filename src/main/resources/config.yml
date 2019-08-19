@@ -73,7 +73,7 @@ WeightedArmour:
       leggings: 6
       chestplate: 8
       helmet: 3
-XPStorage:
+XpStorage:
   enabled: true
 ZauberCauldrons:
   enabled: true
