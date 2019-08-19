@@ -108,7 +108,7 @@ public class PigTractors implements Listener {
                 }
             }
             if(blockBelowFrom.getBlock().getType() == Material.FARMLAND) {
-                if(!(e.getFrom().getBlock().getType() == Material.BEETROOTS || e.getFrom().getBlock().getType() == Material.CARROTS || e.getFrom().getBlock().getType() == Material.POTATOES ||e.getFrom().getBlock().getType() == Material.WHEAT || e.getFrom().getBlock().getType() == Material.NETHER_WART_BLOCK)) {
+                if(e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.BEETROOTS || e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.CARROTS || e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.POTATOES ||e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.WHEAT || e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.NETHER_WART_BLOCK) {
                     for (int i = 0; i < 35; ++i) {
                         if (e.getPlayer().getInventory().getItem(i) == null) break;
                         ItemStack item = e.getPlayer().getInventory().getItem(i);
@@ -134,8 +134,8 @@ public class PigTractors implements Listener {
                             break;
                         }
                     }
-                    return;
                 }
+                return;
             }
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
