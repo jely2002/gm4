@@ -34,6 +34,10 @@ public class PigTractors implements Listener {
         return !mc.storage().config().getBoolean("PigTractors.enabled");
     }
 
+    private void callAchievement(Player p) {
+        Advancements.grantAdvancement("oink_tractors", p);
+    }
+
     private void removeDurability(Inventory inv) {
         for(int i = 0; i < 35; ++i) {
             if(inv.getItem(i) == null) continue;
@@ -53,6 +57,7 @@ public class PigTractors implements Listener {
             Player p = (Player) e.getEntity();
             if(p.getInventory().contains(Material.WOODEN_HOE) || p.getInventory().contains(Material.STONE_HOE) || p.getInventory().contains(Material.IRON_HOE) || p.getInventory().contains(Material.GOLDEN_HOE) || p.getInventory().contains(Material.DIAMOND_HOE)) {
                 playersOnTractor.add(p.getName());
+                callAchievement(p);
             }
         }
     }
@@ -85,6 +90,7 @@ public class PigTractors implements Listener {
                 if(p.isInsideVehicle() && p.getVehicle() instanceof Pig) {
                 	if(playersOnTractor.contains(p.getName())) return;
                     playersOnTractor.add(p.getName());
+                    callAchievement(p);
                 }
             }
         }
