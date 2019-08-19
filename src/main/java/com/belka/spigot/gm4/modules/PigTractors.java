@@ -81,33 +81,35 @@ public class PigTractors implements Listener {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
             if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
                 e.getTo().getBlock().breakNaturally();
+                return;
             }
-            if(blockBelow.getBlock().getType() == Material.DIRT) {
+            if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
                 //TODO Remove durability
             }
             if(blockBelow.getBlock().getType() == Material.FARMLAND) {
+                if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) return;
                 for(int i = 0; i < 35; ++i) {
                     ItemStack item = e.getPlayer().getInventory().getItem(i);
                     if(item.getType() == Material.POTATO) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().getBlock().setType(Material.POTATOES);
+                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.POTATOES);
                         break;
                     } else if(item.getType() == Material.CARROT) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().getBlock().setType(Material.CARROTS);
+                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.CARROTS);
                         break;
                     } else if(item.getType() == Material.BEETROOT_SEEDS) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().getBlock().setType(Material.BEETROOTS);
+                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.BEETROOTS);
                         break;
                     } else if(item.getType()== Material.WHEAT_SEEDS){
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().getBlock().setType(Material.WHEAT);
+                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.WHEAT);
                         break;
                     } else if(item.getType() == Material.NETHER_WART) {
                         item.setAmount(item.getAmount() - 1);
-                        e.getTo().getBlock().setType(Material.NETHER_WART_BLOCK);
+                        e.getTo().add(0,0.0625, 0).getBlock().setType(Material.NETHER_WART_BLOCK);
                         break;
                     }
                 }
