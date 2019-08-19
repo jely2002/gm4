@@ -36,7 +36,7 @@ public class PigTractors implements Listener {
 
     private void removeDurability(Inventory inv) {
         for(int i = 0; i < 35; ++i) {
-            if(inv.getItem(i) == null) break;
+            if(inv.getItem(i) == null) continue;
             if(inv.getItem(i).getType() == Material.DIAMOND_HOE || inv.getItem(i).getType() == Material.GOLDEN_HOE || inv.getItem(i).getType() == Material.IRON_HOE || inv.getItem(i).getType() == Material.STONE_HOE || inv.getItem(i).getType() == Material.WOODEN_HOE) {
                 if(inv.getItem(i) instanceof  Damageable) {
                     ((Damageable) inv.getItem(i)).setDamage(((Damageable) inv.getItem(i)).getDamage() + 1);
@@ -99,55 +99,47 @@ public class PigTractors implements Listener {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
 			Location blockBelowFrom = new Location(e.getFrom().getWorld(), e.getFrom().getBlockX(), e.getFrom().getBlockY() - 1, e.getFrom().getBlockZ());
             if(blockBelowFrom.getBlock().getType() == Material.FARMLAND) {
-                if (!(e.getFrom().getBlock().getType() == Material.BEETROOTS || e.getFrom().getBlock().getType() == Material.CARROTS || e.getFrom().getBlock().getType() == Material.POTATOES || e.getFrom().getBlock().getType() == Material.WHEAT || e.getFrom().getBlock().getType() == Material.NETHER_WART_BLOCK)) {
+                if(!(e.getFrom().getBlock().getType() == Material.BEETROOTS || e.getFrom().getBlock().getType() == Material.CARROTS || e.getFrom().getBlock().getType() == Material.POTATOES ||e.getFrom().getBlock().getType() == Material.WHEAT || e.getFrom().getBlock().getType() == Material.NETHER_WART_BLOCK)) {
                     for (int i = 0; i < 35; ++i) {
                         if (e.getPlayer().getInventory().getItem(i) == null) break;
                         ItemStack item = e.getPlayer().getInventory().getItem(i);
                         if (item.getType() == Material.POTATO) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.POTATOES);
-                            e.getPlayer().sendMessage("placed a crop");
-                            return;
+                            break;
                         } else if (item.getType() == Material.CARROT) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.CARROTS);
-                            e.getPlayer().sendMessage("placed a crop");
-                            return;
+                            break;
                         } else if (item.getType() == Material.BEETROOT_SEEDS) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.BEETROOTS);
-                            e.getPlayer().sendMessage("placed a crop");
-                            return;
+                            break;
                         } else if (item.getType() == Material.WHEAT_SEEDS) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.WHEAT);
-                            e.getPlayer().sendMessage("placed a crop");
-                            return;
+                            break;
                         } else if (item.getType() == Material.NETHER_WART) {
                             item.setAmount(item.getAmount() - 1);
                             e.getFrom().add(0, 0.0625, 0).getBlock().setType(Material.NETHER_WART_BLOCK);
-                            e.getPlayer().sendMessage("placed a crop");
-                            return;
+                            break;
                         }
                     }
-                } else {
-                    if (e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES || e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
-                        BlockData bdata = e.getTo().getBlock().getBlockData();
-                        if (bdata instanceof Ageable) {
-                            Ageable age = (Ageable) bdata;
-                            if (age.getAge() == age.getMaximumAge()) {
-                                e.getTo().getBlock().breakNaturally();
-                                e.getPlayer().sendMessage("broken a crop");
-                                return;
-                            }
-                        }
+                }
+            }
+			if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
+                BlockData bdata = e.getTo().getBlock().getBlockData();
+                if(bdata instanceof Ageable) {
+                    Ageable age = (Ageable) bdata;
+                    if (age.getAge() == age.getMaximumAge()) {
+                        e.getTo().getBlock().breakNaturally();
+                        return;
                     }
                 }
             }
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
                 blockBelow.getBlock().setType(Material.FARMLAND);
                 removeDurability(e.getPlayer().getInventory());
-                e.getPlayer().sendMessage("made farmland");
             }
         }
     }
