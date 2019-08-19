@@ -41,7 +41,6 @@ public class PigTractors implements Listener {
                 if(inv.getItem(i) instanceof  Damageable) {
                     ((Damageable) inv.getItem(i)).setDamage(((Damageable) inv.getItem(i)).getDamage() + 1);
                 }
-                return;
             }
 
         }
@@ -98,6 +97,16 @@ public class PigTractors implements Listener {
         if(playersOnTractor.contains(e.getPlayer().getName())) {
             Location blockBelow = new Location(e.getTo().getWorld(), e.getTo().getBlockX(), e.getTo().getBlockY() - 1, e.getTo().getBlockZ());
 			Location blockBelowFrom = new Location(e.getFrom().getWorld(), e.getFrom().getBlockX(), e.getFrom().getBlockY() - 1, e.getFrom().getBlockZ());
+            if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
+                BlockData bdata = e.getTo().getBlock().getBlockData();
+                if(bdata instanceof Ageable) {
+                    Ageable age = (Ageable) bdata;
+                    if (age.getAge() == age.getMaximumAge()) {
+                        e.getTo().getBlock().breakNaturally();
+                        return;
+                    }
+                }
+            }
             if(blockBelowFrom.getBlock().getType() == Material.FARMLAND) {
                 if(!(e.getFrom().getBlock().getType() == Material.BEETROOTS || e.getFrom().getBlock().getType() == Material.CARROTS || e.getFrom().getBlock().getType() == Material.POTATOES ||e.getFrom().getBlock().getType() == Material.WHEAT || e.getFrom().getBlock().getType() == Material.NETHER_WART_BLOCK)) {
                     for (int i = 0; i < 35; ++i) {
@@ -125,16 +134,7 @@ public class PigTractors implements Listener {
                             break;
                         }
                     }
-                }
-            }
-			if(e.getTo().getBlock().getType() == Material.BEETROOTS || e.getTo().getBlock().getType() == Material.CARROTS || e.getTo().getBlock().getType() == Material.POTATOES ||e.getTo().getBlock().getType() == Material.WHEAT || e.getTo().getBlock().getType() == Material.NETHER_WART_BLOCK) {
-                BlockData bdata = e.getTo().getBlock().getBlockData();
-                if(bdata instanceof Ageable) {
-                    Ageable age = (Ageable) bdata;
-                    if (age.getAge() == age.getMaximumAge()) {
-                        e.getTo().getBlock().breakNaturally();
-                        return;
-                    }
+                    return;
                 }
             }
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
