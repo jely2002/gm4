@@ -96,8 +96,8 @@ public class PigTractors implements Listener {
             }
         }
     }
-
-    @EventHandler
+//TODO Add working behavior.
+    /*@EventHandler
     public void isRiding(PlayerMoveEvent e) {
         if (isDisabled()) return;
         if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
@@ -109,7 +109,8 @@ public class PigTractors implements Listener {
             Bukkit.broadcastMessage("blockBelow " + blockBelow.getBlock().getType());
             Bukkit.broadcastMessage("blockBelowFrom " + blockBelowFrom.getBlock().getType());
             if(e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.BEETROOTS || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.CARROTS || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.POTATOES ||e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.WHEAT || e.getTo().add(0, 0.0625, 0).getBlock().getType() == Material.NETHER_WART_BLOCK) {
-                BlockData bdata = e.getTo().getBlock().getBlockData();
+                e.getPlayer().sendMessage("1");
+            	BlockData bdata = e.getTo().getBlock().getBlockData();
                 if(bdata instanceof Ageable) {
                     Ageable age = (Ageable) bdata;
                     if (age.getAge() == age.getMaximumAge()) {
@@ -120,6 +121,7 @@ public class PigTractors implements Listener {
                 }
             }
             if(blockBelowFrom.getBlock().getType() == Material.FARMLAND) {
+            	e.getPlayer().sendMessage("2");
                 if(e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.BEETROOTS || e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.CARROTS || e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.POTATOES ||e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.WHEAT || e.getFrom().add(0, 0.0625, 0).getBlock().getType() != Material.NETHER_WART_BLOCK) {
                     for (int i = 0; i < 35; ++i) {
                         if (e.getPlayer().getInventory().getItem(i) == null) break;
@@ -155,10 +157,11 @@ public class PigTractors implements Listener {
                 return;
             }
             if(blockBelow.getBlock().getType() == Material.DIRT || blockBelow.getBlock().getType() == Material.GRASS_BLOCK) {
+            	e.getPlayer().sendMessage("3");
                 blockBelow.getBlock().setType(Material.FARMLAND);
-                removeDurability(e.getPlayer().getInventory());
+//                removeDurability(e.getPlayer().getInventory());
                 e.getPlayer().sendMessage("made farmland");
             }
         }
-    }
+    }*/
 }
