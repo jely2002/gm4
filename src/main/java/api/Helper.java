@@ -94,4 +94,11 @@ public class Helper {
 		World world = Bukkit.getWorld(a[3].split(":")[1]);
 		return new Location(world, x, y, z);
 	}
+
+	public static boolean allEqual(Object... objs) {
+		if(objs.length < 2) return true; // 0 or 1 objects are all equal
+		Object key = objs[0]; // pick one
+		for(Object o : objs) if(!o.equals(key)) return false;
+		return true;
+	}
 }

@@ -16,6 +16,9 @@ CustomCrafter:
   BlastFurnace: true
   Disassembler: true
   EquivalentExchange: true
+CustomTerrain:
+  enabled: true
+  CoolerCaves: true
 DesireLines:
   enabled: true
   max: 50

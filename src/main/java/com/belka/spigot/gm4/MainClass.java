@@ -7,6 +7,7 @@ import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
+import com.belka.spigot.gm4.customTerrain.CustomTerrain;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
@@ -59,6 +60,9 @@ public class MainClass extends JavaPlugin {
 		LightningRods lightningRods = new LightningRods(this);
 		TrappedSigns trappedSigns = new TrappedSigns(this);
 
+//		Custom Terrain
+		CustomTerrain customTerrain = new CustomTerrain(this);
+
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
@@ -91,6 +95,8 @@ public class MainClass extends JavaPlugin {
                 lightningRods,
 				trappedSigns,
 
+				customTerrain,
+
 				advancements,
 				batGrenades,
 				betterArmorStands,
@@ -118,7 +124,7 @@ public class MainClass extends JavaPlugin {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			Advancements.manager.saveProgress(p, "gm4");
 		}
-		Advancements.manager.setAnnounceAdvancementMessages(true);
+//		Advancements.manager.setAnnounceAdvancementMessages(true);
     }
 
     public ConfigManager storage() {
