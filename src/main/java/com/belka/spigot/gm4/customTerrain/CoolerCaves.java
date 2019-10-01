@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
+import com.google.common.util.concurrent.RateLimiter;
 import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -13,7 +14,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Level;
 
-class CoolerCaves {
+public class CoolerCaves {
 	/*
 	update per chunk, updated chunk changes bottom bedrock to barrier
 
@@ -22,8 +23,19 @@ class CoolerCaves {
 	for ^ chunks go ± X,Y,Z chunk > check chunk
 	max 10 chunks per direction (render distance)
 	 */
+	private static MainClass mc;
+	public CoolerCaves(MainClass mc) {
+		this.mc = mc;
+	}
+
 	private static List<BiomeGroup> updatable = Arrays.asList(BiomeGroup.SNOWY, BiomeGroup.OCEAN, BiomeGroup.DESERT, BiomeGroup.BADLANDS);
 	private static BiomeGroup[] updatableArray = updatable.toArray(new BiomeGroup[0]);
+	private static List<Material> updatableBlocks = Arrays.asList(Material.GRASS, Material.DANDELION, Material.POPPY, Material.ALLIUM, Material.AZURE_BLUET, Material.OXEYE_DAISY, Material.ORANGE_TULIP, Material.PINK_TULIP, Material.RED_TULIP, Material.WHITE_TULIP,
+			Material.STONE, Material.GRASS_BLOCK, Material.DIRT, Material.DIORITE, Material.ANDESITE, Material.SAND, Material.LAVA, Material.OBSIDIAN, Material.OAK_PLANKS, Material.OAK_FENCE, Material.GRAVEL);
+
+	private static RateLimiter limiter = RateLimiter.create(16384.0);
+	private static List<Pair<Map.Entry<Location, Material>, BiomeGroup>> replacements = new ArrayList<>();
+	private static boolean isReplacing = false;
 
 	static void loadChunk(Chunk c) {
 		Location corner = new Location(c.getWorld(), c.getX() * 16, 0, c.getZ() * 16);
@@ -47,7 +59,9 @@ class CoolerCaves {
 						if (bg.size() == 0) return;
 						Map<Location, Material> blockMap = new HashMap<>();
 						for(int y = 0; y < cs.getHighestBlockYAt(x, z); y++) {
-							blockMap.put(new Location(c.getWorld(), cs.getX()*16+x, y, cs.getZ()*16+z), cs.getBlockType(x, y, z));
+							Material mat = cs.getBlockType(x, y, z);
+							if (updatableBlocks.contains(mat))
+								blockMap.put(new Location(c.getWorld(), cs.getX()*16+x, y, cs.getZ()*16+z), mat);
 						}
 						updateBlocks(blockMap, bg.get(0));
 					}
@@ -62,36 +76,42 @@ class CoolerCaves {
 				Map<Location, Material> blockMap = new HashMap<>();
 				for(int y = 0; y < cs.getHighestBlockYAt(x, z); y++) {
 					Material mat = cs.getBlockType(x, y, z);
-					if (mat == Material.GRASS || mat == Material.DANDELION || mat == Material.POPPY || mat == Material.ALLIUM || mat == Material.AZURE_BLUET || mat == Material.OXEYE_DAISY || mat == Material.ORANGE_TULIP || mat == Material.PINK_TULIP || mat == Material.RED_TULIP || mat == Material.WHITE_TULIP ||
-							mat == Material.STONE || mat == Material.GRASS_BLOCK || mat == Material.DIRT || mat == Material.DIORITE || mat == Material.ANDESITE || mat == Material.SAND || mat == Material.LAVA || mat == Material.OBSIDIAN || mat == Material.OAK_PLANKS || mat == Material.OAK_FENCE || mat == Material.GRAVEL)
+					if (updatableBlocks.contains(mat))
 						blockMap.put(new Location(w, cs.getX()*16+x, y, cs.getZ()*16+z), mat);
 				}
 				updateBlocks(blockMap, group);
 			}
 		}
-//		final List<String> blocksRaw = mc.getConfig().getStringList("");
-//		int count = 1;
-//		for(int counter = 0; counter < blocksRaw.size(); counter++) {
-//			final int finalCounter = counter;
-//			Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
-//				String[] rawArray = blocksRaw.get(finalCounter).split(", ");
-//				Location location = new Location(Bukkit.getWorlds().get(0), Integer.parseInt(rawArray[1]), Integer.parseInt(rawArray[2]), Integer.parseInt(rawArray[3]));
-//				Block block = location.add(0,0,0).getBlock();
-//				block.setType(Objects.requireNonNull(Material.getMaterial(rawArray[4])));
-//			}, count);
-//			if(counter % 3 == 0) {
-//				count++;
-//			}
-//		}
 	}
 	private static void updateBlocks(Map<Location, Material> blockMap, BiomeGroup group) {
 		Bukkit.broadcastMessage(ChatColor.GOLD + "update " + blockMap.size());
-//		for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
-//			setReplacement(block, group);
-//		}
+		for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
+			replacements.add(new Pair<>(block, group));
+			setReplacement(block, group);
+		}
+//		startReplacing();
+	}
+
+	private static void startReplacing() {
+		if (isReplacing) return;
+
+		int count = 1;
+		for(int counter = 0; counter < replacements.size(); counter++) {
+			final int finalCounter = counter;
+			Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
+				Pair<Map.Entry<Location, Material>, BiomeGroup> pair = replacements.get(finalCounter);
+				setReplacement(pair.getKey(), pair.getValue());
+			}, count);
+
+			if(counter % 3 == 0) {
+				count++;
+			}
+		}
+		isReplacing = true;
 	}
 
 	private static void setReplacement(Map.Entry<Location, Material> map, BiomeGroup group) {
+		limiter.acquire();
 		Block b = map.getKey().getBlock();
 		Material mat = map.getValue();
 		switch (group) {

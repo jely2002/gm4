@@ -17,7 +17,6 @@ import java.util.List;
 public class CustomTerrain implements Listener {
 
 	private MainClass mc;
-
 	public CustomTerrain(MainClass mc) {
 		this.mc = mc;
 	}

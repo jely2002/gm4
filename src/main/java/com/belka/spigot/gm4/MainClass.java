@@ -7,6 +7,7 @@ import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
+import com.belka.spigot.gm4.customTerrain.CoolerCaves;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
@@ -62,6 +63,7 @@ public class MainClass extends JavaPlugin {
 
 //		Custom Terrain
 		CustomTerrain customTerrain = new CustomTerrain(this);
+        CoolerCaves coolerCaves = new CoolerCaves(this);
 
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
