@@ -48,6 +48,7 @@ public class CustomTerrain implements Listener {
 //				i++;
 //				Bukkit.broadcastMessage(i + ": " + c.getX() + " " + c.getZ());
 //				Bukkit.getScheduler().runTaskAsynchronously(mc, () -> {
+				Bukkit.broadcastMessage("Chunk");
 					CoolerCaves.loadChunk(c);
 //				});
 			}
