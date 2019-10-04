@@ -2,17 +2,10 @@ package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.google.common.util.concurrent.RateLimiter;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.world.block.BlockTypes;
+import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Snow;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -35,12 +28,12 @@ public class CoolerCaves {
 	private static List<Material> updatableBlocks = Arrays.asList(Material.GRASS, Material.DANDELION, Material.POPPY, Material.ALLIUM, Material.AZURE_BLUET, Material.OXEYE_DAISY, Material.ORANGE_TULIP, Material.PINK_TULIP, Material.RED_TULIP, Material.WHITE_TULIP,
 			Material.STONE, Material.GRASS_BLOCK, Material.DIRT, Material.DIORITE, Material.ANDESITE, Material.SAND, Material.LAVA, Material.OBSIDIAN, Material.OAK_PLANKS, Material.OAK_FENCE, Material.GRAVEL);
 
-	private static RateLimiter limiter = RateLimiter.create(1.0);
+//	private static RateLimiter limiter = RateLimiter.create(1.0);
 	private static int blocks = 0;
-//	private static List<Pair<Map.Entry<Location, Material>, BiomeGroup>> replacements = new ArrayList<>();
-//	private static boolean isReplacing = false;
+	private static List<Pair<Map.Entry<Location, Material>, BiomeGroup>> replacements = new ArrayList<>();
+	private static boolean isReplacing = false;
 
-	private static EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(Bukkit.getWorlds().get(0)), -1);
+//	private static EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(Bukkit.getWorlds().get(0)), -1);
 
 	static void loadChunk(Chunk c) {
 		Location corner = new Location(c.getWorld(), c.getX() * 16, 0, c.getZ() * 16);
@@ -51,7 +44,7 @@ public class CoolerCaves {
 			List<BiomeGroup> neB = BiomeGroup.getBiomeGroups(cs.getBiome(15, 0), updatableArray);
 			List<BiomeGroup> seB = BiomeGroup.getBiomeGroups(cs.getBiome(15, 15), updatableArray);
 			List<BiomeGroup> swB = BiomeGroup.getBiomeGroups(cs.getBiome(0, 15), updatableArray);
-
+			Bukkit.broadcastMessage(nwB.size() + " " + neB.size() + " " + seB.size() + " " + swB.size());
 			if (nwB.size() == 0 && neB.size() == 0 && seB.size() == 0 && swB.size() == 0) return;
 
 			if (Helper.allEqual(nwB, neB, seB, swB)) { //If chunk corners have same biome
@@ -89,11 +82,12 @@ public class CoolerCaves {
 		}
 	}
 	private static void updateBlocks(Map<Location, Material> blockMap, BiomeGroup group) {
+		Bukkit.broadcastMessage("updateBlocks " + group.name());
 		for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
-//			replacements.add(new Pair<>(block, group));
-			setReplacement(block, group);
+			replacements.add(new Pair<>(block, group));
+//			setReplacement(block, group);
 		}
-//		startReplacing();
+		updateBlocks();
 	}
 
 //	private static void startReplacing() {
@@ -118,6 +112,7 @@ public class CoolerCaves {
 //		limiter.acquire();
 		Block b = map.getKey().getBlock();
 		Material mat = map.getValue();
+		blocks++;
 //		switch (group) {
 //			case SNOWY:
 //				switch (mat) {
@@ -163,37 +158,42 @@ public class CoolerCaves {
 //		}
 		switch (group) {
 			case SNOWY:
-				Bukkit.broadcastMessage("SNOWY");
+				Bukkit.broadcastMessage(blocks + " SNOWY " + mat.name() + " " + group.name());
 				switch (mat) {
 					case GRASS:
 						b.setType(Material.SNOW);
 						((Snow) b.getBlockData()).setLayers(2);
+						break;
 					case DANDELION: case POPPY: case BLUE_ORCHID: case ALLIUM: case AZURE_BLUET: case OXEYE_DAISY: case ORANGE_TULIP: case PINK_TULIP: case RED_TULIP: case WHITE_TULIP:
 						b.setType(Material.SNOW);
 						((Snow) b.getBlockData()).setLayers(3);
-					case STONE: case GRASS_BLOCK: changeBlock(b, Material.SNOW_BLOCK);
-					case DIRT: case GRANITE: changeBlock(b, Material.PACKED_ICE);
-					case DIORITE: changeBlock(b, Material.BLUE_ICE);
-					case ANDESITE: changeBlock(b, Material.ICE);
-					case SAND: changeBlock(b, Material.WHITE_CONCRETE_POWDER);
-					case LAVA: case OBSIDIAN: changeBlock(b, Material.WATER);
+						break;
+					case STONE: case GRASS_BLOCK: changeBlock(b, Material.SNOW_BLOCK); break;
+					case DIRT: case GRANITE: changeBlock(b, Material.PACKED_ICE); break;
+					case DIORITE: changeBlock(b, Material.BLUE_ICE); break;
+					case ANDESITE: changeBlock(b, Material.ICE); break;
+					case SAND: changeBlock(b, Material.WHITE_CONCRETE_POWDER); break;
+					case LAVA: case OBSIDIAN: changeBlock(b, Material.WATER); break;
 				}
+				break;
 			case OCEAN:
-				Bukkit.broadcastMessage("OCEAN");
+				Bukkit.broadcastMessage(blocks + " OCEAN " + mat.name() + " " + group.name());
 				switch (mat) {
-					case OAK_PLANKS: changeBlock(b, Material.DARK_PRISMARINE);
-					case OAK_FENCE: changeBlock(b, Material.PRISMARINE_BRICKS);
+					case OAK_PLANKS: changeBlock(b, Material.DARK_PRISMARINE); break;
+					case OAK_FENCE: changeBlock(b, Material.PRISMARINE_BRICKS); break;
 				}
+				break;
 			case DESERT:
-				Bukkit.broadcastMessage("DESERT");
+				Bukkit.broadcastMessage(blocks + " DESERT " + mat.name() + " " + group.name());
 				switch (mat) {
-					case STONE: case GRANITE: case DIORITE: case ANDESITE: changeBlock(b, Material.SANDSTONE);
-					case GRAVEL: changeBlock(b, Material.SAND);
-					case OAK_PLANKS: changeBlock(b, Material.DARK_OAK_PLANKS);
-					case OAK_FENCE: changeBlock(b, Material.DARK_OAK_FENCE);
+					case STONE: case GRANITE: case DIORITE: case ANDESITE: changeBlock(b, Material.SANDSTONE); break;
+					case GRAVEL: changeBlock(b, Material.SAND); break;
+					case OAK_PLANKS: changeBlock(b, Material.DARK_OAK_PLANKS); break;
+					case OAK_FENCE: changeBlock(b, Material.DARK_OAK_FENCE); break;
 				}
+				break;
 			case BADLANDS:
-				Bukkit.broadcastMessage("BADLANDS");
+				Bukkit.broadcastMessage(blocks + " BADLANDS " + mat.name() + " " + group.name());
 				switch (mat) {
 					case STONE: case GRANITE: case DIORITE: case ANDESITE:
 						int y = map.getKey().getBlockY();
@@ -205,8 +205,10 @@ public class CoolerCaves {
 						else if (y < 58) changeBlock(b, Material.LIGHT_GRAY_TERRACOTTA);
 						else if (y < 62) changeBlock(b, Material.BROWN_TERRACOTTA);
 						else changeBlock(b, Material.TERRACOTTA);
-					case GRAVEL: changeBlock(b, Material.RED_SAND);
+						break;
+					case GRAVEL: changeBlock(b, Material.RED_SAND); break;
 				}
+				break;
 		}
 	}
 	private static void changeBlock(Block b, Material mat) {
@@ -221,9 +223,30 @@ public class CoolerCaves {
 //			@Override
 //			public void run() {
 				b.setType(mat,false);
-				blocks++;
 //				Bukkit.broadcastMessage(ChatColor.GOLD + "update i:" + blocks + " mat:" + mat.name() + " x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ());
 //			}
 //		}.runTask(mc);
+	}
+	private static void updateBlocks() {
+		if (isReplacing) return;
+		isReplacing = true;
+		final int[] task = new int[]{-1};
+		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+			int n = 1024;//16384
+			List<Pair<Map.Entry<Location, Material>, BiomeGroup>> tmp = new ArrayList<>();
+			for (int i = 0; i < n; i++) {
+				if (replacements.size() == 0) break;
+				tmp.add(replacements.get(0));
+				replacements.remove(0);
+			}
+			for (int i = 0; i < tmp.size(); i++) {
+				Pair<Map.Entry<Location, Material>, BiomeGroup> pair = tmp.get(i);
+				setReplacement(pair.getKey(), pair.getValue());
+				if (tmp.size() < n && i == tmp.size() - 1) {
+					Bukkit.getScheduler().cancelTask(task[0]);
+					isReplacing = false;
+				}
+			}
+		}, 0L, 20L);
 	}
 }
