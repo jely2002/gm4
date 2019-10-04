@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import com.belka.spigot.gm4.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;
@@ -43,16 +44,18 @@ public class BlastFurnaces implements Listener, Initializable {
 			enabled = false;
 			return;
 		}
-		ArrayList<String> blastFurnaces = new ArrayList<>(mc.storage().data().getConfigurationSection("BlastFurnaces").getKeys(false));
-		for (String uuid : blastFurnaces) {
-			ArmorStand as = (ArmorStand) Bukkit.getEntity(UUID.fromString(uuid));
-			int x = mc.storage().data().getInt("BlastFurnaces." + uuid + ".x");
-			int y = mc.storage().data().getInt("BlastFurnaces." + uuid + ".y");
-			int z = mc.storage().data().getInt("BlastFurnaces." + uuid + ".z");
-			World world = Bukkit.getWorld(mc.storage().data().getString("BlastFurnaces." + uuid + ".world"));
-			Block b = new Location(world, x, y, z).getBlock();
-			if (b.getState() instanceof Furnace) {
-				activeBlastFurnaces.put((Furnace) b.getState(), as);
+		if (mc.storage().data().getConfigurationSection("BlastFurnaces") != null) {
+			ArrayList<String> blastFurnaces = new ArrayList<>(mc.storage().data().getConfigurationSection("BlastFurnaces").getKeys(false));
+			for (String uuid : blastFurnaces) {
+				ArmorStand as = (ArmorStand) Bukkit.getEntity(UUID.fromString(uuid));
+				int x = mc.storage().data().getInt("BlastFurnaces." + uuid + ".x");
+				int y = mc.storage().data().getInt("BlastFurnaces." + uuid + ".y");
+				int z = mc.storage().data().getInt("BlastFurnaces." + uuid + ".z");
+				World world = Bukkit.getWorld(mc.storage().data().getString("BlastFurnaces." + uuid + ".world"));
+				Block b = new Location(world, x, y, z).getBlock();
+				if (b.getState() instanceof Furnace) {
+					activeBlastFurnaces.put((Furnace) b.getState(), as);
+				}
 			}
 		}
 	}

@@ -76,6 +76,7 @@ public class CustomCrafter implements Listener, Initializable {
                                 as.setMarker(true);
                                 as.setCustomName("CustomCrafter");
                                 as.setHelmet(new ItemStack(Material.CRAFTING_TABLE));
+                                as.addScoreboardTag("gm4");
 
 								dr.setCustomName("Custom Crafter");
 								dr.update();
@@ -170,6 +171,12 @@ public class CustomCrafter implements Listener, Initializable {
 			Block b = inv.getLocation().getBlock();
 			List<String> active = mc.storage().data().getStringList("CustomCrafter.customCrafters");
 			if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
+				for (Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
+					if (e instanceof ArmorStand && e.getScoreboardTags().contains("gm4")) {
+						Bukkit.broadcastMessage("Lit");
+						e.setFireTicks(Integer.MAX_VALUE);
+					}
+				}
 				mc.getServer().getScheduler().runTaskLater(mc, () -> {
 					Dropper dropper = (Dropper) b.getState();
 					rh.craft(dropper, (Player) inv.getViewers().get(0));

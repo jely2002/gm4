@@ -23,14 +23,14 @@ import java.util.logging.Level;
 
 public class MainClass extends JavaPlugin {
 
-    private CommandManager cmdMgmt;
-    private ConfigManager storage;
-    private MainCommands mCmds;
+	private CommandManager cmdMgmt;
+	private ConfigManager storage;
+	private MainCommands mCmds;
 
-    public SpeedPaths speedPaths;
+	public SpeedPaths speedPaths;
 
-    @Override
-    public void onEnable() {
+	@Override
+	public void onEnable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println("Oo---------------oO " + ConsoleColor.CYAN + ConsoleColor.BOLD + "Gamemode 4" + ConsoleColor.RESET + " Oo---------------oO");
 		System.out.println(ConsoleColor.GREEN + ConsoleColor.BOLD + "		Version " + pdfFile.getVersion() + ConsoleColor.RESET);
@@ -41,20 +41,20 @@ public class MainClass extends JavaPlugin {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
-        SettingsGUI gui = new SettingsGUI(this);
+		SettingsGUI gui = new SettingsGUI(this);
 		CustomItems customItems = new CustomItems();
 
-        cmdMgmt = new CommandManager(this, gui);
-        storage = new ConfigManager(this);
-        mCmds = new MainCommands(this, customItems);
+		cmdMgmt = new CommandManager(this, gui);
+		storage = new ConfigManager(this);
+		mCmds = new MainCommands(this, customItems);
 
-        Stats stats = new Stats();
+		Stats stats = new Stats();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
 
 //		Custom Crafting
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
-        CustomRecipes customRecipes = new CustomRecipes(this);
+		CustomRecipes customRecipes = new CustomRecipes(this);
 //      With Craftable Items
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		BlastFurnaces blastFurnaces = new BlastFurnaces(this);
@@ -63,7 +63,7 @@ public class MainClass extends JavaPlugin {
 
 //		Custom Terrain
 		CustomTerrain customTerrain = new CustomTerrain(this);
-        CoolerCaves coolerCaves = new CoolerCaves(this);
+		CoolerCaves coolerCaves = new CoolerCaves(this);
 
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
@@ -74,7 +74,7 @@ public class MainClass extends JavaPlugin {
 		EnderHoppers enderHoppers = new EnderHoppers(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass();
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
-        PigTractors pigTractors = new PigTractors(this);
+		PigTractors pigTractors = new PigTractors(this);
 		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
 		speedPaths = new SpeedPaths(this);
@@ -82,19 +82,19 @@ public class MainClass extends JavaPlugin {
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
 
-        registerClasses(this,
-                storage,
-                cmdMgmt,
-                mCmds,
-                gui,
-                stats,
+		registerClasses(this,
+				storage,
+				cmdMgmt,
+				mCmds,
+				gui,
+				stats,
 
-                recipeHandler,
-                customCrafter,
-                customRecipes,
-                heartCanisters,
-                blastFurnaces,
-                lightningRods,
+				recipeHandler,
+				customCrafter,
+				customRecipes,
+				heartCanisters,
+				blastFurnaces,
+				lightningRods,
 				trappedSigns,
 
 				customTerrain,
@@ -104,71 +104,70 @@ public class MainClass extends JavaPlugin {
 				betterArmorStands,
 				betterFire,
 				chairs,
-                desireLines,
+				desireLines,
 				enderHoppers,
-                endermanSupportClass,
-                inkSpittingSquid,
-                pigTractors,
+				endermanSupportClass,
+				inkSpittingSquid,
+				pigTractors,
 				soulProbes,
 				spawnerMinecarts,
-                speedPaths,
+				speedPaths,
 				weightedArmour,
 				xpStorage,
 				zauberCauldrons);
-    }
+	}
 
-    @Override
-    public void onDisable() {
+	@Override
+	public void onDisable() {
 		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
 		saveConfig();
-    	storage().saveAll();
+		storage().saveAll();
 
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			Advancements.manager.saveProgress(p, "gm4");
 		}
 //		Advancements.manager.setAnnounceAdvancementMessages(true);
-    }
+	}
 
-    public ConfigManager storage() {
-        return storage;
-    }
+	public ConfigManager storage() {
+		return storage;
+	}
 
-    private void registerClasses(Object... classes) {
-        int listenersRegistered = 0;
-        int commandsRegistered = 0;
-        int subcommandsRegistered = 0;
-        int classesInitialized = 0;
-        for(Object o : classes) {
-            if(o instanceof Listener) {
-                getServer().getPluginManager().registerEvents((Listener) o, this);
-                listenersRegistered++;
-            }
-            if(o instanceof PluginCommand) {
-                PluginCommand plcmd = (PluginCommand) o;
-                for(String arg : plcmd.getCommands()) {
-                    getCommand(arg).setExecutor(plcmd);
-                    commandsRegistered++;
-                }
-            }
-            if(o instanceof PluginSubcommand) {
-                PluginSubcommand plscmd = (PluginSubcommand) o;
-                for(String arg : plscmd.getSubcommand()) {
-                    cmdMgmt.addCommand(arg, plscmd);
-                    subcommandsRegistered++;
-                }
-            }
-            if(o instanceof Initializable) {
-                Initializable initClass = (Initializable) o;
-                initClass.init(this);
-                classesInitialized++;
-            }
-        }
-        if(getConfig().getBoolean("internal.verbosemode")) {
-            getLogger().log(Level.INFO, "Registered " + commandsRegistered + " commands.");
-            getLogger().log(Level.INFO, "Registered " + subcommandsRegistered + " subcommands.");
-            getLogger().log(Level.INFO, "Registered " + listenersRegistered + " listeners.");
-            getLogger().log(Level.INFO, "Initialized  " + classesInitialized + " classes.");
-        }
-    }
-
+	private void registerClasses(Object... classes) {
+		int listenersRegistered = 0;
+		int commandsRegistered = 0;
+		int subcommandsRegistered = 0;
+		int classesInitialized = 0;
+		for(Object o : classes) {
+			if(o instanceof Listener) {
+				getServer().getPluginManager().registerEvents((Listener) o, this);
+				listenersRegistered++;
+			}
+			if(o instanceof PluginCommand) {
+				PluginCommand plcmd = (PluginCommand) o;
+				for(String arg : plcmd.getCommands()) {
+					getCommand(arg).setExecutor(plcmd);
+					commandsRegistered++;
+				}
+			}
+			if(o instanceof PluginSubcommand) {
+				PluginSubcommand plscmd = (PluginSubcommand) o;
+				for(String arg : plscmd.getSubcommand()) {
+					cmdMgmt.addCommand(arg, plscmd);
+					subcommandsRegistered++;
+				}
+			}
+			if(o instanceof Initializable) {
+				Initializable initClass = (Initializable) o;
+				initClass.init(this);
+				classesInitialized++;
+			}
+		}
+		if(getConfig().getBoolean("internal.verbosemode")) {
+			getLogger().log(Level.INFO, "Registered " + commandsRegistered + " commands.");
+			getLogger().log(Level.INFO, "Registered " + subcommandsRegistered + " subcommands.");
+			getLogger().log(Level.INFO, "Registered " + listenersRegistered + " listeners.");
+			getLogger().log(Level.INFO, "Initialized  " + classesInitialized + " classes.");
+		}
+	}
 }

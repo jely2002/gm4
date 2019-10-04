@@ -1,7 +1,6 @@
-package com.belka.spigot.gm4.modules;
+package com.belka.spigot.gm4;
 
 public class ConsoleColor {
-	
 	public static final String RESET = "\u001B[0m";
 	public static final String BOLD = "\u001B[1m";
 	public static final String ITALIC = "\u001B[3m";

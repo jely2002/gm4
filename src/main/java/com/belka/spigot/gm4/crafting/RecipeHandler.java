@@ -107,6 +107,7 @@ public class RecipeHandler implements Initializable {
 				p.closeInventory();
 				as.setHelmet(helmet);
 				as.setHeadPose(pose);
+				as.setFireTicks(Integer.MAX_VALUE);
 				Location asLoc = as.getLocation().add(loc);
 				as.teleport(asLoc);
 			}
