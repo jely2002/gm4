@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4;
 
+import api.Helper;
 import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
@@ -72,18 +73,16 @@ public class CommandManager implements PluginCommand, TabCompleter {
 		if (cmd.getName().equalsIgnoreCase("gamemode4")) {
 			if (sender instanceof Player) {
 				if (args.length == 1)
-					return Stream.of("reload", "version", "achievement", "give").filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).collect(Collectors.toList());
+					return Helper.filterTab(args[0], "reload", "version", "achievement", "give");
 				else if (args[0].equalsIgnoreCase("give")) {
 					if (args.length == 2) {
 						ArrayList<String> playerNames = new ArrayList<>();
 						for (Player p:  Bukkit.getOnlinePlayers())
 							playerNames.add(p.getDisplayName());
-						return playerNames.stream().filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
+						return Helper.filterTab(args[1], playerNames.stream());
 					}
-					else if (args.length == 3) {
-						List<String> items = Arrays.asList("HEART_CANISTER_TIER_1", "HEART_CANISTER_TIER_2", "MINIUM_DUST", "INERT_STONE", "PHILOSOPHERS_STONE", "PHILOSOPHERS_STONE_MKII", "PHILOSOPHERS_STONE_MKIII", "PHILOSOPHERS_STONE_MKIV", "AC_ERROR", "BOOTS_OF_OSTARA", "TRAPPED_SIGN", "LIGHTNING_ROD", "SOUL_PROBES_BOOK", "EMPTY_SPAWN_EGG");
-						return items.stream().filter(s -> s.toLowerCase().startsWith(args[2].toLowerCase())).collect(Collectors.toList());
-					}
+					else if (args.length == 3)
+						return Helper.filterTab(args[2], "HEART_CANISTER_TIER_1", "HEART_CANISTER_TIER_2", "MINIUM_DUST", "INERT_STONE", "PHILOSOPHERS_STONE", "PHILOSOPHERS_STONE_MKII", "PHILOSOPHERS_STONE_MKIII", "PHILOSOPHERS_STONE_MKIV", "AC_ERROR", "BOOTS_OF_OSTARA", "TRAPPED_SIGN", "LIGHTNING_ROD", "SOUL_PROBES_BOOK", "EMPTY_SPAWN_EGG");
 				}
 			}
 		}
