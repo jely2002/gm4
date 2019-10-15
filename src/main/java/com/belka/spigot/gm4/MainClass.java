@@ -25,9 +25,9 @@ public class MainClass extends JavaPlugin {
 
 	private CommandManager cmdMgmt;
 	private ConfigManager storage;
-	private MainCommands mCmds;
 
 	public SpeedPaths speedPaths;
+	private CoolerCaves coolerCaves;
 
 	@Override
 	public void onEnable() {
@@ -46,7 +46,7 @@ public class MainClass extends JavaPlugin {
 
 		cmdMgmt = new CommandManager(this, gui);
 		storage = new ConfigManager(this);
-		mCmds = new MainCommands(this, customItems);
+		MainCommands mCmds = new MainCommands(this, customItems);
 
 		Stats stats = new Stats();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
@@ -62,8 +62,8 @@ public class MainClass extends JavaPlugin {
 		TrappedSigns trappedSigns = new TrappedSigns(this);
 
 //		Custom Terrain
-		CustomTerrain customTerrain = new CustomTerrain(this);
-		CoolerCaves coolerCaves = new CoolerCaves(this);
+		coolerCaves = new CoolerCaves(this);
+		CustomTerrain customTerrain = new CustomTerrain(this, coolerCaves);
 
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
@@ -119,7 +119,7 @@ public class MainClass extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
+		coolerCaves.disable();
 		saveConfig();
 		storage().saveAll();
 
@@ -127,6 +127,7 @@ public class MainClass extends JavaPlugin {
 			Advancements.manager.saveProgress(p, "gm4");
 		}
 //		Advancements.manager.setAnnounceAdvancementMessages(true);
+		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
 	}
 
 	public ConfigManager storage() {
