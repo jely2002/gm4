@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Helper {
     public static List<Entity> getNearbyEntities(Location l, double size) {
@@ -100,5 +102,22 @@ public class Helper {
 		Object key = objs[0]; // pick one
 		for(Object o : objs) if(!o.equals(key)) return false;
 		return true;
+	}
+
+	public static int toInteger(String number) {
+		int a = 0;
+		try {
+			a = Integer.parseInt(number);
+		} catch(NumberFormatException e) {
+			return a;
+		}
+		return a;
+	}
+
+	public static List<String> filterTab(String arg, String... items) {
+		return Stream.of(items).filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).collect(Collectors.toList());
+	}
+	public static List<String> filterTab(String arg, Stream<String> items) {
+		return items.filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).collect(Collectors.toList());
 	}
 }
