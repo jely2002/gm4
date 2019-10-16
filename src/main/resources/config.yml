@@ -18,10 +18,12 @@ CustomCrafter:
   EquivalentExchange: true
 CustomTerrain:
   enabled: true
+  loadRadius: 3
+  replacingSpeed: 24576
   CoolerCaves:
     enabled: true
-    loadRadius: 3
-    replacingSpeed: 24576
+  DangerousDungeons:
+    enabled: true
 DesireLines:
   enabled: true
   max: 50

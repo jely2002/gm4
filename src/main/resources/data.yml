@@ -2,8 +2,7 @@ BlastFurnaces: []
 CustomCrafter:
   customCrafters: []
 CustomTerrain:
-  CoolerCaves:
-    chunks: []
+  chunks: []
 TrappedSigns: []
 SpawnerMinecarts: []
 EnderHoppers: []

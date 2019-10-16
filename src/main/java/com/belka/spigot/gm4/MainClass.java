@@ -9,6 +9,7 @@ import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.customTerrain.CoolerCaves;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
+import com.belka.spigot.gm4.customTerrain.DangerousDungeons;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
@@ -28,6 +29,7 @@ public class MainClass extends JavaPlugin {
 
 	public SpeedPaths speedPaths;
 	private CoolerCaves coolerCaves;
+	private DangerousDungeons dangerousDungeons;
 
 	@Override
 	public void onEnable() {
@@ -62,8 +64,9 @@ public class MainClass extends JavaPlugin {
 		TrappedSigns trappedSigns = new TrappedSigns(this);
 
 //		Custom Terrain
-		coolerCaves = new CoolerCaves(this);
-		CustomTerrain customTerrain = new CustomTerrain(this, coolerCaves);
+		CustomTerrain customTerrain = new CustomTerrain(this);
+		coolerCaves = new CoolerCaves(this, customTerrain);
+		dangerousDungeons = new DangerousDungeons(this, customTerrain);
 
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
@@ -132,6 +135,13 @@ public class MainClass extends JavaPlugin {
 
 	public ConfigManager storage() {
 		return storage;
+	}
+
+	public CoolerCaves coolerCaves() {
+		return coolerCaves;
+	}
+	public DangerousDungeons dangerousDungeons() {
+		return dangerousDungeons;
 	}
 
 	private void registerClasses(Object... classes) {
