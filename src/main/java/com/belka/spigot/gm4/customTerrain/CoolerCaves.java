@@ -23,7 +23,7 @@ public class CoolerCaves {
 
 	private int loadRadius = 3;
 	
-	private List<Pair<Map.Entry<Location, Material>, BiomeGroup>> replacements = new ArrayList<>();
+	private List<UpdatableBlock> replacements = new ArrayList<>();
 	private boolean isReplacing = false;
 	private int replacingSpeed = 24576;
 
@@ -126,7 +126,9 @@ public class CoolerCaves {
 
 	private void updateColumn(Map<Location, Material> blockMap, BiomeGroup group) {
 		for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
-			replacements.add(new Pair<>(block, group));
+			UpdatableBlock ub = new UpdatableBlock(block.getKey(), block.getValue());
+			ub.setBiomeGroup(group);
+			replacements.add(ub);
 		}
 		updateBlocks();
 	}
@@ -136,18 +138,16 @@ public class CoolerCaves {
 		isReplacing = true;
 		final int[] task = new int[]{-1};
 		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-//			Bukkit.broadcastMessage("schedule " + replacements.size());
-			List<Pair<Map.Entry<Location, Material>, BiomeGroup>> tmp = new ArrayList<>();
+			List<UpdatableBlock> tmp = new ArrayList<>();
 			for (int i = 0; i < replacingSpeed; i++) {
 				if (replacements.size() == 0) break;
 				tmp.add(replacements.get(0));
 				replacements.remove(0);
 			}
 			for (int i = 0; i < tmp.size(); i++) {
-				Pair<Map.Entry<Location, Material>, BiomeGroup> pair = tmp.get(i);
-				setReplacement(pair.getKey(), pair.getValue());
+				UpdatableBlock pair = tmp.get(i);
+				setReplacement(pair);
 				if (tmp.size() < replacingSpeed && i == tmp.size() - 1) {
-//					Bukkit.broadcastMessage("cancel i: " + i + " tmp: " + tmp.size() + " b: " + blocks);
 					Bukkit.broadcastMessage("Updated queued chunks");
 					Bukkit.getScheduler().cancelTask(task[0]);
 					isReplacing = false;
@@ -156,10 +156,10 @@ public class CoolerCaves {
 		}, 0L, 20L);
 	}
 
-	private void setReplacement(Map.Entry<Location, Material> map, BiomeGroup group) {
-		Block b = map.getKey().getBlock();
-		Material mat = map.getValue();
-		switch (group) {
+	private void setReplacement(UpdatableBlock ub) {
+		Block b = ub.getLocation().getBlock();
+		Material mat = ub.getMaterial();
+		switch (ub.getBiomeGroup()) {
 			case SNOWY:
 				switch (mat) {
 					case GRASS:
@@ -203,7 +203,7 @@ public class CoolerCaves {
 			case BADLANDS:
 				switch (mat) {
 					case STONE: case GRANITE: case DIORITE: case ANDESITE:
-						int y = map.getKey().getBlockY();
+						int y = ub.getLocation().getBlockY();
 						if (y < 12) b.setType(Material.BROWN_TERRACOTTA, false);
 						else if (y < 27) b.setType(Material.TERRACOTTA, false);
 						else if (y < 29) b.setType(Material.RED_TERRACOTTA, false);
