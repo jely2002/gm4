@@ -12,8 +12,10 @@ import java.util.*;
 public class CoolerCaves {
 
 	private MainClass mc;
-	public CoolerCaves(MainClass mc) {
+	private CustomTerrain ct;
+	public CoolerCaves(MainClass mc, CustomTerrain ct) {
 		this.mc = mc;
+		this.ct = ct;
 	}
 
 	private List<BiomeGroup> updatable = Arrays.asList(BiomeGroup.SNOWY, BiomeGroup.OCEAN, BiomeGroup.DESERT, BiomeGroup.BADLANDS);
@@ -21,49 +23,27 @@ public class CoolerCaves {
 	private List<Material> updatableBlocks = Arrays.asList(Material.GRASS, Material.DANDELION, Material.POPPY, Material.ALLIUM, Material.AZURE_BLUET, Material.OXEYE_DAISY, Material.ORANGE_TULIP, Material.PINK_TULIP, Material.RED_TULIP, Material.WHITE_TULIP,
 			Material.STONE, Material.GRASS_BLOCK, Material.DIRT, Material.GRANITE, Material.DIORITE, Material.ANDESITE, Material.SAND, Material.LAVA, Material.OBSIDIAN, Material.OAK_PLANKS, Material.OAK_FENCE, Material.GRAVEL);
 
-	private int loadRadius = 3;
-	
-	private List<UpdatableBlock> replacements = new ArrayList<>();
-	private boolean isReplacing = false;
-	private int replacingSpeed = 24576;
 
-	private List<Pair<Integer, Integer>> loadedChunks = new ArrayList<>();
 
 	public void init(MainClass mc) {
-		if (!mc.storage().config().getBoolean("CustomTerrain.enabled") || !mc.storage().config().getBoolean("CustomTerrain.CoolerCaves.enabled")) return;
+		if (!ct.customTerrain && !ct.coolerCaves) return;
 
-		replacingSpeed = mc.storage().config().getInt("CustomTerrain.CoolerCaves.replacingSpeed");
-		loadRadius = mc.storage().config().getInt("CustomTerrain.CoolerCaves.loadRadius");
-		if (mc.storage().data().getConfigurationSection("CustomTerrain.CoolerCaves.chunks") == null) return;
-		for (String chunk: mc.storage().data().getStringList("CustomTerrain.CoolerCaves.chunks")) {
-			loadedChunks.add(new Pair<>(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
-		}
+		if (mc.storage().data().getConfigurationSection("CustomTerrain.chunks") != null)
+			for (String chunk: mc.storage().data().getStringList("CustomTerrain.chunks")) {
+				ct.loadedChunks.add(new Pair<>(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
+			}
 	}
 
 	public void disable() {
 		List<String> tmp = new ArrayList<>();
-		for (Pair<Integer, Integer> pair: loadedChunks) {
+		for (Pair<Integer, Integer> pair: ct.loadedChunks) {
 			tmp.add(pair.getKey() + " " + pair.getValue());
 		}
-		mc.storage().data().set("CustomTerrain.CoolerCaves.chunks", tmp);
+		mc.storage().data().set("CustomTerrain.chunks", tmp);
 		mc.storage().saveData();
 	}
 
-	void loadChunks(Location loc) {
-		Chunk c = loc.getChunk();
-
-		for (int x = c.getX() - loadRadius; x <= c.getX() + loadRadius; x++) {
-			for (int z = c.getZ() - loadRadius; z <= c.getZ() + loadRadius; z++) {
-				Chunk chunk = c.getWorld().getChunkAt(x, z);
-				if (!loadedChunks.contains(new Pair<>(chunk.getX(), chunk.getZ()))) {
-					loadChunk(chunk);
-					loadedChunks.add(new Pair<>(chunk.getX(), chunk.getZ()));
-				}
-			}
-		}
-	}
-
-	private void loadChunk(Chunk c) {
+	void loadChunk(Chunk c) {
 		Location corner = new Location(c.getWorld(), c.getX() * 16, 0, c.getZ() * 16);
 		Block nw = corner.getBlock();
 		if (nw.getType() == Material.BARRIER) return;//todo maybe change to config
@@ -126,66 +106,45 @@ public class CoolerCaves {
 
 	private void updateColumn(Map<Location, Material> blockMap, BiomeGroup group) {
 		for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
-			UpdatableBlock ub = new UpdatableBlock(block.getKey(), block.getValue());
-			ub.setBiomeGroup(group);
-			replacements.add(ub);
+			UpdatableBlock ub = getReplacement(block.getKey(), block.getValue(), group);
+			ct.replacements.add(ub);
 		}
-		updateBlocks();
+		ct.updateBlocks();
 	}
 
-	private void updateBlocks() {
-		if (isReplacing) return;
-		isReplacing = true;
-		final int[] task = new int[]{-1};
-		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			List<UpdatableBlock> tmp = new ArrayList<>();
-			for (int i = 0; i < replacingSpeed; i++) {
-				if (replacements.size() == 0) break;
-				tmp.add(replacements.get(0));
-				replacements.remove(0);
-			}
-			for (int i = 0; i < tmp.size(); i++) {
-				UpdatableBlock pair = tmp.get(i);
-				setReplacement(pair);
-				if (tmp.size() < replacingSpeed && i == tmp.size() - 1) {
-					Bukkit.broadcastMessage("Updated queued chunks");
-					Bukkit.getScheduler().cancelTask(task[0]);
-					isReplacing = false;
-				}
-			}
-		}, 0L, 20L);
-	}
-
-	private void setReplacement(UpdatableBlock ub) {
-		Block b = ub.getLocation().getBlock();
-		Material mat = ub.getMaterial();
-		switch (ub.getBiomeGroup()) {
+	private UpdatableBlock getReplacement(Location loc, Material mat, BiomeGroup group) {
+		UpdatableBlock ub = new UpdatableBlock(loc, null, false);
+		switch (group) {
 			case SNOWY:
 				switch (mat) {
 					case GRASS:
-						b.setType(Material.SNOW, false);
-						Snow s = (Snow) b.getBlockData();
-						s.setLayers(2);
-						b.setBlockData(s);
+						ub.setMaterial(Material.SNOW);
+						ub.setConsumer(block -> {
+							Snow s = (Snow) block.getBlockData();
+							s.setLayers(2);
+							block.setBlockData(s);
+						});
 						break;
 					case DANDELION: case POPPY: case BLUE_ORCHID: case ALLIUM: case AZURE_BLUET: case OXEYE_DAISY: case ORANGE_TULIP: case PINK_TULIP: case RED_TULIP: case WHITE_TULIP:
-						b.setType(Material.SNOW, false);
-						Snow s2 = (Snow) b.getBlockData();
-						s2.setLayers(3);
-						b.setBlockData(s2);
+						ub.setMaterial(Material.SNOW);
+						ub.setConsumer(block -> {
+							Snow s = (Snow) block.getBlockData();
+							s.setLayers(3);
+							block.setBlockData(s);
+						});
 						break;
-					case STONE: case GRASS_BLOCK: b.setType(Material.SNOW_BLOCK, false); break;
-					case DIRT: case GRANITE: b.setType(Material.PACKED_ICE, false); break;
-					case DIORITE: b.setType(Material.BLUE_ICE, false); break;
-					case ANDESITE: b.setType(Material.ICE, false); break;
-					case SAND: b.setType(Material.WHITE_CONCRETE_POWDER, false); break;
-					case LAVA: case OBSIDIAN: b.setType(Material.WATER); break;
+					case STONE: case GRASS_BLOCK: ub.setMaterial(Material.SNOW_BLOCK); break;
+					case DIRT: case GRANITE: ub.setMaterial(Material.PACKED_ICE); break;
+					case DIORITE: ub.setMaterial(Material.BLUE_ICE); break;
+					case ANDESITE: ub.setMaterial(Material.ICE); break;
+					case SAND: ub.setMaterial(Material.WHITE_CONCRETE_POWDER); break;
+					case LAVA: case OBSIDIAN: ub.setMaterial(Material.WATER); ub.setUpdate(true); break;
 				}
 				break;
 			case OCEAN:
 				switch (mat) {
-					case OAK_PLANKS: b.setType(Material.DARK_PRISMARINE, false); break;
-					case OAK_FENCE: b.setType(Material.PRISMARINE_BRICKS, false); break;
+					case OAK_PLANKS: ub.setMaterial(Material.DARK_PRISMARINE); break;
+					case OAK_FENCE: ub.setMaterial(Material.PRISMARINE_BRICKS); break;
 				}
 				break;
 			case DESERT:
@@ -194,28 +153,29 @@ public class CoolerCaves {
 					case GRANITE:
 					case DIORITE:
 					case ANDESITE:
-						b.setType(Material.SANDSTONE, false); break;
-					case GRAVEL: b.setType(Material.SAND, false); break;
-					case OAK_PLANKS: b.setType(Material.DARK_OAK_PLANKS, false); break;
-					case OAK_FENCE: b.setType(Material.BIRCH_FENCE); break;
+						ub.setMaterial(Material.SANDSTONE); break;
+					case GRAVEL: ub.setMaterial(Material.SAND); break;
+					case OAK_PLANKS: ub.setMaterial(Material.DARK_OAK_PLANKS); break;
+					case OAK_FENCE: ub.setMaterial(Material.BIRCH_FENCE); break;
 				}
 				break;
 			case BADLANDS:
 				switch (mat) {
 					case STONE: case GRANITE: case DIORITE: case ANDESITE:
-						int y = ub.getLocation().getBlockY();
-						if (y < 12) b.setType(Material.BROWN_TERRACOTTA, false);
-						else if (y < 27) b.setType(Material.TERRACOTTA, false);
-						else if (y < 29) b.setType(Material.RED_TERRACOTTA, false);
-						else if (y < 37) b.setType(Material.ORANGE_TERRACOTTA, false);
-						else if (y < 52) b.setType(Material.TERRACOTTA, false);
-						else if (y < 58) b.setType(Material.LIGHT_GRAY_TERRACOTTA, false);
-						else if (y < 62) b.setType(Material.BROWN_TERRACOTTA, false);
-						else b.setType(Material.TERRACOTTA, false);
+						int y = loc.getBlockY();
+						if (y < 12) ub.setMaterial(Material.BROWN_TERRACOTTA);
+						else if (y < 27) ub.setMaterial(Material.TERRACOTTA);
+						else if (y < 29) ub.setMaterial(Material.RED_TERRACOTTA);
+						else if (y < 37) ub.setMaterial(Material.ORANGE_TERRACOTTA);
+						else if (y < 52) ub.setMaterial(Material.TERRACOTTA);
+						else if (y < 58) ub.setMaterial(Material.LIGHT_GRAY_TERRACOTTA);
+						else if (y < 62) ub.setMaterial(Material.BROWN_TERRACOTTA);
+						else ub.setMaterial(Material.TERRACOTTA);
 						break;
-					case GRAVEL: b.setType(Material.RED_SAND, false); break;
+					case GRAVEL: ub.setMaterial(Material.RED_SAND); break;
 				}
 				break;
 		}
+		return ub;
 	}
 }
