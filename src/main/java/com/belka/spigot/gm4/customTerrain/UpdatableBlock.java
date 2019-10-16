@@ -2,39 +2,44 @@ package com.belka.spigot.gm4.customTerrain;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+
+import java.util.function.Consumer;
 
 public class UpdatableBlock {
     private Location location;
     private Material material;
-    private Runnable runnable;
-    private BiomeGroup biomeGroup;
+	private boolean update;
+    private Consumer<Block> consumer;
 
-    public UpdatableBlock(Location location, Material material) {
+    UpdatableBlock(Location location, Material material, boolean update) {
         this.location = location;
         this.material = material;
+        this.update = update;
     }
 
     public Location getLocation() {
         return location;
     }
 
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
     public Material getMaterial() {
         return material;
     }
 
-    public void setRunnable(Runnable runnable) {
-        this.runnable = runnable;
-    }
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
+	public boolean isUpdate() {
+		return update;
+	}
 
-    public Runnable getRunnable() {
-        return runnable;
+	public void setConsumer(Consumer<Block> consumer) {
+        this.consumer = consumer;
     }
-
-    public void setBiomeGroup(BiomeGroup biomeGroup) {
-        this.biomeGroup = biomeGroup;
-    }
-
-    public BiomeGroup getBiomeGroup() {
-        return biomeGroup;
+    public Consumer<Block> getConsumer() {
+        return consumer;
     }
 }
