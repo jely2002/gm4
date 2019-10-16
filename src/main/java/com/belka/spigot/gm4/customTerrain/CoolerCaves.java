@@ -44,10 +44,6 @@ public class CoolerCaves {
 	}
 
 	void loadChunk(Chunk c) {
-		Location corner = new Location(c.getWorld(), c.getX() * 16, 0, c.getZ() * 16);
-		Block nw = corner.getBlock();
-		if (nw.getType() == Material.BARRIER) return;//todo maybe change to config
-
 		ChunkSnapshot cs = c.getChunkSnapshot(true, true, false);
 		List<BiomeGroup> nwB = BiomeGroup.getBiomeGroups(cs.getBiome(0, 0), updatableArray);
 		List<BiomeGroup> neB = BiomeGroup.getBiomeGroups(cs.getBiome(15, 0), updatableArray);

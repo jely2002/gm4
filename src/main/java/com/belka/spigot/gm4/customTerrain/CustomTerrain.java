@@ -6,6 +6,7 @@ import javafx.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,6 +70,10 @@ public class CustomTerrain implements Listener, Initializable {
 			for (int z = c.getZ() - loadRadius; z <= c.getZ() + loadRadius; z++) {
 				Chunk chunk = c.getWorld().getChunkAt(x, z);
 				if (!loadedChunks.contains(new Pair<>(chunk.getX(), chunk.getZ()))) {
+					Location corner = new Location(c.getWorld(), c.getX() * 16, 0, c.getZ() * 16);
+					Block nw = corner.getBlock();
+					if (nw.getType() == Material.BARRIER) continue;
+
 					if (coolerCaves) mc.coolerCaves().loadChunk(chunk);
 					if (dangerousDungeons) mc.dangerousDungeons();
 
