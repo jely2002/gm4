@@ -57,6 +57,27 @@ public class Helper {
         return blocks;
     }
 
+	public static List<Block> getBlocksBetween(Location loc1, Location loc2) {
+		List<Block> blocks = new ArrayList<>();
+		if (loc1.getWorld() != loc2.getWorld()) return null;
+
+		int maxBlockX = Math.max(loc1.getBlockX(), loc2.getBlockX());
+		int bominBlockX = Math.min(loc1.getBlockX(), loc2.getBlockX());
+
+		int maxBlockY = Math.max(loc1.getBlockY(), loc2.getBlockY());
+		int bominBlockY = Math.min(loc1.getBlockY(), loc2.getBlockY());
+
+		int maxBlockZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+		int bominBlockZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+
+		for (int x = bominBlockX; x <= maxBlockX; x++)
+			for(int z = bominBlockZ; z <= maxBlockZ; z++)
+				for(int y = bominBlockY; y <= maxBlockY; y++)
+					blocks.add(loc1.getWorld().getBlockAt(x, y, z));
+
+		return blocks;
+	}
+
     public static EntityType getEntityByName(String name) {
 		for (EntityType type : EntityType.values()) {
 			if(type.name().equalsIgnoreCase(name)) {
