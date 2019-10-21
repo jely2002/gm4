@@ -23,11 +23,9 @@
             <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>de.tr7zw.itemnbtapi</groupId>
-            <artifactId>item-nbt-api</artifactId>
-            <version>1.18.3-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/item-nbt-api-plugin-1.8.3-SNAPSHOT.jar</systemPath>
+            <groupId>de.tr7zw</groupId>
+            <artifactId>item-nbt-api-plugin</artifactId>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
 
@@ -35,6 +33,11 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+            <layout>default</layout>
         </repository>
     </repositories>
 
