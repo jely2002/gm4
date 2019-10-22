@@ -8,13 +8,15 @@ import mryurihi.tbnbt.tag.NBTTagCompound;
 import mryurihi.tbnbt.tag.NBTTagList;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Structure {
 	private NBTTagCompound nbt;
