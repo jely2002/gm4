@@ -24,25 +24,6 @@ public class CoolerCaves {
 			Material.STONE, Material.GRASS_BLOCK, Material.DIRT, Material.GRANITE, Material.DIORITE, Material.ANDESITE, Material.SAND, Material.LAVA, Material.OBSIDIAN, Material.OAK_PLANKS, Material.OAK_FENCE, Material.GRAVEL);
 
 
-
-	public void init(MainClass mc) {
-		if (!ct.customTerrain && !ct.coolerCaves) return;
-
-		if (mc.storage().data().getConfigurationSection("CustomTerrain.chunks") != null)
-			for (String chunk: mc.storage().data().getStringList("CustomTerrain.chunks")) {
-				ct.loadedChunks.add(new Pair<>(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
-			}
-	}
-
-	public void disable() {
-		List<String> tmp = new ArrayList<>();
-		for (Pair<Integer, Integer> pair: ct.loadedChunks) {
-			tmp.add(pair.getKey() + " " + pair.getValue());
-		}
-		mc.storage().data().set("CustomTerrain.chunks", tmp);
-		mc.storage().saveData();
-	}
-
 	void loadChunk(Chunk c) {
 		ChunkSnapshot cs = c.getChunkSnapshot(true, true, false);
 		List<BiomeGroup> nwB = BiomeGroup.getBiomeGroups(cs.getBiome(0, 0), updatableArray);
