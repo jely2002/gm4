@@ -14,12 +14,17 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 
 public class MainClass extends JavaPlugin {
@@ -28,8 +33,11 @@ public class MainClass extends JavaPlugin {
 	private ConfigManager storage;
 
 	public SpeedPaths speedPaths;
+	private CustomTerrain customTerrain;
 	private CoolerCaves coolerCaves;
 	private DangerousDungeons dangerousDungeons;
+
+	public String chatPrefix = ChatColor.WHITE + "[" + ChatColor.DARK_AQUA + "GM4" + ChatColor.WHITE + "] " + ChatColor.RESET;
 
 	@Override
 	public void onEnable() {
@@ -64,7 +72,7 @@ public class MainClass extends JavaPlugin {
 		TrappedSigns trappedSigns = new TrappedSigns(this);
 
 //		Custom Terrain
-		CustomTerrain customTerrain = new CustomTerrain(this);
+		customTerrain = new CustomTerrain(this);
 		coolerCaves = new CoolerCaves(this, customTerrain);
 		dangerousDungeons = new DangerousDungeons(this, customTerrain);
 
@@ -122,7 +130,7 @@ public class MainClass extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		coolerCaves.disable();
+		customTerrain.disable();
 		saveConfig();
 		storage().saveAll();
 
@@ -142,6 +150,13 @@ public class MainClass extends JavaPlugin {
 	}
 	public DangerousDungeons dangerousDungeons() {
 		return dangerousDungeons;
+	}
+
+	public File getResourceAsFile(String resource) throws IOException {
+		InputStream inputStream = getResource(resource);
+		File tmpFile = File.createTempFile("file", "temp");
+		FileUtils.copyInputStreamToFile(inputStream, tmpFile); // FileUtils from apache-io
+		return tmpFile;
 	}
 
 	private void registerClasses(Object... classes) {
