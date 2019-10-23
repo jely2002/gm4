@@ -46,6 +46,10 @@ public class Structure {
 		this.nbt = inputStream.readTag().getAsTagCompound();
 	}
 
+	public File getFile() {
+		return file;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
