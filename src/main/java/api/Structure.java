@@ -28,7 +28,7 @@ public class Structure {
 	private File file;
 	private NBTTagCompound nbt;
 	private String name;
-	private Vector offset = new Vector();
+	private Vector offset;
 	private List<EntityType> ignoredEntityTypes = new ArrayList<>();
 
 	public Structure(File file) throws IOException {
@@ -302,7 +302,7 @@ public class Structure {
 		return null;
 	}
 
-	public EntityType getEntityByName(String name) {//TODO Private access
+	private EntityType getEntityByName(String name) {
 		for (EntityType type : EntityType.values()) {
 			if(type.name().equalsIgnoreCase(name)) {
 				return type;
