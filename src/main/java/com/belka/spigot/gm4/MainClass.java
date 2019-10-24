@@ -1,6 +1,9 @@
 package com.belka.spigot.gm4;
 
 import api.InventoryCreator;
+import api.LootTables.Entry;
+import api.LootTables.Function;
+import api.LootTables.Pool;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
@@ -17,6 +20,8 @@ import com.belka.spigot.gm4.modules.*;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -127,6 +132,9 @@ public class MainClass extends JavaPlugin {
 				weightedArmour,
 				xpStorage,
 				zauberCauldrons);
+		ConfigurationSerialization.registerClass(Pool.class, "Pool");
+		ConfigurationSerialization.registerClass(Entry.class, "Entry");
+		ConfigurationSerialization.registerClass(Function.class, "Function");
 	}
 
 	@Override
