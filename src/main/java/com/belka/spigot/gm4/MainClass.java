@@ -38,6 +38,7 @@ public class MainClass extends JavaPlugin {
 	private DangerousDungeons dangerousDungeons;
 
 	public String chatPrefix = ChatColor.WHITE + "[" + ChatColor.DARK_AQUA + "GM4" + ChatColor.WHITE + "] " + ChatColor.RESET;
+	public String consolePrefix = ConsoleColor.BLACK + "[" + ConsoleColor.CYAN + "GM4" + ConsoleColor.BLACK + "] " + ConsoleColor.RESET;
 
 	@Override
 	public void onEnable() {
