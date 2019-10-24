@@ -8,10 +8,15 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
@@ -92,6 +97,7 @@ public class CustomTerrain implements Listener, Initializable {
 			}
 		}
 	}
+
 	private void loadChunk(Chunk c) {
 		Block nw = c.getBlock(0,0,0);
 		if (nw.getType() == Material.BARRIER) return;
@@ -108,11 +114,12 @@ public class CustomTerrain implements Listener, Initializable {
 		}
 		else if (dangerousDungeons && c.getBlock(10,1,10).getType() == Material.GRANITE) {
 			List<Material> triggers = Arrays.asList(Material.AIR, Material.CAVE_AIR, Material.WATER);
-			for (int y = 15; y <= 60; y += 5) {
+			for (int y = 15; y <= 50; y += 5) {
 				if (triggers.contains(c.getBlock(8, y, 8).getType())) {
 					structure = mc.dangerousDungeons().getStructure(c);
 					loc = c.getBlock(8, y, 8).getLocation();
 					Bukkit.broadcastMessage("DD");
+					if (structure == null) Bukkit.broadcastMessage("null");
 					break;
 				}
 			}
@@ -125,21 +132,22 @@ public class CustomTerrain implements Listener, Initializable {
 			for (Pair<Vector, HashMap<String, Object>> entityPair: structure.getEntities()) {
 				HashMap<String, Object> map = entityPair.getValue();
 				if (!map.containsKey("id")) continue;
-				EntityType entityType = structure.getEntityByName(map.get("id").toString().replace("minecraft:", ""));
+				EntityType entityType = Helper.getEntityByName(map.get("id").toString().replace("minecraft:", ""));
 				if (entityType == EntityType.AREA_EFFECT_CLOUD) {
-					Location entityLoc = loc.clone().add(structure.getOffset()).add(entityPair.getKey());
 					for (Map.Entry<String, Object> entry : map.entrySet()) {
 						if (entry.getKey().equalsIgnoreCase("Tags")) {
 							if (entry.getValue() instanceof List) {
 								List<String> tags = (List<String>) entry.getValue();
 								if (tags.contains("gm4_orbis_populate")) {
+									Block entityBlock = loc.clone().add(entityPair.getKey()).getBlock();
 									if (tags.contains("gm4_chest")) {
-										if (tags.contains("gm4_dungeon")) placeChest(entityLoc, "dungeon");
-										else if (tags.contains("gm4_tower")) placeChest(entityLoc, "tower");
+										if (tags.contains("gm4_dungeon")) placeChest(entityBlock, "dungeon");
+										else if (tags.contains("gm4_tower")) placeChest(entityBlock, "tower");
 									}
 									if (tags.contains("gm4_spawner")) {
-										if (tags.contains("gm4_default_spawner")) placeSpawner(entityLoc, "default");
-										else if (tags.contains("gm4_water_spawner")) placeSpawner(entityLoc, "water");
+										Bukkit.broadcastMessage(entityBlock.getX() + " " + entityBlock.getY() + " " + entityBlock.getZ());
+										if (tags.contains("gm4_default_spawner")) placeSpawner(entityBlock, "default");
+										else if (tags.contains("gm4_water_spawner")) placeSpawner(entityBlock, "water");
 									}
 								}
 							}
@@ -153,13 +161,20 @@ public class CustomTerrain implements Listener, Initializable {
 					p.sendMessage(mc.chatPrefix + ChatColor.GREEN + "Spawned " + structure.getName() + " at " + ChatColor.GOLD + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ());
 				}
 			}
+			System.out.println(mc.consolePrefix + ConsoleColor.GREEN + "Spawned " + structure.getName() + " at " + ConsoleColor.YELLOW + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ() + ConsoleColor.RESET);
 		}
 
-//		if (coolerCaves) mc.coolerCaves().loadChunk(c);
+		if (coolerCaves) mc.coolerCaves().loadChunk(c);
+
+		for (int x = 0 ; x < 16 ; x++ ) {
+			for (int z = 0; z < 16; z++) {
+				replacements.add(new UpdatableBlock(c.getBlock(x, 0, z).getLocation(), Material.BARRIER, false));
+			}
+		}
+		updateBlocks();
 	}
 
-	private void placeChest(Location loc, String type) {
-		Block b = loc.getBlock();
+	private void placeChest(Block b, String type) {
 		if (b.getType() != Material.CHEST) b.setType(Material.CHEST, true);
 		if (type.equalsIgnoreCase("dungeon")) {
 			if (b.getX() <= 29) {
@@ -190,8 +205,36 @@ public class CustomTerrain implements Listener, Initializable {
 			}
 		}
 	}
-	private void placeSpawner(Location loc, String type) {
+	private void placeSpawner(Block b, String type) {
+		if (b.getType() != Material.SPAWNER) b.setType(Material.SPAWNER, true);
+		List<EntityType> defaultEntities = Arrays.asList(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER, EntityType.CREEPER);
+		List<EntityType> waterEntities = Arrays.asList(EntityType.DROWNED, EntityType.GUARDIAN, EntityType.GUARDIAN, EntityType.PUFFERFISH);
 
+		EntityType entityType = defaultEntities.get(new Random().nextInt(defaultEntities.size()));
+		if (type.equalsIgnoreCase("water")) entityType = waterEntities.get(new Random().nextInt(waterEntities.size()));
+		BlockState blockState = b.getState();
+		((CreatureSpawner) blockState).setSpawnedType(entityType);
+		blockState.update();
+		//TODO add block to config
+	}
+
+	private List<Entity> spawned = new ArrayList<>();
+	@EventHandler
+	public void onEntitySpawn(SpawnerSpawnEvent e) {
+		CreatureSpawner spawner = e.getSpawner();
+		spawner.getBlock();
+		//TODO check block with config
+		spawned.add(e.getEntity());
+	}
+
+	@EventHandler
+	public void onEntityDeath(EntityDeathEvent e) {
+		Entity entity = e.getEntity();
+		if (spawned.contains(entity)) {
+			spawned.remove(entity);
+			e.setDroppedExp(0);
+			e.getDrops().clear();
+		}
 	}
 
 	void updateBlocks() {
@@ -214,12 +257,12 @@ public class CustomTerrain implements Listener, Initializable {
 				}
 
 				if (tmp.size() < replacingSpeed && i == tmp.size() - 1) {// Done
-					for (Player p: Bukkit.getOnlinePlayers()) {
-						if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) {
-							p.sendMessage(mc.chatPrefix + ChatColor.GREEN + "Updated queued CustomTerrain blocks!");
-						}
-					}
-					System.out.println(ConsoleColor.GREEN + "Updated queued CustomTerrain blocks!");
+//					for (Player p: Bukkit.getOnlinePlayers()) {
+//						if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) {
+//							p.sendMessage(mc.chatPrefix + ChatColor.GREEN + "Updated queued CustomTerrain blocks!");
+//						}
+//					}
+//					System.out.println(mc.consolePrefix + ConsoleColor.GREEN + "Updated queued CustomTerrain blocks!" + ConsoleColor.RESET);
 					Bukkit.getScheduler().cancelTask(task[0]);
 					isReplacing = false;
 				}
