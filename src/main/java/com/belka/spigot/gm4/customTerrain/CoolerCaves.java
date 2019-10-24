@@ -31,15 +31,7 @@ public class CoolerCaves {
 		List<BiomeGroup> seB = BiomeGroup.getBiomeGroups(cs.getBiome(15, 15), updatableArray);
 		List<BiomeGroup> swB = BiomeGroup.getBiomeGroups(cs.getBiome(0, 15), updatableArray);
 
-		if (nwB.size() == 0 && neB.size() == 0 && seB.size() == 0 && swB.size() == 0) {
-			for (int x = 0 ; x < 16 ; x++ ) {
-				for (int z = 0; z < 16; z++) {
-					Block b = c.getBlock(x, 0, z);
-					b.setType(Material.BARRIER);
-				}
-			}
-			return;
-		}
+		if (nwB.size() == 0 && neB.size() == 0 && seB.size() == 0 && swB.size() == 0) return;
 
 		if (Helper.allEqual(nwB, neB, seB, swB)) { //If chunk corners have same biome
 			updateFullChunk(c.getWorld(), c, cs, nwB.get(0));
@@ -115,7 +107,7 @@ public class CoolerCaves {
 					case DIORITE: ub.setMaterial(Material.BLUE_ICE); break;
 					case ANDESITE: ub.setMaterial(Material.ICE); break;
 					case SAND: ub.setMaterial(Material.WHITE_CONCRETE_POWDER); break;
-					case LAVA: case OBSIDIAN: ub.setMaterial(Material.WATER); ub.setUpdate(true); break;
+					case LAVA: case OBSIDIAN: ub.setMaterial(Material.WATER); break;// ub.setUpdate(true);
 				}
 				break;
 			case OCEAN:
@@ -133,7 +125,7 @@ public class CoolerCaves {
 						ub.setMaterial(Material.SANDSTONE); break;
 					case GRAVEL: ub.setMaterial(Material.SAND); break;
 					case OAK_PLANKS: ub.setMaterial(Material.DARK_OAK_PLANKS); break;
-					case OAK_FENCE: ub.setMaterial(Material.BIRCH_FENCE); break;
+					case OAK_FENCE: ub.setMaterial(Material.BIRCH_FENCE); ub.setUpdate(true); break;
 				}
 				break;
 			case BADLANDS:
