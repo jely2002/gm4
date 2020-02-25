@@ -3,6 +3,7 @@ package com.belka.spigot.gm4;
 import api.InventoryCreator;
 import api.LootTables.Entry;
 import api.LootTables.Function;
+import api.LootTables.LootTable;
 import api.LootTables.Pool;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
@@ -13,6 +14,7 @@ import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.customTerrain.CoolerCaves;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
 import com.belka.spigot.gm4.customTerrain.DangerousDungeons;
+import com.belka.spigot.gm4.customTerrain.TowerStructures;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
@@ -20,7 +22,6 @@ import com.belka.spigot.gm4.modules.*;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -41,6 +42,7 @@ public class MainClass extends JavaPlugin {
 	private CustomTerrain customTerrain;
 	private CoolerCaves coolerCaves;
 	private DangerousDungeons dangerousDungeons;
+	private TowerStructures towerStructures;
 
 	public String chatPrefix = ChatColor.WHITE + "[" + ChatColor.DARK_AQUA + "GM4" + ChatColor.WHITE + "] " + ChatColor.RESET;
 	public String consolePrefix = ConsoleColor.BLACK + "[" + ConsoleColor.CYAN + "GM4" + ConsoleColor.BLACK + "] " + ConsoleColor.RESET;
@@ -56,6 +58,11 @@ public class MainClass extends JavaPlugin {
 
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+
+		ConfigurationSerialization.registerClass(LootTable.class, "LootTable");
+		ConfigurationSerialization.registerClass(Pool.class, "Pool");
+		ConfigurationSerialization.registerClass(Entry.class, "Entry");
+		ConfigurationSerialization.registerClass(Function.class, "Function");
 
 		SettingsGUI gui = new SettingsGUI(this);
 		CustomItems customItems = new CustomItems();
@@ -78,9 +85,11 @@ public class MainClass extends JavaPlugin {
 		TrappedSigns trappedSigns = new TrappedSigns(this);
 
 //		Custom Terrain
-		customTerrain = new CustomTerrain(this);
+		LootTable lootTable = new LootTable();
+		customTerrain = new CustomTerrain(this, lootTable);
 		coolerCaves = new CoolerCaves(this, customTerrain);
-		dangerousDungeons = new DangerousDungeons(this, customTerrain);
+		dangerousDungeons = new DangerousDungeons(this);
+		towerStructures = new TowerStructures(this);
 
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
@@ -132,9 +141,6 @@ public class MainClass extends JavaPlugin {
 				weightedArmour,
 				xpStorage,
 				zauberCauldrons);
-		ConfigurationSerialization.registerClass(Pool.class, "Pool");
-		ConfigurationSerialization.registerClass(Entry.class, "Entry");
-		ConfigurationSerialization.registerClass(Function.class, "Function");
 	}
 
 	@Override
@@ -159,6 +165,9 @@ public class MainClass extends JavaPlugin {
 	}
 	public DangerousDungeons dangerousDungeons() {
 		return dangerousDungeons;
+	}
+	public TowerStructures towerStructures() {
+		return towerStructures;
 	}
 
 	public File getResourceAsFile(String resource) throws IOException {
