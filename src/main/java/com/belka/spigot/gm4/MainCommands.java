@@ -1,15 +1,21 @@
 package com.belka.spigot.gm4;
 
+import api.Helper;
+import api.LootTables.LootTable;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class MainCommands implements PluginSubcommand {
@@ -24,8 +30,7 @@ public class MainCommands implements PluginSubcommand {
 
 	@Override
 	public String[] getSubcommand() {
-        String[] commands = {"reload", "version", "advancement", "give"};
-		return commands;
+		return new String[]{"reload", "version", "advancement", "give", "loot"};
 	}
 
 	@Override
@@ -64,10 +69,29 @@ public class MainCommands implements PluginSubcommand {
 					ItemStack itemStack = (ItemStack) method.invoke(instance, x);
 					p.getInventory().addItem(itemStack);
 					sender.sendMessage("Gave " + x + " [" + ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()) + "] to " + args[1]);
-				} catch (Exception toBeHandled) {}
+				} catch (Exception ignored) {}
 			}
 			else {
 				sender.sendMessage(ChatColor.RED + "That player doesn't exist!");
+			}
+		}
+		else if(args[0].equalsIgnoreCase("loot")) {//gm4 loot <source/file> <name> <x> <y> <z>
+			if (args.length == 6 && sender instanceof Player) {
+				LootTable loot = null;
+				String name = args[2];
+				if (name.contains("/")) name = name.split("/")[name.split("/").length];
+				if (args[1].equalsIgnoreCase("source")) {
+					try {
+						loot = new LootTable().load(mc.getResourceAsFile("custom_terrain/" + args[2] + ".nbt"), name);
+					} catch (IOException ignored) {}
+				}
+				else if (args[1].equalsIgnoreCase("file")) {
+					loot = new LootTable().load(mc.getDataFolder() + "/", name);
+				}
+				Block block = new Location(((Player) sender).getWorld(), Helper.toInteger(args[3]), Helper.toInteger(args[4]), Helper.toInteger(args[5])).getBlock();
+				if (block.getState() instanceof Chest && loot != null) {
+					loot.place((Chest) block.getState(), true);
+				}
 			}
 		}
 		return true;
