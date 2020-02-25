@@ -10,13 +10,13 @@ import java.util.Map;
 @SerializableAs("Entry")
 public class Entry implements ConfigurationSerializable {
 	//TODO conditions
-	private String type;
-	private String name;
+	private String type;//Required
+	private String name;//Required
 	//TODO children
 	//TODO expand
-	private List<Function> functions;
-	private int weight;
-	//TODO quality
+	private List<Function> functions;//Required
+	private int weight;//Required
+	private int quality;
 
 	public Entry(String type, String name, List<Function> functions, int weight) {
 		this.type = type;
@@ -27,8 +27,9 @@ public class Entry implements ConfigurationSerializable {
 	public Entry(Map<String, Object> map) {
 		this.type = (String) map.get("type");
 		this.name = (String) map.get("name");
-		this.functions = (List<Function>) map.get("functions");
+		if (map.get("functions") != null) this.functions = (List<Function>) map.get("functions");
 		this.weight = (int) map.get("weight");
+		if (map.get("quality") != null) this.quality = (int) map.get("quality");
 	}
 
 	public String getType() {
@@ -59,18 +60,25 @@ public class Entry implements ConfigurationSerializable {
 		this.weight = weight;
 	}
 
+	public int getQuality() {
+		return quality;
+	}
+	public void setQuality(int quality) {
+		this.quality = quality;
+	}
+
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("type", type);
 		map.put("name", name);
-		map.put("functions", functions);
+		if (functions != null) map.put("functions", functions);
 		map.put("weight", weight);
+		map.put("quality", quality);
 
 		return map;
 	}
-
 	public static Entry deserialize(Map<String, Object> map) {
 		return new Entry(map);
 	}
