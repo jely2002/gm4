@@ -28,6 +28,7 @@
                 <includes>
                   <include>com.github.mryurihi</include>
                   <include>commons-io</include>
+                  <include>com.fasterxml.jackson.*</include>
                 </includes>
               </artifactSet>
             </configuration>
@@ -76,10 +77,6 @@
         <exclusion>
           <artifactId>bungeecord-chat</artifactId>
           <groupId>net.md-5</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>snakeyaml</artifactId>
-          <groupId>org.yaml</groupId>
         </exclusion>
       </exclusions>
     </dependency>
