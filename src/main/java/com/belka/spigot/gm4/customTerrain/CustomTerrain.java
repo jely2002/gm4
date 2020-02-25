@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
+import api.LootTables.LootTable;
 import api.Structure;
 import com.belka.spigot.gm4.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
@@ -9,6 +10,7 @@ import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -21,11 +23,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
+import java.io.IOException;
 import java.util.*;
 
 public class CustomTerrain implements Listener, Initializable {
 
 	private MainClass mc;
+	private LootTable lt;
 
 	private boolean customTerrain;
 	private boolean coolerCaves;
@@ -38,8 +42,9 @@ public class CustomTerrain implements Listener, Initializable {
 	private boolean isReplacing = false;
 	private int replacingSpeed = 24576;
 
-	public CustomTerrain(MainClass mc) {
+	public CustomTerrain(MainClass mc, LootTable lt) {
 		this.mc = mc;
+		this.lt = lt;
 	}
 
 	public void init(MainClass mc) {
@@ -50,10 +55,11 @@ public class CustomTerrain implements Listener, Initializable {
 		loadRadius = mc.storage().config().getInt("CustomTerrain.loadRadius");
 		replacingSpeed = mc.storage().config().getInt("CustomTerrain.replacingSpeed");
 
-		if (mc.storage().data().getConfigurationSection("CustomTerrain.chunks") != null)
-			for (String chunk: mc.storage().data().getStringList("CustomTerrain.chunks")) {
+		if (mc.storage().data().getConfigurationSection("CustomTerrain.chunks") != null) {
+			for (String chunk : mc.storage().data().getStringList("CustomTerrain.chunks")) {
 				loadedChunks.add(new Pair<>(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
 			}
+		}
 		System.out.println("loadedChunks: " + loadedChunks.size());
 	}
 
@@ -91,8 +97,6 @@ public class CustomTerrain implements Listener, Initializable {
 				Chunk chunk = c.getWorld().getChunkAt(x, z);
 				if (!loadedChunks.contains(new Pair<>(chunk.getX(), chunk.getZ()))) {
 					loadChunk(chunk);
-
-					loadedChunks.add(new Pair<>(chunk.getX(), chunk.getZ()));
 				}
 			}
 		}
@@ -102,15 +106,28 @@ public class CustomTerrain implements Listener, Initializable {
 		Block nw = c.getBlock(0,0,0);
 		if (nw.getType() == Material.BARRIER) return;
 
-//		ChunkSnapshot cs = c.getChunkSnapshot(true, true, false);
+		ChunkSnapshot cs = c.getChunkSnapshot(true, true, false);
 		//TODO get biomes
 
 		Structure structure = null;
 		Location loc = null;
-		if (c.getBlock(10,1,10).getType() == Material.DIORITE) {
-			List<Material> triggers = Arrays.asList(Material.AIR);//add remaining
-			Bukkit.broadcastMessage("Diorite");
-			//TODO Tower Structures
+		if (c.getBlock(10,1,10).getType() == Material.DIORITE) {//TODO add config bool
+			Bukkit.broadcastMessage("Tower");
+			List<Material> triggers = Arrays.asList(Material.AIR, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.DEAD_BUSH, Material.GRASS, Material.FERN, Material.VINE, Material.SNOW,
+					Material.DANDELION, Material.POPPY, Material.BLUE_ORCHID, Material.ALLIUM, Material.AZURE_BLUET, Material.OXEYE_DAISY, Material.ORANGE_TULIP, Material.PINK_TULIP, Material.RED_TULIP, Material.WHITE_TULIP,
+					Material.SUNFLOWER, Material.LILAC, Material.ROSE_BUSH, Material.PEONY, Material.TALL_GRASS, Material.LARGE_FERN,
+					Material.ACACIA_LEAVES, Material.BIRCH_LEAVES, Material.JUNGLE_LEAVES, Material.OAK_LEAVES, Material.SPRUCE_LEAVES, Material.DARK_OAK_LEAVES,
+					Material.ACACIA_LOG, Material.BIRCH_LOG, Material.JUNGLE_LOG, Material.OAK_LOG, Material.SPRUCE_LOG, Material.DARK_OAK_LOG);
+
+			for (int y = cs.getHighestBlockYAt(8, 8) + 1; y >= 60; y--) {//IDK
+				if (!triggers.contains(c.getBlock(8, y, 8).getType())) {
+					structure = mc.towerStructures().getStructure(c, y);
+					loc = c.getBlock(8, y+1, 8).getLocation();//y+1
+					Bukkit.broadcastMessage("TS");
+					if (structure == null) Bukkit.broadcastMessage("null");
+					break;
+				}
+			}
 		}
 		else if (dangerousDungeons && c.getBlock(10,1,10).getType() == Material.GRANITE) {
 			List<Material> triggers = Arrays.asList(Material.AIR, Material.CAVE_AIR, Material.WATER);
@@ -145,7 +162,6 @@ public class CustomTerrain implements Listener, Initializable {
 										else if (tags.contains("gm4_tower")) placeChest(entityBlock, "tower");
 									}
 									if (tags.contains("gm4_spawner")) {
-										Bukkit.broadcastMessage(entityBlock.getX() + " " + entityBlock.getY() + " " + entityBlock.getZ());
 										if (tags.contains("gm4_default_spawner")) placeSpawner(entityBlock, "default");
 										else if (tags.contains("gm4_water_spawner")) placeSpawner(entityBlock, "water");
 									}
@@ -172,40 +188,51 @@ public class CustomTerrain implements Listener, Initializable {
 			}
 		}
 		updateBlocks();
+		loadedChunks.add(new Pair<>(c.getX(), c.getZ()));
 	}
 
 	private void placeChest(Block b, String type) {
-		if (b.getType() != Material.CHEST) b.setType(Material.CHEST, true);
-		if (type.equalsIgnoreCase("dungeon")) {
-			if (b.getX() <= 29) {
-
+		if (!(b.getState() instanceof Chest)) b.setType(Material.CHEST);
+		LootTable lootTable = null;
+		try {
+			if (type.equalsIgnoreCase("dungeon")) {
+				if (b.getX() <= 29) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/dungeon_20.yml"), "dungeon_20");
+				}
+				else if (b.getX() >= 30 && b.getX() <= 39) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/dungeon_30.yml"), "dungeon_30");
+				}
+				else if (b.getX() >= 40) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/dungeon_40.yml"), "dungeon_40");
+				}
 			}
-			else if (b.getX() >= 30 && b.getX() <= 39) {
-
+			else if (type.equalsIgnoreCase("tower")) {
+				if (b.getX() <= 89) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/tower_70.yml"), "tower_70");
+				}
+				else if (b.getX() >= 90 && b.getX() <= 109) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/tower_90.yml"), "tower_90");
+				}
+				else if (b.getX() >= 110 && b.getX() <= 129) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/tower_110.yml"), "tower_110");
+				}
+				else if (b.getX() >= 130 && b.getX() <= 149) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/tower_130.yml"), "tower_130");
+				}
+				else if (b.getX() >= 150) {
+					lootTable = lt.load(mc.getResourceAsFile("custom_terrain/loot_tables/tower_150.yml"), "tower_150");
+				}
 			}
-			else if (b.getX() >= 40) {
-
+			if (lootTable != null) {
+				Chest chest = (Chest) b.getState();
+				lootTable.place(chest, true);
 			}
-		}
-		else if (type.equalsIgnoreCase("tower")) {
-			if (b.getX() <= 89) {
-
-			}
-			else if (b.getX() >= 90 && b.getX() <= 109) {
-
-			}
-			else if (b.getX() >= 110 && b.getX() <= 129) {
-
-			}
-			else if (b.getX() >= 130 && b.getX() <= 149) {
-
-			}
-			else if (b.getX() >= 150) {
-
-			}
+			else System.out.println("loot null");
+		} catch (IOException e) {
+			System.out.println("Error: " + e.getMessage());
 		}
 	}
-	private void placeSpawner(Block b, String type) {
+	private void placeSpawner(Block b, String type) {//TODO change to bedrock pattern io random to be seed specific?
 		if (b.getType() != Material.SPAWNER) b.setType(Material.SPAWNER, true);
 		List<EntityType> defaultEntities = Arrays.asList(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER, EntityType.CREEPER);
 		List<EntityType> waterEntities = Arrays.asList(EntityType.DROWNED, EntityType.GUARDIAN, EntityType.GUARDIAN, EntityType.PUFFERFISH);
