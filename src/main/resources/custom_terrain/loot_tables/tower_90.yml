@@ -1,0 +1,249 @@
+tower_90:
+  ==: LootTable
+  pools:
+  - ==: Pool
+    rolls:
+      - 2
+      - 4
+    entries:
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:bone"
+      weight: 20
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 8
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:rotten_flesh"
+      weight: 20
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 10
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:arrow"
+      weight: 20
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 20
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:string"
+      weight: 20
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 12
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:gunpowder"
+      weight: 20
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 6
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:spider_eye"
+      weight: 5
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 6
+  - ==: Pool
+    rolls:
+      - 1
+      - 2
+    entries:
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:ender_pearl"
+      weight: 3
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 2
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:cobweb"
+      weight: 4
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 10
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:phantom_membrane"
+      weight: 2
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 3
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:feather"
+      weight: 5
+      functions:
+      - ==: Function
+        function: "minecraft:set_count"
+        count:
+          - 1
+          - 10
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:enchanted_book"
+      weight: 1
+      functions:
+      - ==: Function
+        function: "minecraft:set_nbt"
+        tag: "{StoredEnchantments:[{id:\"minecraft:feather_falling\",lvl:4s}]}"
+  - ==: Pool
+    rolls:
+      - 1
+      - 2
+    entries:
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:book"
+      weight: 15
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:diamond_axe"
+      weight: 2
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+      - ==: Function
+        function: "minecraft:set_damage"
+        damage:
+          - 0.25
+          - 0.75
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:diamond_sword"
+      weight: 2
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+      - ==: Function
+        function: "minecraft:set_damage"
+        damage:
+          - 0.25
+          - 0.75
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:diamond_boots"
+      weight: 1
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+      - ==: Function
+        function: "minecraft:set_damage"
+        damage:
+          - 0.25
+          - 0.75
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:diamond_leggings"
+      weight: 1
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+      - ==: Function
+        function: "minecraft:set_damage"
+        damage:
+          - 0.25
+          - 0.75
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:diamond_chestplate"
+      weight: 1
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+      - ==: Function
+        function: "minecraft:set_damage"
+        damage:
+          - 0.25
+          - 0.75
+    - ==: Entry
+      type: "minecraft:item"
+      name: "minecraft:diamond_helmet"
+      weight: 1
+      functions:
+      - ==: Function
+        function: "minecraft:enchant_with_levels"
+        treasure: true
+        levels:
+          - 17
+          - 30
+      - ==: Function
+        function: "minecraft:set_damage"
+        damage:
+          - 0.25
+          - 0.75
+  - ==: Pool
+    rolls: 1
+    entries:
+    - ==: Entry
+      type: "minecraft:tag"
+      name: "orbis:tower_loot_common"
+      weight: 3
+    - ==: Entry
+      type: "minecraft:tag"
+      name: "orbis:tower_loot_uncommon"
+      weight: 2
+    - ==: Entry
+      type: "minecraft:tag"
+      name: "orbis:tower_loot_rare"
+      weight: 1
+  
