@@ -141,4 +141,34 @@ public class Helper {
 	public static List<String> filterTab(String arg, Stream<String> items) {
 		return items.filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).collect(Collectors.toList());
 	}
+
+	public static List<String> getLookingCoords(Player p, int i, int size) {
+    	Block b = p.getTargetBlockExact(5);
+    	List<String> items = new ArrayList<>();
+    	if (b != null) {
+    		if (i == 0) {
+    			if (size >= 3) items.add(b.getX() + " " + b.getY() + " " + b.getZ());
+				if (size >= 2) items.add(b.getX() + " " + b.getY());
+				if (size >= 1) items.add(b.getX() + "");
+			}
+			else if (i == 1) {
+				if (size >= 2) items.add(b.getY() + " " + b.getZ());
+				if (size >= 1) items.add(b.getY() + "");
+			}
+			else if (i == 2) items.add(b.getZ() + "");
+		}
+    	else {
+			if (i == 0) {
+				if (size >= 3) items.add("~ ~ ~");
+				if (size >= 2) items.add("~ ~");
+				if (size >= 1) items.add("~");
+			}
+			else if (i == 1) {
+				if (size >= 2) items.add("~ ~");
+				if (size >= 1) items.add("~");
+			}
+			else if (i == 2) items.add("~");
+		}
+    	return items;
+	}
 }
