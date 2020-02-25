@@ -12,12 +12,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class DangerousDungeons {
-
 	private MainClass mc;
-	private CustomTerrain ct;
-	public DangerousDungeons(MainClass mc, CustomTerrain ct) {
+	public DangerousDungeons(MainClass mc) {
 		this.mc = mc;
-		this.ct = ct;
 	}
 
 	Structure getStructure(Chunk c) {
@@ -26,21 +23,21 @@ public class DangerousDungeons {
 
 		Structure structure = null;
 		if (biomeGroupList.contains(BiomeGroup.OCEAN)) {
-			if (c.getBlock(8, 3, 8).getType() == Material.BEDROCK) structure = getStructure("ocean", new Vector(-8, -7, -8));
+			if (c.getBlock(8, 3, 8).getType() == Material.BEDROCK) structure = getStructure("ocean", "Ocean Dungeon", new Vector(-8, -7, -8));
 		}
-		else if (biomeGroupList.contains(BiomeGroup.DESERT)) structure = getStructure("desert", new Vector(-8, -7, -8));
-		else if (biomeGroupList.contains(BiomeGroup.BADLANDS)) structure = getStructure("badlands", new Vector(-8, -7, -8));
-		else if (biomeGroupList.contains(BiomeGroup.SNOWY)) structure = getStructure("snowy", new Vector(-8, -7, -8));
+		else if (biomeGroupList.contains(BiomeGroup.DESERT)) structure = getStructure("desert", "Desert Dungeon", new Vector(-8, -7, -8));
+		else if (biomeGroupList.contains(BiomeGroup.BADLANDS)) structure = getStructure("badlands", "Badlands Dungeon", new Vector(-8, -7, -8));
+		else if (biomeGroupList.contains(BiomeGroup.SNOWY)) structure = getStructure("snowy", "Snowy Dungeon", new Vector(-8, -7, -8));
 		else {
-			if (c.getBlock(8, 4, 8).getType() == Material.BEDROCK) structure = getStructure("default2", new Vector(-8, -7, -5));
-			else structure = getStructure("default", new Vector(-8, -7, -8));
+			if (c.getBlock(8, 4, 8).getType() == Material.BEDROCK) structure = getStructure("default2", "Library Dungeon", new Vector(-8, -7, -5));
+			else structure = getStructure("default", "Default Dungeon", new Vector(-8, -7, -8));
 		}
 		return structure;
 	}
 	
-	private Structure getStructure(String name, Vector offset) {
+	private Structure getStructure(String fileName, String name, Vector offset) {
 		try {
-			File file = mc.getResourceAsFile("custom_terrain/dangerous_dungeons/" + name + ".nbt");
+			File file = mc.getResourceAsFile("custom_terrain/dangerous_dungeons/" + fileName + ".nbt");
 			Structure structure = new Structure(file, name);
 			structure.setOffset(offset);
 			return structure;
