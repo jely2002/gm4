@@ -1,6 +1,6 @@
 name: Gamemode-4
 main: com.belka.spigot.gm4.MainClass
-version: 1.4
+version: 0.1.0
 api-version: 1.14
 description: Gamemode 4 Plugin
 depend: [CrazyAdvancementsAPI, NBTAPI]
