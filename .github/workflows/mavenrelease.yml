@@ -3,7 +3,7 @@ name: Upload Maven release Package
 on:
   push:
     tags:
-    - 'v*'
+    - 'v*.*.*'
 
 jobs:
   build:
@@ -22,7 +22,15 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-  
+      
+    - name: Release on GitHub
+      uses: softprops/action-gh-release@v1
+      with:
+        files: target/*.jar
+        body: 'For changelogs see commits.'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
