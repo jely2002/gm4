@@ -1,12 +1,12 @@
 package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
-import api.LootTables.LootTable;
+import api.lootTables.LootTable;
 import api.Structure;
-import com.belka.spigot.gm4.ConsoleColor;
+import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -64,7 +64,7 @@ public class CustomTerrain implements Listener, Initializable {
 
 		if (mc.storage.data().getConfigurationSection("CustomTerrain.chunks") != null) {
 			for (String chunk : mc.storage.data().getStringList("CustomTerrain.chunks")) {
-				loadedChunks.add(new Pair<>(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
+				loadedChunks.add(Pair.of(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
 			}
 		}
 		System.out.println("loadedChunks: " + loadedChunks.size());
@@ -102,7 +102,7 @@ public class CustomTerrain implements Listener, Initializable {
 		for (int x = c.getX() - loadRadius; x <= c.getX() + loadRadius; x++) {
 			for (int z = c.getZ() - loadRadius; z <= c.getZ() + loadRadius; z++) {
 				Chunk chunk = c.getWorld().getChunkAt(x, z);
-				if (!loadedChunks.contains(new Pair<>(chunk.getX(), chunk.getZ()))) {
+				if (!loadedChunks.contains(Pair.of(chunk.getX(), chunk.getZ()))) {
 					loadChunk(chunk);
 				}
 			}
@@ -153,7 +153,7 @@ public class CustomTerrain implements Listener, Initializable {
 			structure.setIgnoredEntityTypes(Collections.singletonList(EntityType.AREA_EFFECT_CLOUD));
 			structure.place(loc, true);
 
-			for (Pair<Vector, HashMap<String, Object>> entityPair: structure.getEntities()) {
+			for (Pair<Vector, HashMap<String, Object>> entityPair : structure.getEntities()) {
 				HashMap<String, Object> map = entityPair.getValue();
 				if (!map.containsKey("id")) continue;
 				EntityType entityType = Helper.getEntityByName(map.get("id").toString().replace("minecraft:", ""));
@@ -195,7 +195,7 @@ public class CustomTerrain implements Listener, Initializable {
 			}
 		}
 		updateBlocks();
-		loadedChunks.add(new Pair<>(c.getX(), c.getZ()));
+		loadedChunks.add(Pair.of(c.getX(), c.getZ()));
 	}
 
 	private void placeChest(Block b, String type) {

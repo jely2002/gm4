@@ -2,7 +2,6 @@ package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import javafx.util.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Snow;

@@ -1,10 +1,11 @@
 package com.belka.spigot.gm4;
 
+import api.ConsoleColor;
 import api.InventoryCreator;
-import api.LootTables.Entry;
-import api.LootTables.Function;
-import api.LootTables.LootTable;
-import api.LootTables.Pool;
+import api.lootTables.Entry;
+import api.lootTables.Function;
+import api.lootTables.LootTable;
+import api.lootTables.Pool;
 import api.services.Metrics;
 import api.services.Updater;
 import com.belka.spigot.gm4.config.ConfigManager;

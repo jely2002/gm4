@@ -1,13 +1,13 @@
 package api;
 
-import de.tr7zw.nbtapi.NBTContainer;
-import de.tr7zw.nbtapi.NBTEntity;
-import javafx.util.Pair;
+import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.changeme.nbtapi.NBTEntity;
 import mryurihi.tbnbt.TagType;
 import mryurihi.tbnbt.stream.NBTInputStream;
 import mryurihi.tbnbt.tag.NBTTag;
 import mryurihi.tbnbt.tag.NBTTagCompound;
 import mryurihi.tbnbt.tag.NBTTagList;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -102,7 +102,7 @@ public class Structure {
 					map.put(entry.getKey(), getTagValue(entry.getValue()));
 				}
 			}
-			list.add(new Pair<>(pos, map));
+			list.add(Pair.of(pos, map));
 		}
 		return list;
 	}
@@ -121,7 +121,7 @@ public class Structure {
 				List<Integer> posInt = tag.get("pos").getAsTagList().getValue().stream().map(nbtTag1 -> nbtTag1.getAsTagInt().getValue()).collect(Collectors.toList());
 				pos.setX(posInt.get(0)).setY(posInt.get(1)).setZ(posInt.get(2));
 			}
-			list.add(new Pair<>(pos, state));
+			list.add(Pair.of(pos, state));
 		}
 		return list;
 	}
@@ -130,7 +130,7 @@ public class Structure {
 		List<Pair<Material, HashMap<String, Object>>> palette = getPalette();
 		List<Pair<Vector, Material>> list = new ArrayList<>();
 		for (Pair<Vector, Integer> pair: blocks) {
-			list.add(new Pair<>(pair.getKey(), palette.get(pair.getValue()).getKey()));
+			list.add(Pair.of(pair.getKey(), palette.get(pair.getValue()).getKey()));
 		}
 		return list;
 	}
@@ -150,7 +150,7 @@ public class Structure {
 					map.put(entry.getKey(), getTagValue(entry.getValue()));
 				}
 			}
-			list.add(new Pair<>(mat, map));
+			list.add(Pair.of(mat, map));
 		}
 		return list;
 	}
