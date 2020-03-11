@@ -1,4 +1,4 @@
-package api.LootTables;
+package api.lootTables;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
