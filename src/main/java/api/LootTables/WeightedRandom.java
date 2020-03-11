@@ -1,4 +1,4 @@
-package api.lootTables;
+package api.LootTables;
 
 import java.util.ArrayList;
 import java.util.List;

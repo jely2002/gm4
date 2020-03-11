@@ -1,4 +1,4 @@
-package api.lootTables;
+package api.LootTables;
 
 import com.belka.spigot.gm4.ConsoleColor;
 import com.fasterxml.jackson.core.JsonProcessingException;
