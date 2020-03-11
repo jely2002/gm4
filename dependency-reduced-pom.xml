@@ -3,8 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.belka.spigot</groupId>
   <artifactId>gm4</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <build>
+    <finalName>GM4-${project.version}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -106,4 +107,11 @@
       <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Jely2002 Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/jely2002/gm4</url>
+    </repository>
+  </distributionManagement>
 </project>

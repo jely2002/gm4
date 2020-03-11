@@ -72,16 +72,6 @@
         </repository>
     </repositories>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Jely2002 Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/jely2002/gm4</url>
-        </repository>
-    </distributionManagement>
-
-    <packaging>jar</packaging>
-
     <build>
         <finalName>GM4-${project.version}</finalName>
         <plugins>
