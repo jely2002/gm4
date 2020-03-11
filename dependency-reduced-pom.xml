@@ -107,11 +107,4 @@
       <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Jely2002 Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/jely2002/gm4</url>
-    </repository>
-  </distributionManagement>
 </project>

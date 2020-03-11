@@ -134,11 +134,17 @@ public class MainClass extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		customTerrain.disable();
-		saveConfig();
-		storage.saveAll();
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			Advancements.manager.saveProgress(p, "gm4");
+		if(customTerrain != null) {
+			customTerrain.disable();
+		}
+		if(storage != null) {
+			saveConfig();
+			storage.saveAll();
+		}
+		if(Advancements.manager != null) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				Advancements.manager.saveProgress(p, "gm4");
+			}
 		}
 //		Advancements.manager.setAnnounceAdvancementMessages(true);
 		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
