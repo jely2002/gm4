@@ -1,7 +1,7 @@
 package com.belka.spigot.gm4;
 
 import api.Helper;
-import api.lootTables.LootTable;
+import api.LootTables.LootTable;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.Advancements;
