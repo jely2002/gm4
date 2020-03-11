@@ -39,7 +39,7 @@ public class ZauberCauldrons implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
-		active = mc.storage().data().getStringList("ZauberCauldrons");
+		active = mc.storage.data().getStringList("ZauberCauldrons");
 		checkCauldrons();
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
 			for (String cauldron : active) {
@@ -70,8 +70,8 @@ public class ZauberCauldrons implements Listener, Initializable {
 						if (cauldron.getLevel() == cauldron.getMaximumLevel()) {
 							if (!active.contains("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName())) {
 								active.add("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName());
-								mc.storage().data().set("ZauberCauldrons", active);
-								mc.storage().saveData();
+								mc.storage.data().set("ZauberCauldrons", active);
+								mc.storage.saveData();
 							}
 						}
 					}
@@ -85,8 +85,8 @@ public class ZauberCauldrons implements Listener, Initializable {
 				if (c.getType() == Material.CAULDRON) {
 					if (active.contains("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName())) {
 						active.remove("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName());
-						mc.storage().data().set("ZauberCauldrons", active);
-						mc.storage().saveData();
+						mc.storage.data().set("ZauberCauldrons", active);
+						mc.storage.saveData();
 					}
 				}
 			}
@@ -98,8 +98,8 @@ public class ZauberCauldrons implements Listener, Initializable {
 			Block c = Helper.locFromConfig(cauldron).getBlock();
 			if (c.getRelative(BlockFace.DOWN).getType() != Material.FIRE) {
 				active.remove("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName());
-				mc.storage().data().set("ZauberCauldrons", active);
-				mc.storage().saveData();
+				mc.storage.data().set("ZauberCauldrons", active);
+				mc.storage.saveData();
 			}
 		}
 	}

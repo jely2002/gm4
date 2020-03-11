@@ -46,14 +46,14 @@ public class TrappedSigns implements Listener, Initializable {
     public void signDestroy(BlockBreakEvent e) {
         if(!enabled) return;
 		if (!(e.getBlock().getState() instanceof Sign)) return;
-		if(!mc.storage().data().contains("TrappedSigns.0")) return;
-        for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
-            if (e.getBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
-                if (e.getBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
-                    if (e.getBlock().getLocation().getBlockZ() == mc.storage().data().getInt("TrappedSigns." + id + ".z")) {
-                        if (e.getBlock().getWorld().getName().equals(mc.storage().data().getString("TrappedSigns." + id + ".world"))) {
-                            mc.storage().data().set("TrappedSigns." + id, null);
-                            mc.storage().saveData();
+		if(!mc.storage.data().contains("TrappedSigns.0")) return;
+        for (String id : mc.storage.data().getConfigurationSection("TrappedSigns").getKeys(false)) {
+            if (e.getBlock().getLocation().getBlockX() == mc.storage.data().getInt("TrappedSigns." + id + ".x")) {
+                if (e.getBlock().getLocation().getBlockY() == mc.storage.data().getInt("TrappedSigns." + id + ".y")) {
+                    if (e.getBlock().getLocation().getBlockZ() == mc.storage.data().getInt("TrappedSigns." + id + ".z")) {
+                        if (e.getBlock().getWorld().getName().equals(mc.storage.data().getString("TrappedSigns." + id + ".world"))) {
+                            mc.storage.data().set("TrappedSigns." + id, null);
+                            mc.storage.saveData();
                             if(e.getPlayer().getGameMode() == GameMode.SURVIVAL || e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
 //                                e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.OAK_SIGN, 1)); //!!!!!!!!!
                                 e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.REDSTONE, 3));
@@ -69,12 +69,12 @@ public class TrappedSigns implements Listener, Initializable {
     @EventHandler
     public void signTextEdit(SignChangeEvent e) {
         if (!enabled) return;
-		if(!mc.storage().data().contains("TrappedSigns.0")) return;
-        for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
-            if (e.getBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
-                if (e.getBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
-                    if (e.getBlock().getLocation().getBlockZ() == mc.storage().data().getInt("TrappedSigns." + id + ".z")) {
-                        if (e.getBlock().getWorld().getName().equals(mc.storage().data().getString("TrappedSigns." + id + ".world"))) {
+		if(!mc.storage.data().contains("TrappedSigns.0")) return;
+        for (String id : mc.storage.data().getConfigurationSection("TrappedSigns").getKeys(false)) {
+            if (e.getBlock().getLocation().getBlockX() == mc.storage.data().getInt("TrappedSigns." + id + ".x")) {
+                if (e.getBlock().getLocation().getBlockY() == mc.storage.data().getInt("TrappedSigns." + id + ".y")) {
+                    if (e.getBlock().getLocation().getBlockZ() == mc.storage.data().getInt("TrappedSigns." + id + ".z")) {
+                        if (e.getBlock().getWorld().getName().equals(mc.storage.data().getString("TrappedSigns." + id + ".world"))) {
                             if (e.getLine(3).isEmpty()) {
                                 e.setLine(3, "-x-");
                             }
@@ -91,12 +91,12 @@ public class TrappedSigns implements Listener, Initializable {
         if (!enabled) return;
         if (!(e.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         if (!(e.getClickedBlock().getState() instanceof Sign)) return;
-        if(!mc.storage().data().contains("TrappedSigns.0")) return;
-        for (String id : mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false)) {
-            if (e.getClickedBlock().getLocation().getBlockX() == mc.storage().data().getInt("TrappedSigns." + id + ".x")) {
-                if(e.getClickedBlock().getLocation().getBlockY() == mc.storage().data().getInt("TrappedSigns." + id + ".y")) {
-                    if(e.getClickedBlock().getLocation().getBlockZ() == mc.storage().data().getInt("TrappedSigns." + id + ".z")) {
-                        if(e.getClickedBlock().getWorld().getName().equals(mc.storage().data().getString("TrappedSigns." + id + ".world"))) {
+        if(!mc.storage.data().contains("TrappedSigns.0")) return;
+        for (String id : mc.storage.data().getConfigurationSection("TrappedSigns").getKeys(false)) {
+            if (e.getClickedBlock().getLocation().getBlockX() == mc.storage.data().getInt("TrappedSigns." + id + ".x")) {
+                if(e.getClickedBlock().getLocation().getBlockY() == mc.storage.data().getInt("TrappedSigns." + id + ".y")) {
+                    if(e.getClickedBlock().getLocation().getBlockZ() == mc.storage.data().getInt("TrappedSigns." + id + ".z")) {
+                        if(e.getClickedBlock().getWorld().getName().equals(mc.storage.data().getString("TrappedSigns." + id + ".world"))) {
                             for(Block b : getRedstone(e.getClickedBlock())) {
 								AnaloguePowerable r = (AnaloguePowerable) b.getBlockData();
 								if (r.getPower() != 0) continue;
@@ -132,17 +132,17 @@ public class TrappedSigns implements Listener, Initializable {
 
     private void addSign(Location loc) {
         int id;
-        if(!mc.storage().data().contains("TrappedSigns.0")) {
+        if(!mc.storage.data().contains("TrappedSigns.0")) {
             id = 0;
         }
         else {
-            id = mc.storage().data().getConfigurationSection("TrappedSigns").getKeys(false).size();
+            id = mc.storage.data().getConfigurationSection("TrappedSigns").getKeys(false).size();
         }
-        mc.storage().data().set("TrappedSigns." + id + ".x", loc.getBlockX());
-        mc.storage().data().set("TrappedSigns." + id + ".y", loc.getBlockY());
-        mc.storage().data().set("TrappedSigns." + id + ".z", loc.getBlockZ());
-        mc.storage().data().set("TrappedSigns." + id + ".world", loc.getWorld().getName());
-        mc.storage().saveData();
+        mc.storage.data().set("TrappedSigns." + id + ".x", loc.getBlockX());
+        mc.storage.data().set("TrappedSigns." + id + ".y", loc.getBlockY());
+        mc.storage.data().set("TrappedSigns." + id + ".z", loc.getBlockZ());
+        mc.storage.data().set("TrappedSigns." + id + ".world", loc.getWorld().getName());
+        mc.storage.saveData();
     }
 
     private ArrayList<Block> getRedstone(Block b) {

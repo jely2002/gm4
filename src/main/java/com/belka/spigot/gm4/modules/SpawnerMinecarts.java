@@ -87,10 +87,10 @@ public class SpawnerMinecarts implements Listener {
 										JsonObject jsonObject = new JsonParser().parse("[{\"Entity\":{\"id\":\"minecraft:" + mob + "\"}, \"Weight\":1}]").getAsJsonObject();
 										JsonArray data = jsonObject.getAsJsonArray();
 										nbtEntity.setObject("SpawnPotentials", data);
-										List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
+										List<String> stored = mc.storage.data().getStringList("SpawnerMinecarts");
 										stored.add(mms.getUniqueId().toString());
-										mc.storage().data().set("SpawnerMinecarts", stored);
-										mc.storage().saveData();
+										mc.storage.data().set("SpawnerMinecarts", stored);
+										mc.storage.saveData();
                                     }
                                 }
                             }
@@ -119,10 +119,10 @@ public class SpawnerMinecarts implements Listener {
 					spawner.setSpawnedType(Helper.getEntityByName(mob));
 					blockState.update();
 
-					List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
+					List<String> stored = mc.storage.data().getStringList("SpawnerMinecarts");
 					stored.remove(sm.getUniqueId().toString());
-					mc.storage().data().set("SpawnerMinecarts", stored);
-					mc.storage().saveData();
+					mc.storage.data().set("SpawnerMinecarts", stored);
+					mc.storage.saveData();
 
 					Minecart mic = (Minecart) sm.getWorld().spawnEntity(sm.getLocation(), EntityType.MINECART);
 					mic.setVelocity(sm.getVelocity());
@@ -136,7 +136,7 @@ public class SpawnerMinecarts implements Listener {
 	public void onDamage(EntityDamageEvent e) {
 		if (!mc.getConfig().getBoolean("SpawnerMinecarts.enabled")) return;
 		if (e.getEntityType() == EntityType.MINECART_MOB_SPAWNER) {
-			List<String> stored = mc.storage().data().getStringList("SpawnerMinecarts");
+			List<String> stored = mc.storage.data().getStringList("SpawnerMinecarts");
 			if (stored.contains(e.getEntity().getUniqueId().toString())) {
 				e.setCancelled(true);
 			}

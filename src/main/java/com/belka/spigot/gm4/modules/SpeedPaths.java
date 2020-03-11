@@ -21,8 +21,8 @@ public class SpeedPaths implements Listener {
     }
 
     public void loadValues() {
-        pathBlock = Material.getMaterial(mc.storage().config().getString("SpeedPaths.pathBlock"));
-        speedFactor = mc.storage().config().getInt("SpeedPaths.speedFactor");
+        pathBlock = Material.getMaterial(mc.storage.config().getString("SpeedPaths.pathBlock"));
+        speedFactor = mc.storage.config().getInt("SpeedPaths.speedFactor");
     }
 
     @EventHandler

@@ -204,8 +204,8 @@ public class SoulProbes implements Listener, Initializable {
 								p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
 
 								String loc = "SoulProbes." + p.getUniqueId() + "." + eName.toUpperCase();
-								mc.storage().data().set(loc, x - y);
-								mc.storage().saveData();
+								mc.storage.data().set(loc, x - y);
+								mc.storage.saveData();
 							}
 							else p.sendMessage(ChatColor.RED + "You don't have any empty spawn eggs!");
 						}
@@ -247,8 +247,8 @@ public class SoulProbes implements Listener, Initializable {
 		Player p = e.getEntity().getKiller();
 		if (p != null) {
 			String loc = "SoulProbes." + p.getUniqueId() + "." + dead.getType().name();
-			mc.storage().data().set(loc, mc.storage().data().getInt(loc, 0) + 1);
-			mc.storage().saveData();
+			mc.storage.data().set(loc, mc.storage.data().getInt(loc, 0) + 1);
+			mc.storage.saveData();
 		}
 	}
 }

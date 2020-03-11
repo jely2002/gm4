@@ -124,7 +124,7 @@ public class InventoryCreator {
 		}
 		ItemStack item = SkullCreator.itemFromUrl(url);
 		ItemMeta meta = item.getItemMeta();
-		int stat = mc.storage().data().getInt("SoulProbes." + p.getUniqueId() + "." + mob.name(), 0);
+		int stat = mc.storage.data().getInt("SoulProbes." + p.getUniqueId() + "." + mob.name(), 0);
 		meta.setDisplayName(ChatColor.DARK_GRAY + "" + stat + "/" + amount);
 		if (stat >= amount) {
 			meta.setDisplayName(ChatColor.GOLD + "" + stat + "/" + amount);

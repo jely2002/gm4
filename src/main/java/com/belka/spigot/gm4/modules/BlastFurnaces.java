@@ -44,14 +44,14 @@ public class BlastFurnaces implements Listener, Initializable {
 			enabled = false;
 			return;
 		}
-		if (mc.storage().data().getConfigurationSection("BlastFurnaces") != null) {
-			ArrayList<String> blastFurnaces = new ArrayList<>(mc.storage().data().getConfigurationSection("BlastFurnaces").getKeys(false));
+		if (mc.storage.data().getConfigurationSection("BlastFurnaces") != null) {
+			ArrayList<String> blastFurnaces = new ArrayList<>(mc.storage.data().getConfigurationSection("BlastFurnaces").getKeys(false));
 			for (String uuid : blastFurnaces) {
 				ArmorStand as = (ArmorStand) Bukkit.getEntity(UUID.fromString(uuid));
-				int x = mc.storage().data().getInt("BlastFurnaces." + uuid + ".x");
-				int y = mc.storage().data().getInt("BlastFurnaces." + uuid + ".y");
-				int z = mc.storage().data().getInt("BlastFurnaces." + uuid + ".z");
-				World world = Bukkit.getWorld(mc.storage().data().getString("BlastFurnaces." + uuid + ".world"));
+				int x = mc.storage.data().getInt("BlastFurnaces." + uuid + ".x");
+				int y = mc.storage.data().getInt("BlastFurnaces." + uuid + ".y");
+				int z = mc.storage.data().getInt("BlastFurnaces." + uuid + ".z");
+				World world = Bukkit.getWorld(mc.storage.data().getString("BlastFurnaces." + uuid + ".world"));
 				Block b = new Location(world, x, y, z).getBlock();
 				if (b.getState() instanceof Furnace) {
 					activeBlastFurnaces.put((Furnace) b.getState(), as);
@@ -63,7 +63,7 @@ public class BlastFurnaces implements Listener, Initializable {
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) { // Create Blast Furnace
 		if (!enabled) return;
-		if (!mc.storage().data().contains("BlastFurnaces")) return;
+		if (!mc.storage.data().contains("BlastFurnaces")) return;
 		Block b = event.getBlock();
 		Material mat = b.getType();
 		if (mat != Material.IRON_BLOCK && mat != Material.FURNACE && mat != Material.GLASS) return;
@@ -141,7 +141,7 @@ public class BlastFurnaces implements Listener, Initializable {
 		for (Entity e : Helper.getNearbyEntities(b.getLocation(), 3)) {
 			if (e instanceof ArmorStand) {
 				ArmorStand as = (ArmorStand) e;
-				if (!as.getCustomName().equalsIgnoreCase("BlastFurnace") || !mc.storage().data().contains("BlastFurnaces." + as.getUniqueId())) return;
+				if (!as.getCustomName().equalsIgnoreCase("BlastFurnace") || !mc.storage.data().contains("BlastFurnaces." + as.getUniqueId())) return;
 				disableBF(as);
 			}
 		}
@@ -149,20 +149,20 @@ public class BlastFurnaces implements Listener, Initializable {
 	}
 	private void enableBF(Furnace furnace, ArmorStand as) {
 		String uuid = as.getUniqueId().toString();
-		mc.storage().data().set("BlastFurnaces." + uuid + ".enabled", true);
-		mc.storage().data().set("BlastFurnaces." + uuid + ".x", furnace.getX());
-		mc.storage().data().set("BlastFurnaces." + uuid + ".y", furnace.getY());
-		mc.storage().data().set("BlastFurnaces." + uuid + ".z", furnace.getZ());
-		mc.storage().data().set("BlastFurnaces." + uuid + ".world", furnace.getWorld().getName());
-		mc.storage().saveData();
+		mc.storage.data().set("BlastFurnaces." + uuid + ".enabled", true);
+		mc.storage.data().set("BlastFurnaces." + uuid + ".x", furnace.getX());
+		mc.storage.data().set("BlastFurnaces." + uuid + ".y", furnace.getY());
+		mc.storage.data().set("BlastFurnaces." + uuid + ".z", furnace.getZ());
+		mc.storage.data().set("BlastFurnaces." + uuid + ".world", furnace.getWorld().getName());
+		mc.storage.saveData();
 	}
 	private void disableBF(ArmorStand as) {
 		String uuid = as.getUniqueId().toString();
-		mc.storage().data().set("BlastFurnaces." + uuid + ".enabled", false);
-		mc.storage().saveData();
+		mc.storage.data().set("BlastFurnaces." + uuid + ".enabled", false);
+		mc.storage.saveData();
 
-		Furnace furnace = (Furnace) new Location(Bukkit.getWorld(mc.storage().data().getString("BlastFurnaces." + uuid + ".world")),
-				mc.storage().data().getInt("BlastFurnaces." + uuid + ".x"), mc.storage().data().getInt("BlastFurnaces." + uuid + ".y"), mc.storage().data().getInt("BlastFurnaces." + uuid + ".z")).getBlock().getState();
+		Furnace furnace = (Furnace) new Location(Bukkit.getWorld(mc.storage.data().getString("BlastFurnaces." + uuid + ".world")),
+				mc.storage.data().getInt("BlastFurnaces." + uuid + ".x"), mc.storage.data().getInt("BlastFurnaces." + uuid + ".y"), mc.storage.data().getInt("BlastFurnaces." + uuid + ".z")).getBlock().getState();
 		activeBlastFurnaces.remove(furnace);
 	}
 

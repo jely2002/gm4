@@ -49,7 +49,7 @@ public class Chairs implements Listener {
 					else if (b2.getBlockData() instanceof Stairs) block = b2;
 					else return;
 
-					List<String> active = mc.storage().data().getStringList("Chairs");
+					List<String> active = mc.storage.data().getStringList("Chairs");
 					if (!active.contains("x:" + block.getX() + " y:" + block.getY() + " z:" + block.getZ() + " w:" + block.getWorld().getName())) {
 						Location pigLoc = block.getLocation();
 						Stairs stairs = (Stairs) block.getBlockData();
@@ -82,8 +82,8 @@ public class Chairs implements Listener {
 						i.remove();
 
 						active.add("x:" + block.getX() + " y:" + block.getY() + " z:" + block.getZ() + " w:" + block.getWorld().getName());
-						mc.storage().data().set("Chairs", active);
-						mc.storage().saveData();
+						mc.storage.data().set("Chairs", active);
+						mc.storage.saveData();
 					}
 				}
 			}
@@ -93,15 +93,15 @@ public class Chairs implements Listener {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block b = event.getBlock();
-		List<String> active = mc.storage().data().getStringList("Chairs");
+		List<String> active = mc.storage.data().getStringList("Chairs");
 		World w = b.getWorld();
 		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName())) {
 			Location loc = b.getLocation().add(0.5, 0.5, 0.5);
 			w.dropItem(loc, new ItemStack(Material.SADDLE, 1));
 
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
-			mc.storage().data().set("Chairs", active);
-			mc.storage().saveData();
+			mc.storage.data().set("Chairs", active);
+			mc.storage.saveData();
 
 			for(Entity e : Helper.getNearbyEntities(b.getLocation().add(.5, -.39, .5), 0.5))
 				if(e instanceof Pig)

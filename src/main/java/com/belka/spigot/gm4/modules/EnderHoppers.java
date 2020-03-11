@@ -39,7 +39,7 @@ public class EnderHoppers implements Listener, Initializable {
         mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
             for (Iterator<Item> it = droppedItems.iterator(); it.hasNext();) {
             	Item i = it.next();
-				List<String> active = mc.storage().data().getStringList("EnderHoppers");
+				List<String> active = mc.storage.data().getStringList("EnderHoppers");
                 for (String hopper : active) {
 					Location loc = Helper.locFromConfig(hopper);
                     Location item = i.getLocation();
@@ -95,8 +95,8 @@ public class EnderHoppers implements Listener, Initializable {
 						Hopper h;
 						if (b.getBlockData().getMaterial() == Material.HOPPER) h = (Hopper) b.getState();
 						else h = (Hopper) b.getRelative(0, -1, 0).getState();
-						List<String> active = mc.storage().data().getStringList("EnderHoppers");
-						List<String> cc = mc.storage().data().getStringList("CustomCrafter.customCrafters");
+						List<String> active = mc.storage.data().getStringList("EnderHoppers");
+						List<String> cc = mc.storage.data().getStringList("CustomCrafter.customCrafters");
 						if (!active.contains("x:" + h.getX() + " y:" + h.getY() + " z:" + h.getZ() + " w:" + h.getWorld().getName()) && !cc.contains("x:" + h.getX() + " y:" + h.getY() + " z:" + h.getZ() + " w:" + h.getWorld().getName())) {
 							Inventory inv = h.getInventory();
 							if (containsRecipe(inv)) {
@@ -106,8 +106,8 @@ public class EnderHoppers implements Listener, Initializable {
 
 								e.getItemDrop().remove();
 								active.add("x:" + h.getX() + " y:" + h.getY() + " z:" + h.getZ() + " w:" + h.getWorld().getName());
-								mc.storage().data().set("EnderHoppers", active);
-								mc.storage().saveData();
+								mc.storage.data().set("EnderHoppers", active);
+								mc.storage.saveData();
 							}
 						}
 					}
@@ -119,7 +119,7 @@ public class EnderHoppers implements Listener, Initializable {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) { // Remove Ender Hopper
 		Block b = event.getBlock();
-		List<String> active = mc.storage().data().getStringList("EnderHoppers");
+		List<String> active = mc.storage.data().getStringList("EnderHoppers");
 		World w = b.getWorld();
 		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName())) {
 			Location loc = b.getLocation().add(0.5, 0.5, 0.5);
@@ -128,8 +128,8 @@ public class EnderHoppers implements Listener, Initializable {
 			w.dropItem(loc, new ItemStack(Material.IRON_BLOCK, 4));
 			w.dropItem(loc, new ItemStack(Material.DIAMOND_BLOCK, 1));
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
-			mc.storage().data().set("EnderHoppers", active);
-			mc.storage().saveData();
+			mc.storage.data().set("EnderHoppers", active);
+			mc.storage.saveData();
 		}
 	}
 
