@@ -38,13 +38,10 @@ import java.util.logging.Level;
 public class MainClass extends JavaPlugin {
 
 	private CommandManager cmdMgmt;
-	private ConfigManager storage;
-
-	public SpeedPaths speedPaths;
 	private CustomTerrain customTerrain;
-	private CoolerCaves coolerCaves;
-	private DangerousDungeons dangerousDungeons;
-	private TowerStructures towerStructures;
+
+	public ConfigManager storage;
+	public SpeedPaths speedPaths;
 
 	public String chatPrefix = ChatColor.WHITE + "[" + ChatColor.DARK_AQUA + "GM4" + ChatColor.WHITE + "] " + ChatColor.RESET;
 	public String consolePrefix = ConsoleColor.BLACK + "[" + ConsoleColor.CYAN + "GM4" + ConsoleColor.BLACK + "] " + ConsoleColor.RESET;
@@ -57,44 +54,31 @@ public class MainClass extends JavaPlugin {
 		System.out.println(ConsoleColor.GREEN + ConsoleColor.BOLD + "		Status  Enabled" + ConsoleColor.RESET);
 		System.out.println("Oo-----------------------oOo-----------------------oO");
 
-		getConfig().options().copyDefaults(true);
-		saveConfig();
+		serializeConfig();
 
-		ConfigurationSerialization.registerClass(LootTable.class, "LootTable");
-		ConfigurationSerialization.registerClass(Pool.class, "Pool");
-		ConfigurationSerialization.registerClass(Entry.class, "Entry");
-		ConfigurationSerialization.registerClass(Function.class, "Function");
-
-
-//Internals
+		//Internals
 		SettingsGUI gui = new SettingsGUI(this);
 		CustomItems customItems = new CustomItems();
 		cmdMgmt = new CommandManager(this, gui);
 		storage = new ConfigManager(this);
 		MainCommands mCmds = new MainCommands(this, customItems);
-//      Services
+		//Services
 		Updater updater = new Updater();
 		Stats stats = new Stats();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
-
-//		Custom Crafting
+		//Custom Crafting
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		CustomRecipes customRecipes = new CustomRecipes(this);
-//      With Craftable Items
+		//With Craftable Items
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		BlastFurnaces blastFurnaces = new BlastFurnaces(this);
 		LightningRods lightningRods = new LightningRods(this);
 		TrappedSigns trappedSigns = new TrappedSigns(this);
-
-//		Custom Terrain
+		//Custom Terrain
 		LootTable lootTable = new LootTable();
 		customTerrain = new CustomTerrain(this, lootTable);
-		coolerCaves = new CoolerCaves(this, customTerrain);
-		dangerousDungeons = new DangerousDungeons(this);
-		towerStructures = new TowerStructures(this);
-
-//		Modules
+		//Modules
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
@@ -111,7 +95,7 @@ public class MainClass extends JavaPlugin {
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
-
+		//Register classes and used interfaces
 		registerClasses(this,
 				storage,
 				cmdMgmt,
@@ -152,34 +136,12 @@ public class MainClass extends JavaPlugin {
 	public void onDisable() {
 		customTerrain.disable();
 		saveConfig();
-		storage().saveAll();
-
+		storage.saveAll();
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			Advancements.manager.saveProgress(p, "gm4");
 		}
 //		Advancements.manager.setAnnounceAdvancementMessages(true);
 		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
-	}
-
-	public ConfigManager storage() {
-		return storage;
-	}
-
-	public CoolerCaves coolerCaves() {
-		return coolerCaves;
-	}
-	public DangerousDungeons dangerousDungeons() {
-		return dangerousDungeons;
-	}
-	public TowerStructures towerStructures() {
-		return towerStructures;
-	}
-
-	public File getResourceAsFile(String resource) throws IOException {
-		InputStream inputStream = getResource(resource);
-		File tmpFile = File.createTempFile("file", "temp");
-		FileUtils.copyInputStreamToFile(inputStream, tmpFile); // FileUtils from apache-io
-		return tmpFile;
 	}
 
 	private void registerClasses(Object... classes) {
@@ -219,4 +181,26 @@ public class MainClass extends JavaPlugin {
 			getLogger().log(Level.INFO, "Initialized  " + classesInitialized + " classes.");
 		}
 	}
+
+	public ConfigManager getStorage() {
+		return storage;
+	}
+
+	private void serializeConfig(){
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		ConfigurationSerialization.registerClass(LootTable.class, "LootTable");
+		ConfigurationSerialization.registerClass(Pool.class, "Pool");
+		ConfigurationSerialization.registerClass(Entry.class, "Entry");
+		ConfigurationSerialization.registerClass(Function.class, "Function");
+	}
+
+	//Public Helper methods that need acces to the JavaPlugin object
+	public File getResourceAsFile(String resource) throws IOException {
+		InputStream inputStream = getResource(resource);
+		File tmpFile = File.createTempFile("file", "temp");
+		FileUtils.copyInputStreamToFile(inputStream, tmpFile);
+		return tmpFile;
+	}
+
 }
