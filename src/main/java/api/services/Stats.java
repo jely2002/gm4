@@ -1,6 +1,7 @@
-package com.belka.spigot.gm4;
+package api.services;
 
-import api.Metrics;
+import api.services.Metrics;
+import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 
 import java.util.HashMap;

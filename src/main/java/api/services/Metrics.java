@@ -1,4 +1,4 @@
-package api;
+package api.services;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
