@@ -1,7 +1,7 @@
 package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
-import api.LootTables.LootTable;
+import api.lootTables.LootTable;
 import api.Structure;
 import com.belka.spigot.gm4.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
