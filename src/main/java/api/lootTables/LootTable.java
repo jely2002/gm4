@@ -1,6 +1,6 @@
-package api.LootTables;
+package api.lootTables;
 
-import com.belka.spigot.gm4.ConsoleColor;
+import api.ConsoleColor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;

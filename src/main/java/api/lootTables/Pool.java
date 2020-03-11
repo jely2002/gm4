@@ -1,4 +1,4 @@
-package api.LootTables;
+package api.lootTables;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
