@@ -1,7 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
-import com.belka.spigot.gm4.ConsoleColor;
+import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.Bukkit;

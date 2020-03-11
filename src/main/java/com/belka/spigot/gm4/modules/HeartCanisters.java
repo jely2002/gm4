@@ -1,6 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
-import com.belka.spigot.gm4.ConsoleColor;
+import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.Initializable;
