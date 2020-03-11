@@ -1,4 +1,4 @@
-package com.belka.spigot.gm4;
+package api;
 
 public class ConsoleColor {
 	public static final String RESET = "\u001B[0m";
