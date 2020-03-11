@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.customTerrain;
 
+import api.Helper;
 import api.Structure;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Chunk;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class DangerousDungeons {
 	private MainClass mc;
+
 	public DangerousDungeons(MainClass mc) {
 		this.mc = mc;
 	}

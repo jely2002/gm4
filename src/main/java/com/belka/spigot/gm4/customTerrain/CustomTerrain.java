@@ -30,6 +30,9 @@ public class CustomTerrain implements Listener, Initializable {
 
 	private MainClass mc;
 	private LootTable lt;
+	private CoolerCaves cc;
+	private DangerousDungeons dd;
+	private TowerStructures ts;
 
 	private boolean customTerrain;
 	private boolean coolerCaves;
@@ -52,11 +55,15 @@ public class CustomTerrain implements Listener, Initializable {
 		coolerCaves = mc.getConfig().getBoolean("CustomTerrain.CoolerCaves.enabled");
 		dangerousDungeons = mc.getConfig().getBoolean("CustomTerrain.DangerousDungeons.enabled");
 
-		loadRadius = mc.storage().config().getInt("CustomTerrain.loadRadius");
-		replacingSpeed = mc.storage().config().getInt("CustomTerrain.replacingSpeed");
+		cc = new CoolerCaves(mc, this);
+		dd = new DangerousDungeons(mc);
+		ts = new TowerStructures(mc);
 
-		if (mc.storage().data().getConfigurationSection("CustomTerrain.chunks") != null) {
-			for (String chunk : mc.storage().data().getStringList("CustomTerrain.chunks")) {
+		loadRadius = mc.storage.config().getInt("CustomTerrain.loadRadius");
+		replacingSpeed = mc.storage.config().getInt("CustomTerrain.replacingSpeed");
+
+		if (mc.storage.data().getConfigurationSection("CustomTerrain.chunks") != null) {
+			for (String chunk : mc.storage.data().getStringList("CustomTerrain.chunks")) {
 				loadedChunks.add(new Pair<>(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
 			}
 		}
@@ -68,8 +75,8 @@ public class CustomTerrain implements Listener, Initializable {
 		for (Pair<Integer, Integer> pair: loadedChunks) {
 			tmp.add(pair.getKey() + " " + pair.getValue());
 		}
-		mc.storage().data().set("CustomTerrain.chunks", tmp);
-		mc.storage().saveData();
+		mc.storage.data().set("CustomTerrain.chunks", tmp);
+		mc.storage.saveData();
 	}
 
 	@EventHandler
@@ -121,7 +128,7 @@ public class CustomTerrain implements Listener, Initializable {
 
 			for (int y = cs.getHighestBlockYAt(8, 8) + 1; y >= 60; y--) {//IDK
 				if (!triggers.contains(c.getBlock(8, y, 8).getType())) {
-					structure = mc.towerStructures().getStructure(c, y);
+					structure = ts.getStructure(c, y);
 					loc = c.getBlock(8, y+1, 8).getLocation();//y+1
 					Bukkit.broadcastMessage("TS");
 					if (structure == null) Bukkit.broadcastMessage("null");
@@ -133,7 +140,7 @@ public class CustomTerrain implements Listener, Initializable {
 			List<Material> triggers = Arrays.asList(Material.AIR, Material.CAVE_AIR, Material.WATER);
 			for (int y = 15; y <= 50; y += 5) {
 				if (triggers.contains(c.getBlock(8, y, 8).getType())) {
-					structure = mc.dangerousDungeons().getStructure(c);
+					structure = dd.getStructure(c);
 					loc = c.getBlock(8, y, 8).getLocation();
 					Bukkit.broadcastMessage("DD");
 					if (structure == null) Bukkit.broadcastMessage("null");
@@ -180,7 +187,7 @@ public class CustomTerrain implements Listener, Initializable {
 			System.out.println(mc.consolePrefix + ConsoleColor.GREEN + "Spawned " + structure.getName() + " at " + ConsoleColor.YELLOW + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ() + ConsoleColor.RESET);
 		}
 
-		if (coolerCaves) mc.coolerCaves().loadChunk(c);
+		if (coolerCaves) cc.loadChunk(c);
 
 		for (int x = 0 ; x < 16 ; x++ ) {
 			for (int z = 0; z < 16; z++) {
