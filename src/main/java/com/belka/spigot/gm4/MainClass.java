@@ -1,11 +1,11 @@
 package com.belka.spigot.gm4;
 
 import api.InventoryCreator;
-import api.lootTables.Entry;
-import api.lootTables.Function;
-import api.lootTables.LootTable;
-import api.lootTables.Pool;
-import api.services.Stats;
+import api.LootTables.Entry;
+import api.LootTables.Function;
+import api.LootTables.LootTable;
+import api.LootTables.Pool;
+import api.services.Metrics;
 import api.services.Updater;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
@@ -13,10 +13,7 @@ import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
-import com.belka.spigot.gm4.customTerrain.CoolerCaves;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
-import com.belka.spigot.gm4.customTerrain.DangerousDungeons;
-import com.belka.spigot.gm4.customTerrain.TowerStructures;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
@@ -27,7 +24,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -55,6 +51,7 @@ public class MainClass extends JavaPlugin {
 		System.out.println("Oo-----------------------oOo-----------------------oO");
 
 		serializeConfig();
+		initializeMetrics();
 
 		//Internals
 		SettingsGUI gui = new SettingsGUI(this);
@@ -64,7 +61,6 @@ public class MainClass extends JavaPlugin {
 		MainCommands mCmds = new MainCommands(this, customItems);
 		//Services
 		Updater updater = new Updater();
-		Stats stats = new Stats();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
 		//Custom Crafting
 		RecipeHandler recipeHandler = new RecipeHandler(this);
@@ -101,7 +97,6 @@ public class MainClass extends JavaPlugin {
 				cmdMgmt,
 				mCmds,
 				gui,
-				stats,
 				updater,
 
 				recipeHandler,
@@ -199,6 +194,10 @@ public class MainClass extends JavaPlugin {
 		ConfigurationSerialization.registerClass(Pool.class, "Pool");
 		ConfigurationSerialization.registerClass(Entry.class, "Entry");
 		ConfigurationSerialization.registerClass(Function.class, "Function");
+	}
+
+	private void initializeMetrics() {
+		Metrics metrics = new Metrics(this,4251);
 	}
 
 	//Public Helper methods that need acces to the JavaPlugin object
