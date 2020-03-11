@@ -1,10 +1,12 @@
 package com.belka.spigot.gm4;
 
 import api.InventoryCreator;
-import api.LootTables.Entry;
-import api.LootTables.Function;
-import api.LootTables.LootTable;
-import api.LootTables.Pool;
+import api.lootTables.Entry;
+import api.lootTables.Function;
+import api.lootTables.LootTable;
+import api.lootTables.Pool;
+import api.services.Stats;
+import api.services.Updater;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
@@ -64,13 +66,15 @@ public class MainClass extends JavaPlugin {
 		ConfigurationSerialization.registerClass(Entry.class, "Entry");
 		ConfigurationSerialization.registerClass(Function.class, "Function");
 
+
+//Internals
 		SettingsGUI gui = new SettingsGUI(this);
 		CustomItems customItems = new CustomItems();
-
 		cmdMgmt = new CommandManager(this, gui);
 		storage = new ConfigManager(this);
 		MainCommands mCmds = new MainCommands(this, customItems);
-
+//      Services
+		Updater updater = new Updater();
 		Stats stats = new Stats();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
 
@@ -91,6 +95,7 @@ public class MainClass extends JavaPlugin {
 		dangerousDungeons = new DangerousDungeons(this);
 		towerStructures = new TowerStructures(this);
 
+//		Modules
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
@@ -114,6 +119,7 @@ public class MainClass extends JavaPlugin {
 				mCmds,
 				gui,
 				stats,
+				updater,
 
 				recipeHandler,
 				customCrafter,
