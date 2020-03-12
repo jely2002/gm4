@@ -18,7 +18,7 @@ public class Pool implements ConfigurationSerializable {
 		this.entries = entries;
 	}
 	public Pool(int[] rolls, List<Entry> entries) {
-		this.rolls = Arrays.stream(rolls).boxed().collect(Collectors.toList());;
+		this.rolls = Arrays.stream(rolls).boxed().collect(Collectors.toList());
 		this.entries = entries;
 	}
 	public Pool(Map<String, Object> map) {

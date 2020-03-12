@@ -17,7 +17,7 @@ public class LocationHelper {
     public static MainClass mc;
 
     public LocationHelper(MainClass mc) {
-        this.mc = mc;
+        LocationHelper.mc = mc;
     }
 
     public static void writeLocation(Location loc, FileConfiguration config, String path) {
