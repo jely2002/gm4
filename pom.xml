@@ -19,16 +19,9 @@
             <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>eu.endercentral.crazy_advancements</groupId>
-            <artifactId>CrazyAdvancementAPI</artifactId>
-            <version>1.13.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
-        </dependency>-->
         <dependency>
             <groupId>com.github.jely2002</groupId>
-            <artifactId>CrazyAdvancementsAPI</artifactId>
+            <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
             <version>1.13.6</version>
             <scope>compile</scope>
         </dependency>
