@@ -4,6 +4,8 @@ BatGrenades:
   enabled: true
 BetterArmorStands:
   enabled: true
+BetterFire:
+  enabled: true
 BlastFurnaces:
   enabled: true
 Chairs:
