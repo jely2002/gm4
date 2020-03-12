@@ -32,7 +32,7 @@ public class Advancements implements Listener, Initializable {
         manager = CrazyAdvancements.getNewAdvancementManager();
 //        if (manager.getAdvancements("gm4").size() > 0 || !mc.getConfig().getBoolean("Advancements.enabled")) return;
 
-        AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.COMMAND_BLOCK, "Gamemode 4", "Vanilla Re-Imagined", AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
+		AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.COMMAND_BLOCK, new JSONMessage("{\"text\":\"Gamemode 4\",\"color\":\"dark_aqua\"}"), new JSONMessage("\"Vanilla Re-Imagined\""), AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
         rootDisplay.setBackgroundTexture("textures/block/cyan_concrete.png");
         Advancement gm4 = new Advancement(null, new NameKey("gm4", "root"), rootDisplay);
 
@@ -82,10 +82,10 @@ public class Advancements implements Listener, Initializable {
 		addAdvancement(gm4, "dont_go_breaking_my_cart", "Don't go breaking my cart", "Capture a Monster Spawner", Material.SPAWNER, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 6f);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-			manager.grantAdvancement(p, gm4);
-//			manager.saveProgress(p, "gm4");
-			manager.addPlayer(p);
 			manager.loadProgress(p, "gm4");
+			manager.grantAdvancement(p, gm4);
+			manager.addPlayer(p);
+			manager.saveProgress(p, "gm4");
         }
     }
 
@@ -124,10 +124,10 @@ public class Advancements implements Listener, Initializable {
     public void onPlayerJoin(PlayerJoinEvent e) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
 			Player p = e.getPlayer();
-			manager.grantAdvancement(p, manager.getAdvancement(new NameKey("gm4", "root")));
-//			manager.saveProgress(p, "gm4");
-			manager.addPlayer(p);
 			manager.loadProgress(p, "gm4");
+			manager.grantAdvancement(p, manager.getAdvancement(new NameKey("gm4", "root")));
+			manager.addPlayer(p);
+			manager.saveProgress(p, "gm4");
 		}, 10L);
     }
     @EventHandler
