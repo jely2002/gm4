@@ -19,6 +19,7 @@ import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
+import eu.endercentral.crazy_advancements.CrazyAdvancements;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,6 +40,7 @@ public class MainClass extends JavaPlugin {
 
 	public ConfigManager storage;
 	public SpeedPaths speedPaths;
+	public CrazyAdvancements advancementsAPI;
 
 	public String chatPrefix = ChatColor.WHITE + "[" + ChatColor.DARK_AQUA + "GM4" + ChatColor.WHITE + "] " + ChatColor.RESET;
 	public String consolePrefix = ConsoleColor.BLACK + "[" + ConsoleColor.CYAN + "GM4" + ConsoleColor.BLACK + "] " + ConsoleColor.RESET;
@@ -54,6 +56,9 @@ public class MainClass extends JavaPlugin {
 		serializeConfig();
 		initializeMetrics();
 
+		//Initialize advancement API
+		advancementsAPI = new CrazyAdvancements();
+		advancementsAPI.initialize(this);
 		//Internals
 		SettingsGUI gui = new SettingsGUI(this);
 		CustomItems customItems = new CustomItems();
@@ -76,7 +81,7 @@ public class MainClass extends JavaPlugin {
 		LootTable lootTable = new LootTable();
 		customTerrain = new CustomTerrain(this, lootTable);
 		//Modules
-		Advancements advancements = new Advancements(this);
+		Advancements advancements = new Advancements(this, advancementsAPI);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
 		BetterFire betterFire = new BetterFire(this);
@@ -141,6 +146,9 @@ public class MainClass extends JavaPlugin {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				Advancements.manager.saveProgress(p, "gm4");
 			}
+			advancementsAPI.disable();
+		} else {
+			getLogger().log(Level.SEVERE, "AD Manager is null");
 		}
 //		Advancements.manager.setAnnounceAdvancementMessages(true);
 		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);

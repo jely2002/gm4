@@ -24,12 +24,13 @@ public class Advancements implements Listener, Initializable {
     private MainClass mc;
     public static AdvancementManager manager;
 
-    public Advancements(MainClass mc) {
+    public Advancements(MainClass mc, CrazyAdvancements advancements) {
         this.mc = mc;
     }
 
     public void init(MainClass mc) {
-        manager = CrazyAdvancements.getNewAdvancementManager();
+        manager = CrazyAdvancements.getNewAdvancementManager(mc);
+
 //        if (manager.getAdvancements("gm4").size() > 0 || !mc.getConfig().getBoolean("Advancements.enabled")) return;
 
 		AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.COMMAND_BLOCK, new JSONMessage("{\"text\":\"Gamemode 4\",\"color\":\"dark_aqua\"}"), new JSONMessage("\"Vanilla Re-Imagined\""), AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
