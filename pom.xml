@@ -15,12 +15,17 @@
             <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>eu.endercentral.crazy_advancements</groupId>
             <artifactId>CrazyAdvancementAPI</artifactId>
             <version>1.13.5</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/CrazyAdvancementsAPI.jar</systemPath>
+        </dependency>-->
+        <dependency>
+            <groupId>com.github.jely2002</groupId>
+            <artifactId>CrazyAdvancementsAPI</artifactId>
+            <version>1.13.6</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
@@ -67,6 +72,10 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
