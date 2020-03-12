@@ -8,6 +8,10 @@
     <artifactId>gm4</artifactId>
     <version>0.1.0</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -26,6 +30,7 @@
             <groupId>com.github.jely2002</groupId>
             <artifactId>CrazyAdvancementsAPI</artifactId>
             <version>1.13.6</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
