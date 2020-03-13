@@ -57,8 +57,7 @@ public class MainClass extends JavaPlugin {
 		initializeMetrics();
 
 		//Initialize advancement API
-		advancementsAPI = new CrazyAdvancements();
-		advancementsAPI.initialize(this);
+		advancementsAPI = new CrazyAdvancements(this);
 		//Internals
 		SettingsGUI gui = new SettingsGUI(this);
 		CustomItems customItems = new CustomItems();
@@ -81,7 +80,7 @@ public class MainClass extends JavaPlugin {
 		LootTable lootTable = new LootTable();
 		customTerrain = new CustomTerrain(this, lootTable);
 		//Modules
-		Advancements advancements = new Advancements(this, advancementsAPI);
+		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
 		BetterArmorStands betterArmorStands = new BetterArmorStands(this);
 		BetterFire betterFire = new BetterFire(this);

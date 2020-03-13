@@ -24,12 +24,12 @@ public class Advancements implements Listener, Initializable {
     private MainClass mc;
     public static AdvancementManager manager;
 
-    public Advancements(MainClass mc, CrazyAdvancements advancements) {
+    public Advancements(MainClass mc) {
         this.mc = mc;
     }
 
     public void init(MainClass mc) {
-        manager = CrazyAdvancements.getNewAdvancementManager(mc);
+        manager = CrazyAdvancements.getNewAdvancementManager();
 
 //        if (manager.getAdvancements("gm4").size() > 0 || !mc.getConfig().getBoolean("Advancements.enabled")) return;
 
