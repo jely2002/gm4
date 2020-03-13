@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.github.jely2002</groupId>
             <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
-            <version>1.13.6</version>
+            <version>1.13.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
