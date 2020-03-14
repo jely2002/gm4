@@ -32,7 +32,7 @@ public class PigTractors implements Listener {
     ArrayList<String> playersOnTractor = new ArrayList<>();
 
     private boolean isDisabled() {
-        return !mc.storage.config().getBoolean("PigTractors.enabled");
+        return !mc.getStorage().config().getBoolean("PigTractors.enabled");
     }
 
     private void callAchievement(Player p) {

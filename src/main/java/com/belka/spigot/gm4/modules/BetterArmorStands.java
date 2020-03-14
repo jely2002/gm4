@@ -24,7 +24,7 @@ public class BetterArmorStands implements Listener {
 
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if (!mc.getConfig().getBoolean("BetterArmorStands.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("BetterArmorStands.enabled")) return;
 		Item i = event.getItemDrop();
 		ItemStack is = i.getItemStack();
 		final int[] task = new int[]{-1};

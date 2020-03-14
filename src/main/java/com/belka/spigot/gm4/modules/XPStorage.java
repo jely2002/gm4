@@ -27,7 +27,7 @@ public class XPStorage implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if(!mc.getConfig().getBoolean("XpStorage.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("XpStorage.enabled")) return;
 		if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
 		Block bTo = e.getTo().getBlock();
 		Block bFrom = e.getFrom().getBlock();
@@ -46,11 +46,11 @@ public class XPStorage implements Listener {
 
 	private void editLevel(Player p, String place) {
 		UUID uuid = p.getUniqueId();
-		if (!mc.storage.data().contains("XpStorage." + uuid)) {
-			mc.storage.data().set("XpStorage." + uuid, 0);
-			mc.storage.saveData();
+		if (!mc.getStorage().data().contains("XpStorage." + uuid)) {
+			mc.getStorage().data().set("XpStorage." + uuid, 0);
+			mc.getStorage().saveData();
 		}
-		final int fStoredLevel = mc.storage.data().getInt("XpStorage." + uuid);
+		final int fStoredLevel = mc.getStorage().data().getInt("XpStorage." + uuid);
 
 		if (place.equals("ABOVE")) {
 			int addXP = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, new Runnable() {
@@ -60,16 +60,16 @@ public class XPStorage implements Listener {
 					if (p.isSneaking() && level >= 50) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel + 50;
-						mc.storage.data().set("XpStorage." + uuid, storedLevel);
-						mc.storage.saveData();
+						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().saveData();
 						level = level - 50;
 						p.setLevel(level);
 					}
 					else if (level > 0) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel + 1;
-						mc.storage.data().set("XpStorage." + uuid, storedLevel);
-						mc.storage.saveData();
+						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().saveData();
 						level = level - 1;
 						p.setLevel(level);
 					}
@@ -87,16 +87,16 @@ public class XPStorage implements Listener {
 					if (p.isSneaking() && storedLevel >= 50) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel - 50;
-						mc.storage.data().set("XpStorage." + uuid, storedLevel);
-						mc.storage.saveData();
+						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().saveData();
 						level = level + 50;
 						p.setLevel(level);
 					}
 					else if (storedLevel > 0) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel - 1;
-						mc.storage.data().set("XpStorage." + uuid, storedLevel);
-						mc.storage.saveData();
+						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().saveData();
 						level = level + 1;
 						p.setLevel(level);
 					}

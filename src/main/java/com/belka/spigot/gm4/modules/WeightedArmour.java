@@ -50,41 +50,41 @@ public class WeightedArmour implements Listener, Initializable {
 	public int level2 = 20;
 
 	public void init(MainClass mc) {
-		if(!mc.getConfig().getBoolean("WeightedArmour.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("WeightedArmour.enabled")) return;
 		
-		leatherBoots = mc.getConfig().getInt("WeightedArmour.weight.leather.boots");
-		leatherLeggings = mc.getConfig().getInt("WeightedArmour.weight.leather.leggings");
-		leatherChestplate = mc.getConfig().getInt("WeightedArmour.weight.leather.chestplate");
-		leatherHelmet = mc.getConfig().getInt("WeightedArmour.weight.leather.helmet");
+		leatherBoots = mc.getStorage().config().getInt("WeightedArmour.weight.leather.boots");
+		leatherLeggings = mc.getStorage().config().getInt("WeightedArmour.weight.leather.leggings");
+		leatherChestplate = mc.getStorage().config().getInt("WeightedArmour.weight.leather.chestplate");
+		leatherHelmet = mc.getStorage().config().getInt("WeightedArmour.weight.leather.helmet");
 
-		chainBoots = mc.getConfig().getInt("WeightedArmour.weight.chain.boots");
-		chainLeggings = mc.getConfig().getInt("WeightedArmour.weight.chain.leggings");
-		chainChestplate = mc.getConfig().getInt("WeightedArmour.weight.chain.chestplate");
-		chainHelmet = mc.getConfig().getInt("WeightedArmour.weight.chain.helmet");
+		chainBoots = mc.getStorage().config().getInt("WeightedArmour.weight.chain.boots");
+		chainLeggings = mc.getStorage().config().getInt("WeightedArmour.weight.chain.leggings");
+		chainChestplate = mc.getStorage().config().getInt("WeightedArmour.weight.chain.chestplate");
+		chainHelmet = mc.getStorage().config().getInt("WeightedArmour.weight.chain.helmet");
 
-		goldBoots = mc.getConfig().getInt("WeightedArmour.weight.gold.boots");
-		goldLeggings = mc.getConfig().getInt("WeightedArmour.weight.gold.leggings");
-		goldChestplate = mc.getConfig().getInt("WeightedArmour.weight.gold.chestplate");
-		goldHelmet = mc.getConfig().getInt("WeightedArmour.weight.gold.helmet");
+		goldBoots = mc.getStorage().config().getInt("WeightedArmour.weight.gold.boots");
+		goldLeggings = mc.getStorage().config().getInt("WeightedArmour.weight.gold.leggings");
+		goldChestplate = mc.getStorage().config().getInt("WeightedArmour.weight.gold.chestplate");
+		goldHelmet = mc.getStorage().config().getInt("WeightedArmour.weight.gold.helmet");
 
-		ironBoots = mc.getConfig().getInt("WeightedArmour.weight.iron.boots");
-		ironLeggings = mc.getConfig().getInt("WeightedArmour.weight.iron.leggings");
-		ironChestplate = mc.getConfig().getInt("WeightedArmour.weight.iron.chestplate");
-		ironHelmet = mc.getConfig().getInt("WeightedArmour.weight.iron.helmet");
+		ironBoots = mc.getStorage().config().getInt("WeightedArmour.weight.iron.boots");
+		ironLeggings = mc.getStorage().config().getInt("WeightedArmour.weight.iron.leggings");
+		ironChestplate = mc.getStorage().config().getInt("WeightedArmour.weight.iron.chestplate");
+		ironHelmet = mc.getStorage().config().getInt("WeightedArmour.weight.iron.helmet");
 
-		diamondBoots = mc.getConfig().getInt("WeightedArmour.weight.diamond.boots");
-		diamondLeggings = mc.getConfig().getInt("WeightedArmour.weight.diamond.leggings");
-		diamondChestplate = mc.getConfig().getInt("WeightedArmour.weight.diamond.chestplate");
-		diamondHelmet = mc.getConfig().getInt("WeightedArmour.weight.diamond.helmet");
+		diamondBoots = mc.getStorage().config().getInt("WeightedArmour.weight.diamond.boots");
+		diamondLeggings = mc.getStorage().config().getInt("WeightedArmour.weight.diamond.leggings");
+		diamondChestplate = mc.getStorage().config().getInt("WeightedArmour.weight.diamond.chestplate");
+		diamondHelmet = mc.getStorage().config().getInt("WeightedArmour.weight.diamond.helmet");
 
-		level0 = mc.getConfig().getInt("WeightedArmour.level-0");
-		level1 = mc.getConfig().getInt("WeightedArmour.level-1");
-		level2 = mc.getConfig().getInt("WeightedArmour.level-2");
+		level0 = mc.getStorage().config().getInt("WeightedArmour.level-0");
+		level1 = mc.getStorage().config().getInt("WeightedArmour.level-1");
+		level2 = mc.getStorage().config().getInt("WeightedArmour.level-2");
 	}
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if(!mc.getConfig().getBoolean("WeightedArmour.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("WeightedArmour.enabled")) return;
 		if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
 		Player p = e.getPlayer();
 		int weight = getArmorWeight(p);

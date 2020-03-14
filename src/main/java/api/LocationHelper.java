@@ -26,7 +26,7 @@ public class LocationHelper {
         config.set(path + ".y", loc.getY());
         config.set(path + ".z", loc.getZ());
         config.set(path + ".world", loc.getWorld().getName());
-        mc.storage.saveAll();
+        mc.getStorage().saveAll();
     }
 
     public static void writeLocations(ArrayList<Location> locations, FileConfiguration config, String path) {
@@ -45,7 +45,7 @@ public class LocationHelper {
             config.set(path + "." + id + ".y", loc.getY());
             config.set(path + "." + id + ".z", loc.getZ());
             config.set(path + "." + id + ".world", loc.getWorld().getName());
-            mc.storage.saveAll();
+            mc.getStorage().saveAll();
         }
     }
 

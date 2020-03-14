@@ -20,7 +20,7 @@ public class BatGrenades implements Initializable {
 	}
 
 	public void init(MainClass mc) {
-		if(!mc.getConfig().getBoolean("BatGrenades.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("BatGrenades.enabled")) return;
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
 				for(World w : Bukkit.getWorlds()) {
 					for (Entity entity : w.getEntities()) {

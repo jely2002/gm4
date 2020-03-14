@@ -37,8 +37,8 @@ public class MainCommands implements PluginSubcommand {
 	public Boolean onSubcommand(String[] args, CommandSender sender) {
 		if(args[0].equalsIgnoreCase("reload")) {
 			if (sender instanceof Player && (sender.isOp() || sender.hasPermission("gm4.reload")) || sender instanceof ConsoleCommandSender) {
-				mc.storage.reloadAll();
-				mc.storage.saveAll();
+				mc.getStorage().reloadAll();
+				mc.getStorage().saveAll();
 				mc.speedPaths.loadValues();
 				sender.sendMessage(ChatColor.GREEN + "Reloaded Gamemode 4 configuration files.");
 			}

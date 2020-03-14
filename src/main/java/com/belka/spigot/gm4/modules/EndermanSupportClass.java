@@ -16,7 +16,7 @@ public class EndermanSupportClass implements Initializable {
 
 	public void init(MainClass mc) {
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			if(mc.getConfig().getBoolean("EndermanSupportClass.enabled")) {
+			if(mc.getStorage().config().getBoolean("EndermanSupportClass.enabled")) {
 				for(World w : Bukkit.getWorlds()) {
 					for(Entity entity : w.getEntities()) {
 						if(entity instanceof Enderman) {

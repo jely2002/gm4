@@ -31,10 +31,10 @@ public class RecipeHandler implements Initializable {
 	}
 
 	public void init(MainClass mc) {
-		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) convertKeys.add("master_crafter");
-		if (mc.getConfig().getBoolean("BlastFurnaces.enabled")) convertKeys.add("blast_furnace");
-		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) convertKeys.add("disassembler");
-		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) convertKeys.add("alchemical_crafter");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) convertKeys.add("master_crafter");
+		if (mc.getStorage().config().getBoolean("BlastFurnaces.enabled")) convertKeys.add("blast_furnace");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) convertKeys.add("disassembler");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) convertKeys.add("alchemical_crafter");
 	}
 
 	public void craft(Dropper dr, Player p) {

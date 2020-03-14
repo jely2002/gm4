@@ -27,13 +27,13 @@ public class DesireLines implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
-		max = mc.getConfig().getInt("DesireLines.max");
-		amount = mc.getConfig().getInt("DesireLines.amount");
+		max = mc.getStorage().config().getInt("DesireLines.max");
+		amount = mc.getStorage().config().getInt("DesireLines.amount");
 	}
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
-		if(!mc.getConfig().getBoolean("DesireLines.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("DesireLines.enabled")) return;
 		if(e.getFrom().getBlock() == e.getTo().getBlock()) return;
 
 		Player p = e.getPlayer();

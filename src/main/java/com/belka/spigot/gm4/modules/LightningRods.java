@@ -32,10 +32,10 @@ public class LightningRods implements Listener, Initializable {
     }
 
     public void init(MainClass mc) {
-        if(!mc.getConfig().getBoolean("LightningRods.enabled")) enabled = false;
-        if(!mc.getConfig().getBoolean("CustomCrafter.enabled")) {
+        if(!mc.getStorage().config().getBoolean("LightningRods.enabled")) enabled = false;
+        if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {
             System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for LightningRods to work!");
-            mc.getConfig().set("LightningRods.enabled", false);
+            mc.getStorage().config().set("LightningRods.enabled", false);
             mc.saveConfig();
             enabled = false;
         }

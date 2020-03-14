@@ -38,7 +38,7 @@ public class SpawnerMinecarts implements Listener {
 	@SuppressWarnings("deprecation")
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
-		if (!mc.getConfig().getBoolean("SpawnerMinecarts.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("SpawnerMinecarts.enabled")) return;
         if (e.getBlock().getType() == Material.REDSTONE_BLOCK) {
             if (e.getBlockAgainst().getType() == Material.PISTON) {
                 Piston piston = (Piston) e.getBlockAgainst().getBlockData();
@@ -87,10 +87,10 @@ public class SpawnerMinecarts implements Listener {
 										JsonObject jsonObject = new JsonParser().parse("[{\"Entity\":{\"id\":\"minecraft:" + mob + "\"}, \"Weight\":1}]").getAsJsonObject();
 										JsonArray data = jsonObject.getAsJsonArray();
 										nbtEntity.setObject("SpawnPotentials", data);
-										List<String> stored = mc.storage.data().getStringList("SpawnerMinecarts");
+										List<String> stored = mc.getStorage().data().getStringList("SpawnerMinecarts");
 										stored.add(mms.getUniqueId().toString());
-										mc.storage.data().set("SpawnerMinecarts", stored);
-										mc.storage.saveData();
+										mc.getStorage().data().set("SpawnerMinecarts", stored);
+										mc.getStorage().saveData();
                                     }
                                 }
                             }
@@ -102,7 +102,7 @@ public class SpawnerMinecarts implements Listener {
     }
     @EventHandler
 	public void onRide(VehicleMoveEvent e) {
-		if (!mc.getConfig().getBoolean("SpawnerMinecarts.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("SpawnerMinecarts.enabled")) return;
 		if (e.getVehicle().getType() == EntityType.MINECART_MOB_SPAWNER) {
 			Vehicle sm = e.getVehicle();
 			if (e.getTo().getBlock().getType() == Material.ACTIVATOR_RAIL) {
@@ -119,10 +119,10 @@ public class SpawnerMinecarts implements Listener {
 					spawner.setSpawnedType(Helper.getEntityByName(mob));
 					blockState.update();
 
-					List<String> stored = mc.storage.data().getStringList("SpawnerMinecarts");
+					List<String> stored = mc.getStorage().data().getStringList("SpawnerMinecarts");
 					stored.remove(sm.getUniqueId().toString());
-					mc.storage.data().set("SpawnerMinecarts", stored);
-					mc.storage.saveData();
+					mc.getStorage().data().set("SpawnerMinecarts", stored);
+					mc.getStorage().saveData();
 
 					Minecart mic = (Minecart) sm.getWorld().spawnEntity(sm.getLocation(), EntityType.MINECART);
 					mic.setVelocity(sm.getVelocity());
@@ -134,9 +134,9 @@ public class SpawnerMinecarts implements Listener {
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent e) {
-		if (!mc.getConfig().getBoolean("SpawnerMinecarts.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("SpawnerMinecarts.enabled")) return;
 		if (e.getEntityType() == EntityType.MINECART_MOB_SPAWNER) {
-			List<String> stored = mc.storage.data().getStringList("SpawnerMinecarts");
+			List<String> stored = mc.getStorage().data().getStringList("SpawnerMinecarts");
 			if (stored.contains(e.getEntity().getUniqueId().toString())) {
 				e.setCancelled(true);
 			}

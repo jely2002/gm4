@@ -39,7 +39,7 @@ public class ZauberCauldrons implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
-		active = mc.storage.data().getStringList("ZauberCauldrons");
+		active = mc.getStorage().data().getStringList("ZauberCauldrons");
 		checkCauldrons();
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
 			for (String cauldron : active) {
@@ -59,7 +59,7 @@ public class ZauberCauldrons implements Listener, Initializable {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if (!mc.getConfig().getBoolean("ZauberCauldrons.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("ZauberCauldrons.enabled")) return;
 		if (e.getAction() == Action.RIGHT_CLICK_BLOCK) { //Start a Zauber Cauldron
 			Block clicked = e.getClickedBlock();
 			if (e.getMaterial() == Material.FLINT_AND_STEEL) {
@@ -70,8 +70,8 @@ public class ZauberCauldrons implements Listener, Initializable {
 						if (cauldron.getLevel() == cauldron.getMaximumLevel()) {
 							if (!active.contains("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName())) {
 								active.add("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName());
-								mc.storage.data().set("ZauberCauldrons", active);
-								mc.storage.saveData();
+								mc.getStorage().data().set("ZauberCauldrons", active);
+								mc.getStorage().saveData();
 							}
 						}
 					}
@@ -85,8 +85,8 @@ public class ZauberCauldrons implements Listener, Initializable {
 				if (c.getType() == Material.CAULDRON) {
 					if (active.contains("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName())) {
 						active.remove("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName());
-						mc.storage.data().set("ZauberCauldrons", active);
-						mc.storage.saveData();
+						mc.getStorage().data().set("ZauberCauldrons", active);
+						mc.getStorage().saveData();
 					}
 				}
 			}
@@ -98,8 +98,8 @@ public class ZauberCauldrons implements Listener, Initializable {
 			Block c = Helper.locFromConfig(cauldron).getBlock();
 			if (c.getRelative(BlockFace.DOWN).getType() != Material.FIRE) {
 				active.remove("x:" + c.getX() + " y:" + c.getY() + " z:" + c.getZ() + " w:" + c.getWorld().getName());
-				mc.storage.data().set("ZauberCauldrons", active);
-				mc.storage.saveData();
+				mc.getStorage().data().set("ZauberCauldrons", active);
+				mc.getStorage().saveData();
 			}
 		}
 	}

@@ -30,10 +30,10 @@ public class HeartCanisters implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
-		if(!mc.getConfig().getBoolean("HeartCanisters.enabled")) enabled = false;
-		if(!mc.getConfig().getBoolean("CustomCrafter.enabled")) {
+		if(!mc.getStorage().config().getBoolean("HeartCanisters.enabled")) enabled = false;
+		if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {
 			System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for HeartCanisters to work!");
-			mc.getConfig().set("HeartCanisters.enabled", false);
+			mc.getStorage().config().set("HeartCanisters.enabled", false);
 			mc.saveConfig();
 			enabled = false;
 		}

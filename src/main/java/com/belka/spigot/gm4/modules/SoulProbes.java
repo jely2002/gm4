@@ -94,9 +94,9 @@ public class SoulProbes implements Listener, Initializable {
 //				mat = Material.CYAN_TERRACOTTA;
 //				override = ChatColor.GRAY;
 //			}
-//			String name = mc.getConfig().getString("achievements." + achievement + ".name");
-//			String lore = mc.getConfig().getString("achievements." + achievement + ".lore");
-//			String reward = "Reward: " + mc.getConfig().getString("achievements." + achievement + ".reward");
+//			String name = mc.getStorage().config().getString("achievements." + achievement + ".name");
+//			String lore = mc.getStorage().config().getString("achievements." + achievement + ".lore");
+//			String reward = "Reward: " + mc.getStorage().config().getString("achievements." + achievement + ".reward");
 //			inv.setItem(i, ic.createGuiItem(mat, override, name, lore, reward));
 //		}
 		return inv;
@@ -133,7 +133,7 @@ public class SoulProbes implements Listener, Initializable {
 
 	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
-    	if (!mc.getConfig().getBoolean("SoulProbes.enabled")) return;
+    	if (!mc.getStorage().config().getBoolean("SoulProbes.enabled")) return;
 		Player p = event.getPlayer();
 		Action action = event.getAction();
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
@@ -153,7 +153,7 @@ public class SoulProbes implements Listener, Initializable {
 	}
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
-		if (!mc.getConfig().getBoolean("SoulProbes.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("SoulProbes.enabled")) return;
 		HumanEntity entity = e.getWhoClicked();
 		if (entity instanceof Player) {
 			Player p = (Player) entity;
@@ -204,8 +204,8 @@ public class SoulProbes implements Listener, Initializable {
 								p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
 
 								String loc = "SoulProbes." + p.getUniqueId() + "." + eName.toUpperCase();
-								mc.storage.data().set(loc, x - y);
-								mc.storage.saveData();
+								mc.getStorage().data().set(loc, x - y);
+								mc.getStorage().saveData();
 							}
 							else p.sendMessage(ChatColor.RED + "You don't have any empty spawn eggs!");
 						}
@@ -242,13 +242,13 @@ public class SoulProbes implements Listener, Initializable {
 
 	@EventHandler
 	public void onKill(EntityDeathEvent e) {
-		if (!mc.getConfig().getBoolean("SoulProbes.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("SoulProbes.enabled")) return;
 		Entity dead = e.getEntity();
 		Player p = e.getEntity().getKiller();
 		if (p != null) {
 			String loc = "SoulProbes." + p.getUniqueId() + "." + dead.getType().name();
-			mc.storage.data().set(loc, mc.storage.data().getInt(loc, 0) + 1);
-			mc.storage.saveData();
+			mc.getStorage().data().set(loc, mc.getStorage().data().getInt(loc, 0) + 1);
+			mc.getStorage().saveData();
 		}
 	}
 }

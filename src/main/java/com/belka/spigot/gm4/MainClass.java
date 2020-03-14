@@ -37,8 +37,8 @@ public class MainClass extends JavaPlugin {
 
 	private CommandManager cmdMgmt;
 	private CustomTerrain customTerrain;
+	private ConfigManager storage;
 
-	public ConfigManager storage;
 	public SpeedPaths speedPaths;
 	public CrazyAdvancements advancementsAPI;
 

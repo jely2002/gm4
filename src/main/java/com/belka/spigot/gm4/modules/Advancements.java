@@ -31,7 +31,7 @@ public class Advancements implements Listener, Initializable {
     public void init(MainClass mc) {
         manager = CrazyAdvancements.getNewAdvancementManager();
 
-//        if (manager.getAdvancements("gm4").size() > 0 || !mc.getConfig().getBoolean("Advancements.enabled")) return;
+//        if (manager.getAdvancements("gm4").size() > 0 || !mc.getStorage().config().getBoolean("Advancements.enabled")) return;
 
 		AdvancementDisplay rootDisplay = new AdvancementDisplay(Material.COMMAND_BLOCK, new JSONMessage("{\"text\":\"Gamemode 4\",\"color\":\"dark_aqua\"}"), new JSONMessage("\"Vanilla Re-Imagined\""), AdvancementFrame.TASK, false, false, AdvancementVisibility.ALWAYS);
         rootDisplay.setBackgroundTexture("textures/block/cyan_concrete.png");

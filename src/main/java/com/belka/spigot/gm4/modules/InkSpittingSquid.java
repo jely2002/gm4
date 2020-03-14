@@ -21,7 +21,7 @@ public class InkSpittingSquid implements Initializable {
 	}
 
 	public void init(MainClass mc) {
-		if(!mc.getConfig().getBoolean("InkSpittingSquid.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("InkSpittingSquid.enabled")) return;
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
 			for(World w : Bukkit.getWorlds()) {
 				for(Entity entity : w.getEntities()) {

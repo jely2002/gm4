@@ -42,15 +42,15 @@ public class CustomCrafter implements Listener, Initializable {
 
 	public void init(MainClass mc) {
 		asNames.add("CustomCrafter");
-		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) asNames.add("MasterCrafter");
-		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) asNames.add("BlastFurnace");
-		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) asNames.add("Disassembler");
-		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) asNames.add("AlchemicalCrafter");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) asNames.add("MasterCrafter");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.BlastFurnace")) asNames.add("BlastFurnace");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) asNames.add("Disassembler");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) asNames.add("AlchemicalCrafter");
 	}
 
 	@EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
-		if (!mc.getConfig().getBoolean("CustomCrafter.enabled")) return;
+		if (!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) return;
 		Item i = e.getItemDrop();
 		final int[] task = new int[]{-1};
 		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
@@ -61,7 +61,7 @@ public class CustomCrafter implements Listener, Initializable {
                     Block b = loc.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
                     if (b.getBlockData().getMaterial() == Material.DROPPER) {
                         Dropper dr = (Dropper) b.getState();
-                        List<String> active = mc.storage.data().getStringList("CustomCrafter.customCrafters");
+                        List<String> active = mc.getStorage().data().getStringList("CustomCrafter.customCrafters");
                         if (!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
                             if (rh.equalsRecipe(dr, CustomRecipes.create()) && dr.getInventory().getItem(0).getAmount() == 1) {
                                 Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
@@ -88,8 +88,8 @@ public class CustomCrafter implements Listener, Initializable {
 
                                 e.getItemDrop().remove();
                                 active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
-                                mc.storage.data().set("CustomCrafter.customCrafters", active);
-                                mc.storage.saveData();
+                                mc.getStorage().data().set("CustomCrafter.customCrafters", active);
+                                mc.getStorage().saveData();
 								Advancements.grantAdvancement("clever_crafting", e.getPlayer());
                             }
                         }
@@ -102,7 +102,7 @@ public class CustomCrafter implements Listener, Initializable {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) { // Remove Custom Crafter
 		Block b = event.getBlock();
-		List<String> active = mc.storage.data().getStringList("CustomCrafter.customCrafters");
+		List<String> active = mc.getStorage().data().getStringList("CustomCrafter.customCrafters");
 		World w = b.getWorld();
 		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName())) {
 			Location loc = b.getLocation().add(0.5, 0.5, 0.5);
@@ -116,17 +116,17 @@ public class CustomCrafter implements Listener, Initializable {
 				dropRecipe(loc, "Blast Furnace Output");
 			}
 			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
-			mc.storage.data().set("CustomCrafter.customCrafters", active);
+			mc.getStorage().data().set("CustomCrafter.customCrafters", active);
 			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 				if(e instanceof ArmorStand) {
 					if(asNames.contains(e.getCustomName())) {
 						if (b.getType() == Material.HOPPER)
-							mc.storage.data().set("BlastFurnaces." + e.getUniqueId().toString(), null);
+							mc.getStorage().data().set("BlastFurnaces." + e.getUniqueId().toString(), null);
 						e.remove();
 					}
 				}
 			}
-			mc.storage.saveData();
+			mc.getStorage().saveData();
 		}
 	}
 
@@ -169,7 +169,7 @@ public class CustomCrafter implements Listener, Initializable {
 	private void updateInv(Inventory inv) {
 		if (inv.getType().equals(InventoryType.DROPPER)) {
 			Block b = inv.getLocation().getBlock();
-			List<String> active = mc.storage.data().getStringList("CustomCrafter.customCrafters");
+			List<String> active = mc.getStorage().data().getStringList("CustomCrafter.customCrafters");
 			if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
 				for (Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
 					if (e instanceof ArmorStand && e.getScoreboardTags().contains("gm4")) {

@@ -28,42 +28,42 @@ public class CustomRecipes implements Initializable {
 
 	public void init(MainClass mc) {
 //		Custom Crafter
-		if (mc.getConfig().getBoolean("CustomCrafter.StandardCrafting")) {
+		if (mc.getStorage().config().getBoolean("CustomCrafter.StandardCrafting")) {
 			add(ccShapedRecipes, GRAVEL(), RED_SAND(), COBWEB(), IRON_HORSE_ARMOR(), GOLDEN_HORSE_ARMOR(), DIAMOND_HORSE_ARMOR(),
 					OAK_PLANKS(), SPRUCE_PLANKS(), BIRCH_PLANKS(), JUNGLE_PLANKS(), ACACIA_PLANKS(), DARK_OAK_PLANKS(),
 					ENCHANTED_GOLDEN_APPLE(), SMOOTH_STONE(), SMOOTH_SANDSTONE(), SMOOTH_RED_SANDSTONE(), SMOOTH_QUARTZ());
 			add(allShapelessRecipes, SAND(), SAND_2());
 		}
-		if (mc.getConfig().getBoolean("CustomCrafter.RecordCrafting"))
+		if (mc.getStorage().config().getBoolean("CustomCrafter.RecordCrafting"))
 			add(ccShapedRecipes, MUSIC_DISC_11(), MUSIC_DISC_13(), MUSIC_DISC_BLOCKS(), MUSIC_DISC_CAT(), MUSIC_DISC_CHIRP(),MUSIC_DISC_FAR(),
 					MUSIC_DISC_MALL(), MUSIC_DISC_MELLOHI(), MUSIC_DISC_STAL(), MUSIC_DISC_STRAD(), MUSIC_DISC_WAIT(), MUSIC_DISC_WARD());
 
-		if (mc.getConfig().getBoolean("HeartCanisters.enabled"))
+		if (mc.getStorage().config().getBoolean("HeartCanisters.enabled"))
 			add(ccShapedRecipes, HEART_CANISTER_TIER_1(), HEART_CANISTER_TIER_2());
 
-		if (mc.getConfig().getBoolean("TrappedSigns.enabled"))
+		if (mc.getStorage().config().getBoolean("TrappedSigns.enabled"))
 			add(ccShapedRecipes, TRAPPED_SIGN());
 
-		if (mc.getConfig().getBoolean("LightningRods.enabled"))
+		if (mc.getStorage().config().getBoolean("LightningRods.enabled"))
 			add(ccShapedRecipes, LIGHTNING_ROD());
 
-		if (mc.getConfig().getBoolean("SoulProbes.enabled"))
+		if (mc.getStorage().config().getBoolean("SoulProbes.enabled"))
 			add(ccShapedRecipes, SOUL_PROBES_BOOK(), EMPTY_SPAWN_EGG());
 
 //		Other Crafters
-		if (mc.getConfig().getBoolean("CustomCrafter.MasterCrafting")) {
+		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) {
 			add(ccShapedRecipes, master_crafter());
 			add(mcShapedRecipes, STONE_BRICKS(), COAL_BLOCK_OAK(), COAL_BLOCK_SPRUCE(), COAL_BLOCK_BIRCH(), COAL_BLOCK_JUNGLE(), COAL_BLOCK_ACACIA(), COAL_BLOCK_DARK_OAK(), BRICKS(), LAVA_BUCKET());
 		}
-		if (mc.getConfig().getBoolean("CustomCrafter.BlastFurnace")) {
+		if (mc.getStorage().config().getBoolean("CustomCrafter.BlastFurnace")) {
 			add(ccShapedRecipes, blast_furnace());
 			add(bfShapedRecipes);
 		}
-		if (mc.getConfig().getBoolean("CustomCrafter.Disassembler")) {
+		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) {
 			add(ccShapedRecipes, disassembler());
 			add(daShapedRecipes);
 		}
-		if (mc.getConfig().getBoolean("CustomCrafter.EquivalentExchange")) {
+		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) {
 			add(ccShapedRecipes, alchemical_crafter(), MINIUM_DUST(), INERT_STONE(), PHILOSOPHERS_STONE());
 			add(acShapedRecipes, PHILOSOPHERS_STONE_MKII(), PHILOSOPHERS_STONE_MKIII(), PHILOSOPHERS_STONE_MKIV(), AC_ERROR());
 		}

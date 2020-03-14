@@ -51,19 +51,19 @@ public class CustomTerrain implements Listener, Initializable {
 	}
 
 	public void init(MainClass mc) {
-		customTerrain = mc.getConfig().getBoolean("CustomTerrain.enabled");
-		coolerCaves = mc.getConfig().getBoolean("CustomTerrain.CoolerCaves.enabled");
-		dangerousDungeons = mc.getConfig().getBoolean("CustomTerrain.DangerousDungeons.enabled");
+		customTerrain = mc.getStorage().config().getBoolean("CustomTerrain.enabled");
+		coolerCaves = mc.getStorage().config().getBoolean("CustomTerrain.CoolerCaves.enabled");
+		dangerousDungeons = mc.getStorage().config().getBoolean("CustomTerrain.DangerousDungeons.enabled");
 
 		cc = new CoolerCaves(mc, this);
 		dd = new DangerousDungeons(mc);
 		ts = new TowerStructures(mc);
 
-		loadRadius = mc.storage.config().getInt("CustomTerrain.loadRadius");
-		replacingSpeed = mc.storage.config().getInt("CustomTerrain.replacingSpeed");
+		loadRadius = mc.getStorage().config().getInt("CustomTerrain.loadRadius");
+		replacingSpeed = mc.getStorage().config().getInt("CustomTerrain.replacingSpeed");
 
-		if (mc.storage.data().getConfigurationSection("CustomTerrain.chunks") != null) {
-			for (String chunk : mc.storage.data().getStringList("CustomTerrain.chunks")) {
+		if (mc.getStorage().data().getConfigurationSection("CustomTerrain.chunks") != null) {
+			for (String chunk : mc.getStorage().data().getStringList("CustomTerrain.chunks")) {
 				loadedChunks.add(Pair.of(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
 			}
 		}
@@ -75,8 +75,8 @@ public class CustomTerrain implements Listener, Initializable {
 		for (Pair<Integer, Integer> pair: loadedChunks) {
 			tmp.add(pair.getKey() + " " + pair.getValue());
 		}
-		mc.storage.data().set("CustomTerrain.chunks", tmp);
-		mc.storage.saveData();
+		mc.getStorage().data().set("CustomTerrain.chunks", tmp);
+		mc.getStorage().saveData();
 	}
 
 	@EventHandler

@@ -32,8 +32,8 @@ public class SettingsGUI implements Listener {
 
 	private void addModules() {
 		int count = 0;
-		for(String module : mc.getConfig().getConfigurationSection("").getKeys(false)) {
-			if (mc.getConfig().getBoolean(module + ".enabled")) {
+		for(String module : mc.getStorage().config().getConfigurationSection("").getKeys(false)) {
+			if (mc.getStorage().config().getBoolean(module + ".enabled")) {
 				inv.setItem(count, createItem(Material.GREEN_STAINED_GLASS_PANE, ChatColor.DARK_GREEN + module.replaceAll("\\d+", "").replaceAll("(.)([A-Z])", "$1 $2")));
 			}
 			else {
@@ -53,7 +53,7 @@ public class SettingsGUI implements Listener {
 			lore.add(ChatColor.GRAY + "Click to close the settings menu");
 		}
 		else {
-			if (mc.getConfig().getBoolean(ChatColor.stripColor(name.replaceAll("\\s+","")) + ".enabled")) {
+			if (mc.getStorage().config().getBoolean(ChatColor.stripColor(name.replaceAll("\\s+","")) + ".enabled")) {
 				lore.add(ChatColor.GRAY + "Click to disable this module");
 			}
 			else {
@@ -89,7 +89,7 @@ public class SettingsGUI implements Listener {
 	}
 
 	private int getInventorySize() {
-		int max = mc.getConfig().getConfigurationSection("").getKeys(false).size();
+		int max = mc.getStorage().config().getConfigurationSection("").getKeys(false).size();
 		if (max <= 0) return 9;
 		int quotient = (int) Math.ceil(max / 9.0);
 		return quotient * 9 + 9;
@@ -103,8 +103,8 @@ public class SettingsGUI implements Listener {
 		if (e.getView().getTitle().contains("Gamemode 4 Modules")) {
 			if (clicked.getItemMeta() == null) return;
 			String displayName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
-			if (mc.getConfig().getConfigurationSection("").getKeys(false).contains(displayName.replaceAll("\\s+",""))) {
-				if (mc.getConfig().getBoolean(displayName.replaceAll("\\s+","") + ".enabled")) {
+			if (mc.getStorage().config().getConfigurationSection("").getKeys(false).contains(displayName.replaceAll("\\s+",""))) {
+				if (mc.getStorage().config().getBoolean(displayName.replaceAll("\\s+","") + ".enabled")) {
 					p.sendMessage(ChatColor.RED + "Disabled " + displayName + ".");
 					inv.setItem(e.getSlot(), updateItem(displayName, true));
 				}
@@ -112,7 +112,7 @@ public class SettingsGUI implements Listener {
 					p.sendMessage(ChatColor.GREEN + "Enabled " + displayName + ".");
 					inv.setItem(e.getSlot() ,updateItem(displayName, false));
 				}
-				mc.getConfig().set(displayName.replaceAll("\\s+","") + ".enabled", !mc.getConfig().getBoolean(displayName.replaceAll("\\s+","") + ".enabled"));
+				mc.getStorage().config().set(displayName.replaceAll("\\s+","") + ".enabled", !mc.getStorage().config().getBoolean(displayName.replaceAll("\\s+","") + ".enabled"));
 				mc.saveConfig();
 			}
 			else if (clicked.getType() == Material.BARRIER) {
