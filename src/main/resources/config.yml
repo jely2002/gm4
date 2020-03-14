@@ -49,7 +49,7 @@ SpawnerMinecarts:
 SpeedPaths:
   enabled: true
   pathBlock: GRASS_PATH
-  speedFactor: 1
+  speedFactor: 2
 TrappedSigns:
   enabled: true
 WeightedArmour:
