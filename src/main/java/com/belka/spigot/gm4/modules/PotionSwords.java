@@ -44,12 +44,14 @@ public class PotionSwords implements Listener {
                       if(skeleton.getType() == EntityType.SKELETON) {
                           Advancements.grantAdvancement("instant_regret", p);
                           Location skeletonLoc = skeleton.getLocation();
+                          Double skeletonHealth = skeleton.getHealth();
                           skeletonLoc.getWorld().spawnEntity(skeletonLoc, EntityType.WITHER_SKELETON);
                           skeleton.remove();
                           for (Entity nearbyEntity : Helper.getNearbyEntities(skeletonLoc, 0.1)) {
                               if (nearbyEntity instanceof WitherSkeleton) {
                                   WitherSkeleton witherSkeleton = (WitherSkeleton) nearbyEntity;
                                   witherSkeleton.setLootTable(LootTables.EMPTY.getLootTable());
+                                  witherSkeleton.setHealth(skeletonHealth);
                               }
                           }
                       }
