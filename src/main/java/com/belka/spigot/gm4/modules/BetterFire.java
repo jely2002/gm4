@@ -7,13 +7,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
@@ -89,12 +95,45 @@ public class BetterFire implements Listener, Initializable {
 	}
 
 	@EventHandler
+	public void onCreeperDamageByPlayer(EntityDamageByEntityEvent e) {
+		if(!mc.getConfig().getBoolean("BetterFire.enabled")) return;
+		if(e.getEntity() instanceof Creeper) {
+			Creeper creeper = (Creeper) e.getEntity();
+			System.out.println(creeper.getHealth());
+			if (creeper.getHealth() <= 2) {
+				if (e.getDamager() instanceof Projectile) {
+					Projectile projectile = (Projectile) e.getDamager();
+					if (projectile.getShooter() instanceof Player) {
+						if (projectile.getFireTicks() > 0) {
+							creeper.getWorld().createExplosion(creeper.getLocation(), 2.5f, true);
+							creeper.setHealth(0.0);
+						}
+					}
+				} else if (e.getDamager() instanceof Player) {
+					Player damager = (Player) e.getDamager();
+					ItemStack damageItem = damager.getInventory().getItemInMainHand();
+					if (damageItem.hasItemMeta()) {
+						ItemMeta meta = damageItem.getItemMeta();
+						if (meta.hasEnchant(Enchantment.FIRE_ASPECT)) {
+							creeper.getWorld().createExplosion(creeper.getLocation(), 2.5f, true);
+							creeper.setHealth(0.0);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
 	public void onCreeperTakeDamage(EntityDamageEvent e) {
 		if(!mc.getConfig().getBoolean("BetterFire.enabled")) return;
-		if (e.getEntity() instanceof Creeper && e.getCause() == DamageCause.FIRE_TICK) {
-			Creeper c = (Creeper)e.getEntity();
-			c.getWorld().createExplosion(c.getLocation(), 2.5f, true);
-			c.setHealth(0.0);
+		if(e.getEntity() instanceof Creeper && (e.getCause() == DamageCause.FIRE_TICK || e.getCause() == DamageCause.FIRE)) {
+			Creeper creeper = (Creeper)e.getEntity();
+			System.out.println(creeper.getHealth());
+			if(creeper.getHealth() <= 2) {
+				creeper.getWorld().createExplosion(creeper.getLocation(), 2.5f, true);
+				creeper.setHealth(0.0);
+			}
 		}
 	}
 }
