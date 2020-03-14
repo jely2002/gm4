@@ -3,17 +3,22 @@ package com.belka.spigot.gm4.modules;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SpeedPaths implements Listener {
 
     private MainClass mc;
     private Material pathBlock;
     private int speedFactor;
+    private List<Player> speedPlayers = new ArrayList<>();
 
     public SpeedPaths(MainClass mc) {
         this.mc = mc;
@@ -33,10 +38,14 @@ public class SpeedPaths implements Listener {
         Location block1 = new Location(pLoc.getWorld(), pLoc.getX(), pLoc.getY() - 1, pLoc.getZ());
 		Location block2 = new Location(pLoc.getWorld(), pLoc.getX(), pLoc.getY() - 2, pLoc.getZ());
         if (pLoc.getBlock().getType() == pathBlock || block1.getBlock().getType() == pathBlock || block2.getBlock().getType() == pathBlock) {
-            e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, speedFactor, true, false));
+            if(e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) return;
+            if(speedPlayers.contains(e.getPlayer())) return;
+            speedPlayers.add(e.getPlayer());
+            e.getPlayer().setWalkSpeed(e.getPlayer().getWalkSpeed() * speedFactor);
         }
-        else if (e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)) {
-            e.getPlayer().removePotionEffect(PotionEffectType.SPEED);
+        else if (speedPlayers.contains(e.getPlayer())) {
+            speedPlayers.remove(e.getPlayer());
+            e.getPlayer().setWalkSpeed(0.2f);
         }
     }
 
