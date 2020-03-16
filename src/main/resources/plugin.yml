@@ -6,5 +6,5 @@ description: Gamemode 4 Plugin
 commands:
    gamemode4:
       aliases: gm4
-      description: Gamemode 4 command.
-      usage: /gm4 [sub-command]
+      description: Opens the gm4 settings menu if no sub-command is given.
+      usage: /gm4 [reload|version]
