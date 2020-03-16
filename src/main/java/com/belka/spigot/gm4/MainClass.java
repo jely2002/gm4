@@ -18,6 +18,7 @@ import com.belka.spigot.gm4.customTerrain.CustomTerrain;
 import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
+import com.belka.spigot.gm4.interfaces.Reloadable;
 import com.belka.spigot.gm4.modules.*;
 import eu.endercentral.crazy_advancements.CrazyAdvancements;
 import org.apache.commons.io.FileUtils;
@@ -31,6 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class MainClass extends JavaPlugin {
@@ -38,6 +40,8 @@ public class MainClass extends JavaPlugin {
 	private CommandManager cmdMgmt;
 	private CustomTerrain customTerrain;
 	private ConfigManager storage;
+
+	private ArrayList<Reloadable> reloadableClasses;
 
 	public SpeedPaths speedPaths;
 	public CrazyAdvancements advancementsAPI;
@@ -160,6 +164,7 @@ public class MainClass extends JavaPlugin {
 		int commandsRegistered = 0;
 		int subcommandsRegistered = 0;
 		int classesInitialized = 0;
+		int reloadableClassesInitialized = 0;
 		for(Object o : classes) {
 			if(o instanceof Listener) {
 				getServer().getPluginManager().registerEvents((Listener) o, this);
@@ -184,11 +189,17 @@ public class MainClass extends JavaPlugin {
 				initClass.init(this);
 				classesInitialized++;
 			}
+			if(o instanceof Reloadable) {
+				Reloadable reloadClass = (Reloadable) o;
+				reloadableClasses.add(reloadClass);
+				reloadableClassesInitialized++;
+			}
 		}
 		if(getConfig().getBoolean("internal.verbosemode")) {
 			getLogger().log(Level.INFO, "Registered " + commandsRegistered + " commands.");
 			getLogger().log(Level.INFO, "Registered " + subcommandsRegistered + " subcommands.");
 			getLogger().log(Level.INFO, "Registered " + listenersRegistered + " listeners.");
+			getLogger().log(Level.INFO, "Registered  " + reloadableClassesInitialized + " reloadable classes.");
 			getLogger().log(Level.INFO, "Initialized  " + classesInitialized + " classes.");
 		}
 	}
@@ -196,6 +207,7 @@ public class MainClass extends JavaPlugin {
 	public ConfigManager getStorage() {
 		return storage;
 	}
+	public ArrayList<Reloadable> getReloadableClasses() { return reloadableClasses; }
 
 	private void serializeConfig(){
 		getConfig().options().copyDefaults(true);
