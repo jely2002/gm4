@@ -23,32 +23,32 @@ public class EndermanSupportClass implements Initializable {
 							for(Entity e : Helper.getNearbyEntities(entity.getLocation(), 25)) {
 								if(e instanceof CaveSpider) {
 									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,.25,0), 2, .25, .1, .25, 0.1, null);
-									((CaveSpider) e).addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1), false);
+									((CaveSpider) e).addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 80, 1, false, true));
 								}
 								else if(e instanceof Creeper) {
 									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,1,0), 2, .25, .1, .25, 0.1, null);
-									((Creeper) e).addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 1), false);
+									((Creeper) e).addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 1, false, true));
 								}
 								else if(e instanceof Silverfish) {
 									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,.15,0), 1, .1, 0, .1, 0.1, null);
-									((Silverfish) e).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 1), false);
+									((Silverfish) e).addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 80, 1, false, true));
 								}
 								else if(e instanceof Skeleton) {
 									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,1,0), 2, .25, .1, .25, 0.1, null);
-									for(Entity p : Helper.getNearbyEntities(e.getLocation(), 4)) {
+									for(Entity p : Helper.getNearbyEntities(e.getLocation(), 7)) {
 										if(p instanceof Player) {
 											((Player) p).removePotionEffect(PotionEffectType.WEAKNESS);
-											((Player) p).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 1), false);
+											((Player) p).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 80, 1, false, true));
 										}
 									}
 								}
 								else if(e instanceof Spider) {
 									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,.25,0), 2, .5, .1, .5, 0.1, null);
-									((Spider) e).addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 0), false);
+									((Spider) e).addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 80, 0, false, true));
 								}
 								else if(e instanceof Zombie) {
 									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,1,0), 2, .25, .1, .25, 0.1, null);
-									((Zombie) e).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 1), false);
+									((Zombie) e).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 1, false, true));
 								}
 								else if(e instanceof Player) {
 									List<EntityType> mobs = Helper.getNearbyEntityTypes(entity.getLocation(), 25);
@@ -56,11 +56,20 @@ public class EndermanSupportClass implements Initializable {
 										Advancements.grantAdvancement("ender_aid", (Player) e);
 									}
 								}
+								else if(e instanceof Shulker) {
+									e.getWorld().spawnParticle(Particle.PORTAL, e.getLocation().add(0,1,0), 2, .25, .1, .25, 0.1, null);
+									for(Entity p : Helper.getNearbyEntities(e.getLocation(), 7)) {
+										if(p instanceof Player) {
+											((Player) p).removePotionEffect(PotionEffectType.BLINDNESS);
+											((Player) p).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0, false, true));
+										}
+									}
+								}
 							}
 						}
 					}
 				}
 			}
-		}, 0, 20L); // Seconds * 20L
+		}, 0, 80L); // Seconds * 80L
 	}
 }
