@@ -4,6 +4,7 @@ import api.Helper;
 import api.lootTables.LootTable;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
+import com.belka.spigot.gm4.interfaces.Reloadable;
 import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,8 +40,10 @@ public class MainCommands implements PluginSubcommand {
 			if (sender instanceof Player && (sender.isOp() || sender.hasPermission("gm4.reload")) || sender instanceof ConsoleCommandSender) {
 				mc.getStorage().reloadAll();
 				mc.getStorage().saveAll();
-				mc.speedPaths.loadValues();
-				sender.sendMessage(ChatColor.GREEN + "Reloaded Gamemode 4 configuration files.");
+				for(Reloadable reloadable : mc.getReloadableClasses()) {
+					reloadable.reload();
+				}
+				sender.sendMessage(ChatColor.GREEN + "Reloaded Gamemode 4 configuration files & modules");
 			}
 		}
 		else if(args[0].equalsIgnoreCase("version")) {
