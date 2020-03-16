@@ -22,11 +22,10 @@ import java.lang.reflect.Method;
 public class MainCommands implements PluginSubcommand {
 
 	private MainClass mc;
-	private CustomItems ci;
+	private CustomItems ci = new CustomItems();
 
-	MainCommands(MainClass mc, CustomItems ci) {
+	MainCommands(MainClass mc) {
 		this.mc = mc;
-		this.ci = ci;
 	}
 
 	@Override
@@ -67,9 +66,7 @@ public class MainCommands implements PluginSubcommand {
 				try {
 					Class<?> type = CustomItems.class;
 					Method method = type.getMethod(args[2], int.class);
-					//as the method is not static, you need to have an instance of the class to be able to invoke the method
-					CustomItems instance = new CustomItems();
-					ItemStack itemStack = (ItemStack) method.invoke(instance, x);
+					ItemStack itemStack = (ItemStack) method.invoke(ci, x);
 					p.getInventory().addItem(itemStack);
 					sender.sendMessage("Gave " + x + " [" + ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()) + "] to " + args[1]);
 				} catch (Exception ignored) {}
