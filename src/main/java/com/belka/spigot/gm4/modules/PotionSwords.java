@@ -1,7 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
-import api.lootTables.LootTable;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
