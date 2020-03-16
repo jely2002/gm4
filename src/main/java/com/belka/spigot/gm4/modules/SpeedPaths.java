@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Reloadable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeedPaths implements Listener {
+public class SpeedPaths implements Listener, Reloadable {
 
     private MainClass mc;
     private Material pathBlock;
@@ -25,9 +26,14 @@ public class SpeedPaths implements Listener {
         loadValues();
     }
 
-    public void loadValues() {
+    @Override
+    public void reload() {
         pathBlock = Material.getMaterial(mc.getStorage().config().getString("SpeedPaths.pathBlock"));
         speedFactor = mc.getStorage().config().getInt("SpeedPaths.speedFactor");
+    }
+
+    public void loadValues() {
+
     }
 
     @EventHandler
@@ -48,5 +54,4 @@ public class SpeedPaths implements Listener {
             e.getPlayer().setWalkSpeed(0.2f);
         }
     }
-
 }
