@@ -41,9 +41,8 @@ public class MainClass extends JavaPlugin {
 	private CustomTerrain customTerrain;
 	private ConfigManager storage;
 
-	private ArrayList<Reloadable> reloadableClasses;
+	private ArrayList<Reloadable> reloadableClasses = new ArrayList<>();
 
-	public SpeedPaths speedPaths;
 	public CrazyAdvancements advancementsAPI;
 
 	public String chatPrefix = ChatColor.WHITE + "[" + ChatColor.DARK_AQUA + "GM4" + ChatColor.WHITE + "] " + ChatColor.RESET;
@@ -64,10 +63,9 @@ public class MainClass extends JavaPlugin {
 		advancementsAPI = new CrazyAdvancements(this);
 		//Internals
 		SettingsGUI gui = new SettingsGUI(this);
-		CustomItems customItems = new CustomItems();
 		cmdMgmt = new CommandManager(this, gui);
 		storage = new ConfigManager(this);
-		MainCommands mCmds = new MainCommands(this, customItems);
+		MainCommands mCmds = new MainCommands(this);
 		//Services
 		Updater updater = new Updater();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
@@ -97,7 +95,8 @@ public class MainClass extends JavaPlugin {
 		PotionSwords potionSwords = new PotionSwords(this);
 		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
-		speedPaths = new SpeedPaths(this);
+		SpeedPaths speedPaths = new SpeedPaths(this);
+		UndeadPlayers undeadPlayers = new UndeadPlayers(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
@@ -133,6 +132,7 @@ public class MainClass extends JavaPlugin {
 				soulProbes,
 				spawnerMinecarts,
 				speedPaths,
+				undeadPlayers,
 				weightedArmour,
 				xpStorage,
 				zauberCauldrons);
@@ -155,7 +155,6 @@ public class MainClass extends JavaPlugin {
 		} else {
 			getLogger().log(Level.SEVERE, "AD Manager is null");
 		}
-//		Advancements.manager.setAnnounceAdvancementMessages(true);
 		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
 	}
 
