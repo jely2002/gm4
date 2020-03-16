@@ -28,12 +28,12 @@ public class SpeedPaths implements Listener, Reloadable {
 
     @Override
     public void reload() {
-        pathBlock = Material.getMaterial(mc.getStorage().config().getString("SpeedPaths.pathBlock"));
-        speedFactor = mc.getStorage().config().getInt("SpeedPaths.speedFactor");
+        loadValues();
     }
 
     public void loadValues() {
-
+        pathBlock = Material.getMaterial(mc.getStorage().config().getString("SpeedPaths.pathBlock"));
+        speedFactor = mc.getStorage().config().getInt("SpeedPaths.speedFactor");
     }
 
     @EventHandler
