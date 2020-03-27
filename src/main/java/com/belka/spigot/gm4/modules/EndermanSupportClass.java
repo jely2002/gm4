@@ -71,6 +71,6 @@ public class EndermanSupportClass implements Module {
 					}
 				}
 			}
-		}, 0, 80L); // Seconds * 80L
+		}, 0, 20L);
 	}
 }
