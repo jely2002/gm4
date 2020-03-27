@@ -3,7 +3,7 @@ package com.belka.spigot.gm4.modules;
 import api.Helper;
 import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class BlastFurnaces implements Listener, Initializable {
+public class BlastFurnaces implements Module, Listener {
 
 	private static MainClass mc;
 	private boolean enabled = true;
@@ -35,6 +35,7 @@ public class BlastFurnaces implements Listener, Initializable {
 		BlastFurnaces.mc = mc;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("BlastFurnaces.enabled")) enabled = false;
 		if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {

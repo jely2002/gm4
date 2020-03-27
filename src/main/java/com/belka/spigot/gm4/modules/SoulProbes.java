@@ -3,7 +3,7 @@ package com.belka.spigot.gm4.modules;
 import api.InventoryCreator;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoulProbes implements Listener, Initializable {
+public class SoulProbes implements Module, Listener {
 
 	private MainClass mc;
 	private InventoryCreator ic;
@@ -39,6 +39,7 @@ public class SoulProbes implements Listener, Initializable {
 		this.ic = ic;
 	}
 
+	@Override
     public void init(MainClass mc) {
 		hostileOverworld.put(EntityType.CREEPER, 100);
 		hostileOverworld.put(EntityType.SKELETON, 100);

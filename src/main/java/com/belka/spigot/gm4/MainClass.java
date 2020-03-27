@@ -11,14 +11,12 @@ import api.services.Updater;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
-import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.interfaces.PluginCommand;
 import com.belka.spigot.gm4.interfaces.PluginSubcommand;
-import com.belka.spigot.gm4.interfaces.Reloadable;
 import com.belka.spigot.gm4.modules.*;
 import eu.endercentral.crazy_advancements.CrazyAdvancements;
 import org.apache.commons.io.FileUtils;
@@ -41,7 +39,7 @@ public class MainClass extends JavaPlugin {
 	private CustomTerrain customTerrain;
 	private ConfigManager storage;
 
-	private ArrayList<Reloadable> reloadableClasses = new ArrayList<>();
+	private ArrayList<Module> modules = new ArrayList<>();
 
 	public CrazyAdvancements advancementsAPI;
 
@@ -101,7 +99,7 @@ public class MainClass extends JavaPlugin {
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
 		//Register classes and used interfaces
-		registerClasses(this,
+		registerClasses(
 				storage,
 				cmdMgmt,
 				mCmds,
@@ -160,10 +158,9 @@ public class MainClass extends JavaPlugin {
 
 	private void registerClasses(Object... classes) {
 		int listenersRegistered = 0;
-		int commandsRegistered = 0;
 		int subcommandsRegistered = 0;
-		int classesInitialized = 0;
-		int reloadableClassesInitialized = 0;
+		int commandsRegistered = 0;
+		int modulesRegistered = 0;
 		for(Object o : classes) {
 			if(o instanceof Listener) {
 				getServer().getPluginManager().registerEvents((Listener) o, this);
@@ -183,30 +180,26 @@ public class MainClass extends JavaPlugin {
 					subcommandsRegistered++;
 				}
 			}
-			if(o instanceof Initializable) {
-				Initializable initClass = (Initializable) o;
-				initClass.init(this);
-				classesInitialized++;
-			}
-			if(o instanceof Reloadable) {
-				Reloadable reloadClass = (Reloadable) o;
-				reloadableClasses.add(reloadClass);
-				reloadableClassesInitialized++;
+			if(o instanceof Module) {
+				Module module = (Module) o;
+				module.init(this);
+				modules.add(module);
+				modulesRegistered++;
 			}
 		}
 		if(getConfig().getBoolean("internal.verbosemode")) {
+			getLogger().log(Level.INFO, "Registered " + modulesRegistered + " commands.");
 			getLogger().log(Level.INFO, "Registered " + commandsRegistered + " commands.");
 			getLogger().log(Level.INFO, "Registered " + subcommandsRegistered + " subcommands.");
 			getLogger().log(Level.INFO, "Registered " + listenersRegistered + " listeners.");
-			getLogger().log(Level.INFO, "Registered  " + reloadableClassesInitialized + " reloadable classes.");
-			getLogger().log(Level.INFO, "Initialized  " + classesInitialized + " classes.");
 		}
 	}
 
 	public ConfigManager getStorage() {
 		return storage;
 	}
-	public ArrayList<Reloadable> getReloadableClasses() { return reloadableClasses; }
+
+	public ArrayList<Module> getModules() { return modules; }
 
 	private void serializeConfig(){
 		getConfig().options().copyDefaults(true);

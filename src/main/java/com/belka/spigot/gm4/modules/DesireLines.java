@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,7 +15,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Random;
 
-public class DesireLines implements Listener, Initializable {
+public class DesireLines implements Module, Listener {
 
 	private MainClass mc;
 	private Random random = new Random();
@@ -26,6 +26,7 @@ public class DesireLines implements Listener, Initializable {
 		this.mc = mc;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		max = mc.getStorage().config().getInt("DesireLines.max");
 		amount = mc.getStorage().config().getInt("DesireLines.amount");

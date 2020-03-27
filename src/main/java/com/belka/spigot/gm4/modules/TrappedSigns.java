@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TrappedSigns implements Listener, Initializable {
+public class TrappedSigns implements Module, Listener {
 
     private MainClass mc;
     private boolean enabled = true;
@@ -32,6 +32,7 @@ public class TrappedSigns implements Listener, Initializable {
         this.mc = mc;
     }
 
+    @Override
     public void init(MainClass mc) {
         if(!mc.getStorage().config().getBoolean("TrappedSigns.enabled")) enabled = false;
         if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {

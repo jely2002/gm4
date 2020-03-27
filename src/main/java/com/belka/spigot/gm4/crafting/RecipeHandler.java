@@ -2,7 +2,6 @@ package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
 import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -11,7 +10,6 @@ import org.bukkit.block.Hopper;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -21,13 +19,14 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RecipeHandler implements Initializable {
+public class RecipeHandler {
 
 	private static MainClass mc;
 	private ArrayList<String> convertKeys = new ArrayList<>();
 
 	public RecipeHandler(MainClass mc) {
 		RecipeHandler.mc = mc;
+		init(mc);
 	}
 
 	public void init(MainClass mc) {

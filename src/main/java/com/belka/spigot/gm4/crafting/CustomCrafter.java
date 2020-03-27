@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomCrafter implements Listener, Initializable {
+public class CustomCrafter implements Module, Listener {
 
 	private MainClass mc;
 	private RecipeHandler rh;
@@ -40,6 +40,7 @@ public class CustomCrafter implements Listener, Initializable {
 		this.rh = rh;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		asNames.add("CustomCrafter");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) asNames.add("MasterCrafter");
