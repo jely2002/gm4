@@ -15,8 +15,6 @@ import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
 import com.belka.spigot.gm4.interfaces.Module;
-import com.belka.spigot.gm4.interfaces.PluginCommand;
-import com.belka.spigot.gm4.interfaces.PluginSubcommand;
 import com.belka.spigot.gm4.modules.*;
 import eu.endercentral.crazy_advancements.CrazyAdvancements;
 import org.apache.commons.io.FileUtils;
@@ -57,13 +55,15 @@ public class MainClass extends JavaPlugin {
 		serializeConfig();
 		initializeMetrics();
 
+
+
 		//Initialize advancement API
 		advancementsAPI = new CrazyAdvancements(this);
 		//Internals
 		SettingsGUI gui = new SettingsGUI(this);
 		cmdMgmt = new CommandManager(this, gui);
+		getCommand("gamemode4").setExecutor(cmdMgmt);
 		storage = new ConfigManager(this);
-		MainCommands mCmds = new MainCommands(this);
 		//Services
 		Updater updater = new Updater();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
@@ -102,7 +102,6 @@ public class MainClass extends JavaPlugin {
 		registerClasses(
 				storage,
 				cmdMgmt,
-				mCmds,
 				gui,
 				updater,
 
@@ -158,27 +157,11 @@ public class MainClass extends JavaPlugin {
 
 	private void registerClasses(Object... classes) {
 		int listenersRegistered = 0;
-		int subcommandsRegistered = 0;
-		int commandsRegistered = 0;
 		int modulesRegistered = 0;
 		for(Object o : classes) {
 			if(o instanceof Listener) {
 				getServer().getPluginManager().registerEvents((Listener) o, this);
 				listenersRegistered++;
-			}
-			if(o instanceof PluginCommand) {
-				PluginCommand plcmd = (PluginCommand) o;
-				for(String arg : plcmd.getCommands()) {
-					getCommand(arg).setExecutor(plcmd);
-					commandsRegistered++;
-				}
-			}
-			if(o instanceof PluginSubcommand) {
-				PluginSubcommand plscmd = (PluginSubcommand) o;
-				for(String arg : plscmd.getSubcommand()) {
-					cmdMgmt.addCommand(arg, plscmd);
-					subcommandsRegistered++;
-				}
 			}
 			if(o instanceof Module) {
 				Module module = (Module) o;
@@ -189,8 +172,6 @@ public class MainClass extends JavaPlugin {
 		}
 		if(getConfig().getBoolean("internal.verbosemode")) {
 			getLogger().log(Level.INFO, "Registered " + modulesRegistered + " commands.");
-			getLogger().log(Level.INFO, "Registered " + commandsRegistered + " commands.");
-			getLogger().log(Level.INFO, "Registered " + subcommandsRegistered + " subcommands.");
 			getLogger().log(Level.INFO, "Registered " + listenersRegistered + " listeners.");
 		}
 	}
