@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -47,6 +48,27 @@ public class CustomCrafter implements Module, Listener {
 		if (mc.getStorage().config().getBoolean("CustomCrafter.BlastFurnace")) asNames.add("BlastFurnace");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) asNames.add("Disassembler");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) asNames.add("AlchemicalCrafter");
+	}
+
+	private void relightCrafters() {
+		for(String activeCrafter : mc.getStorage().data().getStringList("CustomCrafter.customCrafters")) {
+			String[] crafterLocStrings = activeCrafter.split(" ");
+			ArrayList<String> crafterLocString = new ArrayList<>();
+			for(String cs : crafterLocStrings) {
+			 	crafterLocString.add(cs.substring(2));
+			}
+			Location crafterLoc = new Location(Bukkit.getWorld(crafterLocString.get(3)), Integer.parseInt(crafterLocString.get(0)), Integer.parseInt(crafterLocString.get(1)), Integer.parseInt(crafterLocString.get(2)));
+			for (Entity e : Helper.getNearbyEntities(crafterLoc, 1)) {
+				if (e instanceof ArmorStand && e.getScoreboardTags().contains("gm4")) {
+					e.setFireTicks(Integer.MAX_VALUE);
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		relightCrafters();
 	}
 
 	@EventHandler
