@@ -1,20 +1,16 @@
 package com.belka.spigot.gm4.crafting;
 
-import api.Helper;
+import api.CustomBlock;
+import api.CustomBlockType;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.modules.Advancements;
-import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.block.Dropper;
-import org.bukkit.block.Hopper;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,11 +35,40 @@ public class RecipeHandler {
 	public void craft(Dropper dr, Player p) {
 		for (ShapedRecipe recipe : CustomRecipes.allShapedRecipes)
 			if (equalsRecipe(dr, recipe)) {
-				if (dr.getCustomName().equalsIgnoreCase("Custom Crafter")) { // If it's a Custom Crafter
-					if (convertKeys.contains(recipe.getKey().getKey())) convert(dr, recipe.getKey().getKey(), p);
-				}
 				int amount = getFirstAmount(new ArrayList<>(Arrays.asList(dr.getInventory().getContents())));
 				dr.getInventory().clear();
+
+				CustomBlock customBlock = CustomBlock.get(dr.getLocation());
+				if (customBlock != null) {
+					if (convertKeys.contains(recipe.getKey().getKey())) {//TODO check if can be converted from current
+						p.getOpenInventory().close();
+						CustomBlockType cbt = CustomBlockType.getById(recipe.getKey().getKey().replace("_", ""));
+						assert cbt != null;
+						customBlock.convert(cbt);
+						switch (cbt) {
+							case MASTER_CRAFTER:
+								Advancements.grantAdvancement("clever_crafting", p);
+								break;
+							case BLAST_FURNACE:
+								Advancements.grantAdvancement("clever_smelting", p);
+								break;
+							case DISASSEMBLER:
+								Advancements.grantAdvancement("clever_decrafting", p);
+								break;
+						}
+					}
+					if (customBlock.getType() == CustomBlockType.ALCHEMICAL_CRAFTER && recipe.getKey().getKey().toLowerCase().startsWith("ee_")) {
+						dr.getInventory().addItem(CustomItems.PHILOSOPHERS_STONE(1));
+					}
+					switch (customBlock.getType()) {//Sound effects TODO
+						case CUSTOM_CRAFTER:
+							dr.getWorld().playSound(dr.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 1);
+							break;
+						case ALCHEMICAL_CRAFTER:
+							dr.getWorld().playSound(dr.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
+							break;
+					}
+				}
 
 				ItemStack result = recipe.getResult();
 				if (result.getType() == Material.BARRIER) result.setType(Material.AIR);
@@ -51,66 +76,8 @@ public class RecipeHandler {
 				result.setAmount(totAmount);
 				if (result.getAmount() <= result.getMaxStackSize()) dr.getInventory().setItem(4, result);
 				else dr.getInventory().addItem(result);
-				dr.getWorld().playSound(dr.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 1);
+				break;
 			}
-	}
-
-	private void convert(Dropper dr, String convert, Player p) {
-		for (Entity e : Helper.getNearbyEntities(dr.getLocation(), 1)) {
-			if (e instanceof ArmorStand && e.getCustomName().equalsIgnoreCase("CustomCrafter")) {
-				Bukkit.broadcastMessage("Convert to " + convert);
-				ArmorStand as = (ArmorStand) e;
-				ItemStack helmet = new ItemStack(Material.AIR);
-				EulerAngle pose = new EulerAngle(0f, 0f, 0f);
-				Vector loc = new Vector(0f, 0f, 0f);
-				switch (convert) {
-					case "master_crafter":
-						dr.setCustomName("Master Crafter");
-						dr.update();
-						as.setCustomName("MasterCrafter");
-						helmet.setType(Material.PISTON);
-						pose = new EulerAngle(Helper.degToRad(180f), 0f, 0f);
-						loc.setY(0.595f);
-						Advancements.grantAdvancement("clever_crafting", p);
-						break;
-					case "blast_furnace":
-						dr.getInventory().clear();
-
-						Block block = dr.getBlock();
-						block.setType(Material.HOPPER);
-						Hopper hp = (Hopper) block.getState();
-						hp.setCustomName("Blast Furnace Output");
-						hp.update();
-						as.setCustomName("BlastFurnace");
-						helmet.setType(Material.AIR);
-						Advancements.grantAdvancement("clever_smelting", p);
-						break;
-					case "disassembler":
-						dr.setCustomName("Disassembler");
-						dr.update();
-						as.setCustomName("Disassembler");
-						helmet.setType(Material.TNT);
-						dr.getWorld().spawnParticle(Particle.LAVA, dr.getBlock().getLocation().add(0.5f, 0.75f, 0.5f), 10);
-						dr.getWorld().playSound(dr.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
-						Advancements.grantAdvancement("clever_decrafting", p);
-						break;
-					case "alchemical_crafter":
-						dr.setCustomName("Alchemical Crafter");
-						dr.update();
-						as.setCustomName("AlchemicalCrafter");
-						helmet.setType(Material.REDSTONE_BLOCK);
-						helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-						dr.getWorld().strikeLightningEffect(dr.getBlock().getLocation().add(0.5f, 1f, 0.5f));
-						break;
-				}
-				p.closeInventory();
-				as.setHelmet(helmet);
-				as.setHeadPose(pose);
-				as.setFireTicks(Integer.MAX_VALUE);
-				Location asLoc = as.getLocation().add(loc);
-				as.teleport(asLoc);
-			}
-		}
 	}
 
 	public boolean equalsRecipe(Dropper dr, ShapedRecipe recipe) {

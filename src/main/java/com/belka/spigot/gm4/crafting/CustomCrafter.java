@@ -1,19 +1,17 @@
 package com.belka.spigot.gm4.crafting;
 
-import api.Helper;
+import api.CustomBlock;
+import api.CustomBlockType;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dropper;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -22,19 +20,17 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class CustomCrafter implements Module, Listener {
 
 	private MainClass mc;
 	private RecipeHandler rh;
-	private ArrayList<String> asNames = new ArrayList<>();
+	private ArrayList<String> enabled = new ArrayList<>();
 
 	public CustomCrafter(MainClass mc, RecipeHandler rh) {
 		this.mc = mc;
@@ -43,32 +39,11 @@ public class CustomCrafter implements Module, Listener {
 
 	@Override
 	public void init(MainClass mc) {
-		asNames.add("CustomCrafter");
-		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) asNames.add("MasterCrafter");
-		if (mc.getStorage().config().getBoolean("CustomCrafter.BlastFurnace")) asNames.add("BlastFurnace");
-		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) asNames.add("Disassembler");
-		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) asNames.add("AlchemicalCrafter");
-	}
-
-	private void relightCrafters() {
-		for(String activeCrafter : mc.getStorage().data().getStringList("CustomCrafter.customCrafters")) {
-			String[] crafterLocStrings = activeCrafter.split(" ");
-			ArrayList<String> crafterLocString = new ArrayList<>();
-			for(String cs : crafterLocStrings) {
-			 	crafterLocString.add(cs.substring(2));
-			}
-			Location crafterLoc = new Location(Bukkit.getWorld(crafterLocString.get(3)), Integer.parseInt(crafterLocString.get(0)), Integer.parseInt(crafterLocString.get(1)), Integer.parseInt(crafterLocString.get(2)));
-			for (Entity e : Helper.getNearbyEntities(crafterLoc, 1)) {
-				if (e instanceof ArmorStand && e.getScoreboardTags().contains("gm4")) {
-					e.setFireTicks(Integer.MAX_VALUE);
-				}
-			}
-		}
-	}
-
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		relightCrafters();
+		enabled.add("CustomCrafter");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) enabled.add("MasterCrafter");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.BlastFurnace")) enabled.add("BlastFurnace");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) enabled.add("Disassembler");
+		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) enabled.add("AlchemicalCrafter");
 	}
 
 	@EventHandler
@@ -84,38 +59,19 @@ public class CustomCrafter implements Module, Listener {
                     Block b = loc.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
                     if (b.getBlockData().getMaterial() == Material.DROPPER) {
                         Dropper dr = (Dropper) b.getState();
-                        List<String> active = mc.getStorage().data().getStringList("CustomCrafter.customCrafters");
-                        if (!active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
-                            if (rh.equalsRecipe(dr, CustomRecipes.create()) && dr.getInventory().getItem(0).getAmount() == 1) {
-                                Location asLoc = dr.getLocation().add(0.5, 0.075, 0.5);
-                                ArmorStand as = (ArmorStand) dr.getWorld().spawnEntity(asLoc, EntityType.ARMOR_STAND);
-                                as.setSmall(true);
-                                as.setGravity(false);
-                                as.setVisible(false);
-                                as.setCanPickupItems(false);
-                                as.setCustomNameVisible(false);
-                                as.setRemoveWhenFarAway(false);
-                                as.setFireTicks(Integer.MAX_VALUE);
-                                as.setMarker(true);
-                                as.setCustomName("CustomCrafter");
-                                as.setHelmet(new ItemStack(Material.CRAFTING_TABLE));
-                                as.addScoreboardTag("gm4");
-
-								dr.setCustomName("Custom Crafter");
-								dr.update();
-								dr.getInventory().clear();
-
-                                BlockData blockData = b.getBlockData();
-                                ((Directional) blockData).setFacing(BlockFace.DOWN);
-                                b.setBlockData(blockData);
-
-                                e.getItemDrop().remove();
-                                active.add("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName());
-                                mc.getStorage().data().set("CustomCrafter.customCrafters", active);
-                                mc.getStorage().saveData();
+						if (rh.equalsRecipe(dr, CustomRecipes.create()) && dr.getInventory().getItem(0).getAmount() == 1) {
+							if (CustomBlock.get(b.getLocation()) == null) {
+								CustomBlock.create(CustomBlockType.CUSTOM_CRAFTER, b.getLocation());
+								ItemStack item = e.getItemDrop().getItemStack();
+								int amount = e.getItemDrop().getItemStack().getAmount() - 1;
+								if (amount > 0) {
+									item.setAmount(amount);
+									e.getItemDrop().setItemStack(item);
+								}
+								else e.getItemDrop().remove();
 								Advancements.grantAdvancement("clever_crafting", e.getPlayer());
-                            }
-                        }
+							}
+						}
                     }
                 }
 			}
@@ -123,62 +79,13 @@ public class CustomCrafter implements Module, Listener {
 	}
 
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) { // Remove Custom Crafter
+	public void onBlockBreak(BlockBreakEvent event) { // Remove Custom Blocks
 		Block b = event.getBlock();
-		List<String> active = mc.getStorage().data().getStringList("CustomCrafter.customCrafters");
-		World w = b.getWorld();
-		if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName())) {
-			Location loc = b.getLocation().add(0.5, 0.5, 0.5);
-			w.dropItem(loc, new ItemStack(Material.CRAFTING_TABLE, 1));
-			dropRecipe(loc, "");
-			if (b.getType() == Material.DROPPER) {
-				Dropper dr = (Dropper) b.getState();
-				dropRecipe(loc, dr.getCustomName());
-			}
-			else if (b.getType() == Material.HOPPER) {
-				dropRecipe(loc, "Blast Furnace Output");
-			}
-			active.remove("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + w.getName());
-			mc.getStorage().data().set("CustomCrafter.customCrafters", active);
-			for(Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
-				if(e instanceof ArmorStand) {
-					if(asNames.contains(e.getCustomName())) {
-						if (b.getType() == Material.HOPPER)
-							mc.getStorage().data().set("BlastFurnaces." + e.getUniqueId().toString(), null);
-						e.remove();
-					}
-				}
-			}
-			mc.getStorage().saveData();
+		CustomBlock cb = CustomBlock.get(b.getLocation());
+		if (cb != null && cb.getType() != CustomBlockType.ENDER_HOPPER) {
+			cb.destroy(true);
+//			event.getPlayer().sendMessage(ChatColor.GREEN + "Successfully destroyed a " + cb.getType().getName() + " at " + b.getX() + " " + b.getY() + " " + b.getZ() + ".");
 		}
-	}
-
-	private void dropRecipe(Location loc, String name) { // Drop creation items
-		if (name.equalsIgnoreCase("Custom Crafter")) return;
-		ShapedRecipe recipe = CustomRecipes.create();
-		switch (name) {
-			case "Master Crafter":
-				recipe = CustomRecipes.master_crafter();
-				break;
-			case "Disassembler":
-				recipe = CustomRecipes.disassembler();
-				break;
-			case "Blast Furnace Output":
-				recipe = CustomRecipes.blast_furnace();
-				break;
-			case "Alchemical Crafter":
-				recipe = null;
-				loc.getWorld().dropItem(loc, new ItemStack(Material.CRAFTING_TABLE));
-				loc.getWorld().dropItem(loc, CustomItems.MINIUM_DUST(8));
-				break;
-		}
-		if (recipe != null)
-			for (String chars : recipe.getShape())
-				for (String character : chars.split("(?!^)")) {
-					char c = character.charAt(0);
-					ItemStack item = recipe.getIngredientMap().get(c);
-					if (item != null) loc.getWorld().dropItem(loc, item);
-				}
 	}
 
 	@EventHandler
@@ -190,16 +97,11 @@ public class CustomCrafter implements Module, Listener {
 		updateInv(e.getInventory());
 	}
 	private void updateInv(Inventory inv) {
-		if (inv.getType().equals(InventoryType.DROPPER)) {
+		if (inv.getType().equals(InventoryType.DROPPER) && inv.getLocation() != null) {
 			Block b = inv.getLocation().getBlock();
-			List<String> active = mc.getStorage().data().getStringList("CustomCrafter.customCrafters");
-			if(active.contains("x:" + b.getX() + " y:" + b.getY() + " z:" + b.getZ() + " w:" + b.getWorld().getName())) {
-				for (Entity e : Helper.getNearbyEntities(b.getLocation(), 1)) {
-					if (e instanceof ArmorStand && e.getScoreboardTags().contains("gm4")) {
-						Bukkit.broadcastMessage("Lit");
-						e.setFireTicks(Integer.MAX_VALUE);
-					}
-				}
+			CustomBlock cb = CustomBlock.get(b.getLocation());
+			if (cb != null) {
+				Objects.requireNonNull(Bukkit.getEntity(cb.getUuid())).setFireTicks(Integer.MAX_VALUE);
 				mc.getServer().getScheduler().runTaskLater(mc, () -> {
 					Dropper dropper = (Dropper) b.getState();
 					rh.craft(dropper, (Player) inv.getViewers().get(0));
@@ -213,7 +115,7 @@ public class CustomCrafter implements Module, Listener {
 
 	@EventHandler
 	public void onInteract(PlayerArmorStandManipulateEvent e) { // Disable item removal armor stand
-		if (e.getRightClicked().getCustomName() != null && asNames.contains(e.getRightClicked().getCustomName())) {
+		if (e.getRightClicked().getCustomName() != null && enabled.contains(e.getRightClicked().getCustomName())) {
 			e.setCancelled(true);
 		}
 	}

@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4;
 
 import api.ConsoleColor;
+import api.CustomBlock;
 import api.InventoryCreator;
 import api.lootTables.Entry;
 import api.lootTables.Function;
@@ -68,6 +69,7 @@ public class MainClass extends JavaPlugin {
 		Updater updater = new Updater();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
 		//Custom Crafting
+		CustomBlock customBlock = new CustomBlock(this);
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		CustomRecipes customRecipes = new CustomRecipes(this);
@@ -105,6 +107,7 @@ public class MainClass extends JavaPlugin {
 				gui,
 				updater,
 
+				customBlock,
 				recipeHandler,
 				customCrafter,
 				customRecipes,
@@ -189,13 +192,14 @@ public class MainClass extends JavaPlugin {
 		ConfigurationSerialization.registerClass(Pool.class, "Pool");
 		ConfigurationSerialization.registerClass(Entry.class, "Entry");
 		ConfigurationSerialization.registerClass(Function.class, "Function");
+		ConfigurationSerialization.registerClass(CustomBlock.class, "CustomBlock");
 	}
 
 	private void initializeMetrics() {
 		Metrics metrics = new Metrics(this,4251);
 	}
 
-	//Public Helper methods that need acces to the JavaPlugin object
+	//Public Helper methods that need access to the JavaPlugin object
 	public File getResourceAsFile(String resource) throws IOException {
 		InputStream inputStream = getResource(resource);
 		File tmpFile = File.createTempFile("file", "temp");
