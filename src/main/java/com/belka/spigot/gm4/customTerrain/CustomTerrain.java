@@ -1,15 +1,14 @@
 package com.belka.spigot.gm4.customTerrain;
 
-import api.Helper;
-import api.lootTables.LootTable;
-import api.Structure;
 import api.ConsoleColor;
+import api.Helper;
+import api.Structure;
+import api.lootTables.LootTable;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
@@ -21,6 +20,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.loot.LootTables;
+import org.bukkit.loot.Lootable;
 import org.bukkit.util.Vector;
 
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class CustomTerrain implements Module, Listener {
 		loadRadius = mc.getStorage().config().getInt("CustomTerrain.loadRadius");
 		replacingSpeed = mc.getStorage().config().getInt("CustomTerrain.replacingSpeed");
 
-		if (mc.getStorage().data().getConfigurationSection("CustomTerrain.chunks") != null) {
+		if (mc.getStorage().data().contains("CustomTerrain.chunks")) {
 			for (String chunk : mc.getStorage().data().getStringList("CustomTerrain.chunks")) {
 				loadedChunks.add(Pair.of(Helper.toInteger(chunk.split(" ")[0]), Helper.toInteger(chunk.split(" ")[1])));
 			}
@@ -247,28 +248,35 @@ public class CustomTerrain implements Module, Listener {
 
 		EntityType entityType = defaultEntities.get(new Random().nextInt(defaultEntities.size()));
 		if (type.equalsIgnoreCase("water")) entityType = waterEntities.get(new Random().nextInt(waterEntities.size()));
-		BlockState blockState = b.getState();
-		((CreatureSpawner) blockState).setSpawnedType(entityType);
-		blockState.update();
-		//TODO add block to config
+		CreatureSpawner spawner = (CreatureSpawner) b.getState();
+		spawner.setSpawnedType(entityType);
+		spawner.update();
+
+		List<Location> spawners = (List<Location>) mc.getStorage().data().getList("CustomTerrain.spawners");
+		if (spawners == null) spawners = new ArrayList<>();
+		spawners.add(spawner.getLocation());
+		mc.getStorage().data().set("CustomTerrain.spawners", spawners);
+		mc.getStorage().saveData();
 	}
 
 	private List<Entity> spawned = new ArrayList<>();
 	@EventHandler
 	public void onEntitySpawn(SpawnerSpawnEvent e) {
-		CreatureSpawner spawner = e.getSpawner();
-		spawner.getBlock();
-		//TODO check block with config
-		spawned.add(e.getEntity());
+		if (mc.getStorage().data().contains("CustomTerrain.spawners")) {
+			List<Location> spawners = (List<Location>) mc.getStorage().data().getList("CustomTerrain.spawners");
+			if (spawners != null && spawners.contains(e.getSpawner().getLocation())) {
+				if (e.getEntity() instanceof Lootable)
+					((Lootable) e.getEntity()).setLootTable(LootTables.EMPTY.getLootTable());
+				spawned.add(e.getEntity());
+			}
+		}
 	}
-
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent e) {
 		Entity entity = e.getEntity();
 		if (spawned.contains(entity)) {
 			spawned.remove(entity);
 			e.setDroppedExp(0);
-			e.getDrops().clear();
 		}
 	}
 
