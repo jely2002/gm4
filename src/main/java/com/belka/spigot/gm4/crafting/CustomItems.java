@@ -4,7 +4,10 @@ import api.SkullCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,8 +15,10 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class CustomItems {
+	//TODO Handle custom item placing
 
 //	Heart Canisters
 	public static ItemStack HEART_CANISTER_TIER_1(int amount) {
@@ -99,6 +104,21 @@ public class CustomItems {
 		meta.setLore(Arrays.asList(ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + ")@(^%%!)$)(&@%^&@"));
 		skull.setItemMeta(meta);
 		return skull;
+	}
+	public static ItemStack AC_INFINITY_TOOL(int amount) {
+		ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, Integer.MAX_VALUE, true);
+		meta.setDisplayName(ChatColor.AQUA + "Infinity Tool");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "The equivalent of dividing by 0")));
+		meta.setUnbreakable(true);
+
+		AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 105, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
+		meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+
+		item.setItemMeta(meta);
+		return item;
 	}
 
 //	Boots of Ostara

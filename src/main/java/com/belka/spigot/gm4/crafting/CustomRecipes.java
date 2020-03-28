@@ -66,7 +66,9 @@ public class CustomRecipes implements Module {
 		}
 		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) {
 			add(ccShapedRecipes, alchemical_crafter(), MINIUM_DUST(), INERT_STONE(), PHILOSOPHERS_STONE());
-			add(acShapedRecipes, PHILOSOPHERS_STONE_MKII(), PHILOSOPHERS_STONE_MKIII(), PHILOSOPHERS_STONE_MKIV(), AC_ERROR());
+			add(acShapedRecipes, PHILOSOPHERS_STONE_MKII(), PHILOSOPHERS_STONE_MKIII(), PHILOSOPHERS_STONE_MKIV(), AC_ERROR(), AC_INFINITY_TOOL());
+			add(acShapedRecipes, EE_TO_COAL(), EE_TO_IRON(), EE_TO_GOLD(), EE_TO_DIAMOND(), EE_TO_EMERALD(),
+					EE_FROM_EMERALD(), EE_FROM_DIAMOND(), EE_FROM_GOLD(), EE_FROM_IRON(), EE_FROM_COAL());
 		}
 	}
 
@@ -422,7 +424,7 @@ public class CustomRecipes implements Module {
 		ItemStack returnItem = new ItemStack(Material.LAVA_BUCKET, 1);
 		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "LAVA_BUCKET"), returnItem);
 		recipe.shape("NNN","NBN","NNN");
-		recipe.setIngredient('N', Material.NETHER_BRICK);
+		recipe.setIngredient('N', Material.NETHERRACK);
 		recipe.setIngredient('B', Material.BUCKET);
 		return recipe;
 	}
@@ -486,7 +488,95 @@ public class CustomRecipes implements Module {
 		recipe.setIngredient('R', Material.REDSTONE_BLOCK);
 		return recipe;
 	}
-
+	private static ShapedRecipe AC_INFINITY_TOOL() {
+		ItemStack returnItem = CustomItems.AC_INFINITY_TOOL(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "AC_INFINITY_TOOL"), returnItem);
+		recipe.shape("EEE"," D "," D ");
+		recipe.setIngredient('E', Material.PLAYER_HEAD);
+		recipe.setIngredient('D', Material.DIAMOND_BLOCK);
+		return recipe;
+	}
+//	Equivalent Exchange (Alchemical Crafter)
+	private static ShapedRecipe EE_TO_COAL() {
+		ItemStack returnItem = new ItemStack(Material.COAL);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_TO_COAL"), returnItem);
+		recipe.shape("PR ","R  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	private static ShapedRecipe EE_TO_IRON() {
+		ItemStack returnItem = new ItemStack(Material.IRON_INGOT);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_TO_IRON"), returnItem);
+		recipe.shape("PC ","CC ","C  ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('C', Material.COAL);
+		return recipe;
+	}
+	private static ShapedRecipe EE_TO_GOLD() {
+		ItemStack returnItem = new ItemStack(Material.GOLD_INGOT);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_TO_GOLD"), returnItem);
+		recipe.shape("PI ","II ","I  ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('I', Material.IRON_INGOT);
+		return recipe;
+	}
+	private static ShapedRecipe EE_TO_DIAMOND() {
+		ItemStack returnItem = new ItemStack(Material.DIAMOND);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_TO_DIAMOND"), returnItem);
+		recipe.shape("PG ","GG ","G  ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('G', Material.GOLD_INGOT);
+		return recipe;
+	}
+	private static ShapedRecipe EE_TO_EMERALD() {
+		ItemStack returnItem = new ItemStack(Material.EMERALD);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_TO_EMERALD"), returnItem);
+		recipe.shape("PD ","D  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('D', Material.DIAMOND);
+		return recipe;
+	}
+	private static ShapedRecipe EE_FROM_EMERALD() {
+		ItemStack returnItem = new ItemStack(Material.DIAMOND, 2);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_FROM_EMERALD"), returnItem);
+		recipe.shape("P  ","E  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('E', Material.EMERALD);
+		return recipe;
+	}
+	private static ShapedRecipe EE_FROM_DIAMOND() {
+		ItemStack returnItem = new ItemStack(Material.GOLD_INGOT, 4);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_FROM_DIAMOND"), returnItem);
+		recipe.shape("P  ","E  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('E', Material.DIAMOND);
+		return recipe;
+	}
+	private static ShapedRecipe EE_FROM_GOLD() {
+		ItemStack returnItem = new ItemStack(Material.IRON_INGOT, 4);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_FROM_GOLD"), returnItem);
+		recipe.shape("P  ","E  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('E', Material.GOLD_INGOT);
+		return recipe;
+	}
+	private static ShapedRecipe EE_FROM_IRON() {
+		ItemStack returnItem = new ItemStack(Material.COAL, 4);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_FROM_IRON"), returnItem);
+		recipe.shape("P  ","E  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('E', Material.IRON_INGOT);
+		return recipe;
+	}
+	private static ShapedRecipe EE_FROM_COAL() {
+		ItemStack returnItem = new ItemStack(Material.REDSTONE, 2);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "EE_FROM_COAL"), returnItem);
+		recipe.shape("P  ","E  ","   ");
+		recipe.setIngredient('P', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('E', Material.COAL);
+		return recipe;
+	}
 
 //	OTHER MODULES
 //	HeartCanisters
