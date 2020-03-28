@@ -8,6 +8,7 @@ import mryurihi.tbnbt.tag.NBTTag;
 import mryurihi.tbnbt.tag.NBTTagCompound;
 import mryurihi.tbnbt.tag.NBTTagList;
 import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -43,7 +44,7 @@ public class Structure {
 		this.name = name;
 		FileInputStream fileInputStream = new FileInputStream(file);
 		NBTInputStream inputStream = new NBTInputStream(fileInputStream);
-		this.nbt = inputStream.readTag().getAsTagCompound();
+		this.nbt = inputStream.readTag(false).getAsTagCompound();//TODO added named = false
 	}
 
 	public File getFile() {
@@ -160,14 +161,24 @@ public class Structure {
 		return null;
 	}
 
-	public void place(Location target, boolean includeEntities) {
+	public void place(Location target, boolean includeEntities, boolean ignoreAir) {
 		Location loc = target.add(offset);
 		List<Pair<Material, HashMap<String, Object>>> palette = getPalette();
 		for (Pair<Vector, Integer> block: getBlocks()) {
 			Block b = loc.clone().add(block.getKey()).getBlock();
-			b.setType(palette.get(block.getValue()).getKey(), true);
+			Material type = palette.get(block.getValue()).getKey();
+
+			if (ignoreAir) {
+				if (type != Material.AIR && type != Material.CAVE_AIR && type != Material.VOID_AIR) {
+					b.setType(type, false);
+				}
+			}
+			else b.setType(type, false);
+
 			HashMap<String, Object> map = palette.get(block.getValue()).getValue();
 			if (!palette.get(block.getValue()).getValue().isEmpty()) {
+				if (b.getType() == Material.OBSIDIAN && map.containsKey("level"))
+					Bukkit.broadcastMessage(getName() + " " + palette.get(block.getValue()).getKey().name());
 				setBlockData(b, map);
 			}
 		}

@@ -153,7 +153,7 @@ public class CustomTerrain implements Module, Listener {
 
 		if (structure != null) {
 			structure.setIgnoredEntityTypes(Collections.singletonList(EntityType.AREA_EFFECT_CLOUD));
-			structure.place(loc, true);
+			structure.place(loc, true, false);
 
 			for (Pair<Vector, HashMap<String, Object>> entityPair : structure.getEntities()) {
 				HashMap<String, Object> map = entityPair.getValue();
