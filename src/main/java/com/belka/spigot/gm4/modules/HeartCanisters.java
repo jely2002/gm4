@@ -33,7 +33,7 @@ public class HeartCanisters implements Module, Listener {
 	public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("HeartCanisters.enabled")) enabled = false;
 		if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {
-			System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for HeartCanisters to work!");
+			System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for HeartCanisters to work!" + ConsoleColor.RESET);
 			mc.getStorage().config().set("HeartCanisters.enabled", false);
 			mc.saveConfig();
 			enabled = false;
