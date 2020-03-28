@@ -1,7 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class BetterFire implements Listener, Initializable {
+public class BetterFire implements Module, Listener {
 	private MainClass mc;
 
 	public BetterFire(MainClass mc) {
@@ -32,7 +32,7 @@ public class BetterFire implements Listener, Initializable {
 	private HashMap<UUID, Integer> checkArrows = new HashMap<>();
 	private ArrayList<Arrow> deleteArrows = new ArrayList<>();
 
-
+	@Override
 	public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("BetterFire.enabled")) return;
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {

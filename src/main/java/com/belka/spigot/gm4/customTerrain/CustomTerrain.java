@@ -5,7 +5,7 @@ import api.lootTables.LootTable;
 import api.Structure;
 import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -26,7 +26,7 @@ import org.bukkit.util.Vector;
 import java.io.IOException;
 import java.util.*;
 
-public class CustomTerrain implements Listener, Initializable {
+public class CustomTerrain implements Module, Listener {
 
 	private MainClass mc;
 	private LootTable lt;
@@ -50,6 +50,7 @@ public class CustomTerrain implements Listener, Initializable {
 		this.lt = lt;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		customTerrain = mc.getStorage().config().getBoolean("CustomTerrain.enabled");
 		coolerCaves = mc.getStorage().config().getBoolean("CustomTerrain.CoolerCaves.enabled");

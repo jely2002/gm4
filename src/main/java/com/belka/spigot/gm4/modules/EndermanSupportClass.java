@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -12,8 +12,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
-public class EndermanSupportClass implements Initializable {
+public class EndermanSupportClass implements Module {
 
+	@Override
 	public void init(MainClass mc) {
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
 			if(mc.getStorage().config().getBoolean("EndermanSupportClass.enabled")) {

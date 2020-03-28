@@ -3,7 +3,7 @@ package com.belka.spigot.gm4.modules;
 import api.SkullCreator;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import eu.endercentral.crazy_advancements.*;
 import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
 import eu.endercentral.crazy_advancements.manager.AdvancementManager;
@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
-public class Advancements implements Listener, Initializable {
+public class Advancements implements Module, Listener {
 
     private MainClass mc;
     public static AdvancementManager manager;
@@ -28,6 +28,7 @@ public class Advancements implements Listener, Initializable {
         this.mc = mc;
     }
 
+    @Override
     public void init(MainClass mc) {
         manager = CrazyAdvancements.getNewAdvancementManager();
 

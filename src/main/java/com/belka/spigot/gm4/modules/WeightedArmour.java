@@ -1,9 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +10,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class WeightedArmour implements Listener, Initializable {
+public class WeightedArmour implements Module, Listener {
 
 	private MainClass mc;
 
@@ -49,6 +47,7 @@ public class WeightedArmour implements Listener, Initializable {
 	public int level1 = 16;
 	public int level2 = 20;
 
+	@Override
 	public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("WeightedArmour.enabled")) return;
 		

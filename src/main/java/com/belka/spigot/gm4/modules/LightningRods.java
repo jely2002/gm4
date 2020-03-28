@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class LightningRods implements Listener, Initializable {
+public class LightningRods implements Module, Listener {
 
     private MainClass mc;
     private boolean enabled = true;
@@ -31,6 +31,7 @@ public class LightningRods implements Listener, Initializable {
         this.mc = mc;
     }
 
+    @Override
     public void init(MainClass mc) {
         if(!mc.getStorage().config().getBoolean("LightningRods.enabled")) enabled = false;
         if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {

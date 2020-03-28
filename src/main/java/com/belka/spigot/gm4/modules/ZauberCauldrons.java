@@ -2,8 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
-import org.bukkit.Bukkit;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -15,21 +14,12 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockFadeEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
-import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class ZauberCauldrons implements Listener, Initializable {
+public class ZauberCauldrons implements Module, Listener{
 
 	private MainClass mc;
 	private List<String> active = new ArrayList<>();
@@ -38,6 +28,7 @@ public class ZauberCauldrons implements Listener, Initializable {
 		this.mc = mc;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		active = mc.getStorage().data().getStringList("ZauberCauldrons");
 		checkCauldrons();

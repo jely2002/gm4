@@ -1,26 +1,24 @@
 package com.belka.spigot.gm4.config;
 
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 
-public class ConfigManager implements Initializable {
+public class ConfigManager {
 
 	private MainClass mc;
 
 	private CustomConfig data;
-	//private CustomConfig locale;
 	public ConfigManager(MainClass mc) {
 		this.mc = mc;
+		init(mc);
 	}
+
 
 	public void init(MainClass mc) {
 		data = new CustomConfig(mc, "data.yml") ;
-		//locale = new CustomConfig(mc, "locale.yml");
 		data.saveDefaultConfig();
-		//locale.saveDefaultConfig();
 		loadDefaultConfig();
 	}
 
@@ -39,19 +37,13 @@ public class ConfigManager implements Initializable {
 		return data.getConfig();
 	}
 
-	//public FileConfiguration locale() {
-	//    return locale.getConfig();
-	//}
-
 	public void reloadAll() {
 		reloadData();
 		reloadConfig();
-		//reloadLocale();
 	}
 
 	public void saveAll() {
 		mc.saveConfig();
-		//saveLocale();
 		saveData();
 	}
 
@@ -62,14 +54,6 @@ public class ConfigManager implements Initializable {
 	public void saveData() {
 		data.save();
 	}
-
-	//public void reloadLocale() {
-	//    locale.reloadConfig();
-	//}
-
-	//public void saveLocale() {
-	//    locale.saveConfig();
-	//}
 
 	public void reloadConfig() {
 		mc.reloadConfig();

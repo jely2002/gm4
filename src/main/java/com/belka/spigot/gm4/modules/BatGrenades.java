@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class BatGrenades implements Initializable {
+public class BatGrenades implements Module {
 
 	private MainClass mc;
 
@@ -19,6 +19,7 @@ public class BatGrenades implements Initializable {
 		this.mc = mc;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("BatGrenades.enabled")) return;
 		mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {

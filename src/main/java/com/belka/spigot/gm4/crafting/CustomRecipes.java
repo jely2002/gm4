@@ -1,7 +1,7 @@
 package com.belka.spigot.gm4.crafting;
 
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CustomRecipes implements Initializable {
+public class CustomRecipes implements Module {
 
 	private static MainClass mc;
 	public static ArrayList<ShapedRecipe> allShapedRecipes = new ArrayList<>();
@@ -26,6 +26,7 @@ public class CustomRecipes implements Initializable {
 		CustomRecipes.mc = mc;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 //		Custom Crafter
 		if (mc.getStorage().config().getBoolean("CustomCrafter.StandardCrafting")) {

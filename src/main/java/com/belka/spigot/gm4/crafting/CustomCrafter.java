@@ -2,7 +2,7 @@ package com.belka.spigot.gm4.crafting;
 
 import api.Helper;
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Initializable;
+import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.modules.Advancements;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -29,7 +30,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomCrafter implements Listener, Initializable {
+public class CustomCrafter implements Module, Listener {
 
 	private MainClass mc;
 	private RecipeHandler rh;
@@ -40,12 +41,34 @@ public class CustomCrafter implements Listener, Initializable {
 		this.rh = rh;
 	}
 
+	@Override
 	public void init(MainClass mc) {
 		asNames.add("CustomCrafter");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.MasterCrafting")) asNames.add("MasterCrafter");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.BlastFurnace")) asNames.add("BlastFurnace");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.Disassembler")) asNames.add("Disassembler");
 		if (mc.getStorage().config().getBoolean("CustomCrafter.EquivalentExchange")) asNames.add("AlchemicalCrafter");
+	}
+
+	private void relightCrafters() {
+		for(String activeCrafter : mc.getStorage().data().getStringList("CustomCrafter.customCrafters")) {
+			String[] crafterLocStrings = activeCrafter.split(" ");
+			ArrayList<String> crafterLocString = new ArrayList<>();
+			for(String cs : crafterLocStrings) {
+			 	crafterLocString.add(cs.substring(2));
+			}
+			Location crafterLoc = new Location(Bukkit.getWorld(crafterLocString.get(3)), Integer.parseInt(crafterLocString.get(0)), Integer.parseInt(crafterLocString.get(1)), Integer.parseInt(crafterLocString.get(2)));
+			for (Entity e : Helper.getNearbyEntities(crafterLoc, 1)) {
+				if (e instanceof ArmorStand && e.getScoreboardTags().contains("gm4")) {
+					e.setFireTicks(Integer.MAX_VALUE);
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		relightCrafters();
 	}
 
 	@EventHandler

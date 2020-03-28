@@ -1,20 +1,19 @@
 package com.belka.spigot.gm4.modules;
 
 import com.belka.spigot.gm4.MainClass;
-import com.belka.spigot.gm4.interfaces.Reloadable;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeedPaths implements Listener, Reloadable {
+public class SpeedPaths implements Module, Listener {
 
     private MainClass mc;
     private Material pathBlock;
