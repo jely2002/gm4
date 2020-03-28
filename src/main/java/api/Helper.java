@@ -134,6 +134,14 @@ public class Helper {
 		}
 		return a;
 	}
+	public static boolean isInteger(String number) {
+		try {
+			Integer.parseInt(number);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
 
 	public static List<String> filterTab(String arg, String... items) {
 		return Stream.of(items).filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).collect(Collectors.toList());
