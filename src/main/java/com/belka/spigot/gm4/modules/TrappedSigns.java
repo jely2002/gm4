@@ -36,7 +36,7 @@ public class TrappedSigns implements Module, Listener {
     public void init(MainClass mc) {
         if(!mc.getStorage().config().getBoolean("TrappedSigns.enabled")) enabled = false;
         if(!mc.getStorage().config().getBoolean("CustomCrafter.enabled")) {
-            System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for TrappedSigns to work!");
+            System.out.println(ConsoleColor.RED + "Enable CustomCrafter in order for TrappedSigns to work!" + ConsoleColor.RESET);
             mc.getStorage().config().set("TrappedSigns.enabled", false);
             mc.saveConfig();
             enabled = false;
