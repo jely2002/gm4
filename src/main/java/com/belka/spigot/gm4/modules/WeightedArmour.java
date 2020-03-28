@@ -18,39 +18,44 @@ public class WeightedArmour implements Module, Listener {
 		this.mc = mc;
 	}
     
-    public int leatherBoots = 1;
-    public int leatherLeggings = 2;
-    public int leatherChestplate = 3;
-    public int leatherHelmet = 1;
+    private int leatherBoots = 1;
+    private int leatherLeggings = 2;
+    private int leatherChestplate = 3;
+    private int leatherHelmet = 1;
 
-    public int chainBoots = 1;
-    public int chainLeggings = 4;
-    public int chainChestplate = 5;
-    public int chainHelmet = 2;
+    private int chainBoots = 1;
+    private int chainLeggings = 4;
+    private int chainChestplate = 5;
+    private int chainHelmet = 2;
 
-    public int goldBoots = 1;
-    public int goldLeggings = 3;
-    public int goldChestplate = 5;
-    public int goldHelmet = 2;
+    private int goldBoots = 1;
+    private int goldLeggings = 3;
+    private int goldChestplate = 5;
+    private int goldHelmet = 2;
 
-    public int ironBoots = 2;
-    public int ironLeggings = 5;
-    public int ironChestplate = 6;
-    public int ironHelmet = 2;
+    private int ironBoots = 2;
+    private int ironLeggings = 5;
+    private int ironChestplate = 6;
+    private int ironHelmet = 2;
 
-    public int diamondBoots = 3;
-    public int diamondLeggings = 6;
-    public int diamondChestplate = 8;
-    public int diamondHelmet = 3;
+    private int diamondBoots = 3;
+    private int diamondLeggings = 6;
+    private int diamondChestplate = 8;
+    private int diamondHelmet = 3;
 
-	public int level0 = 8;
-	public int level1 = 16;
-	public int level2 = 20;
+	private int level0 = 8;
+	private int level1 = 16;
+	private int level2 = 20;
 
 	@Override
 	public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("WeightedArmour.enabled")) return;
-		
+		reload();
+	}
+
+	@Override
+	public void reload() {
+		if(!mc.getStorage().config().getBoolean("WeightedArmour.enabled")) return;
 		leatherBoots = mc.getStorage().config().getInt("WeightedArmour.weight.leather.boots");
 		leatherLeggings = mc.getStorage().config().getInt("WeightedArmour.weight.leather.leggings");
 		leatherChestplate = mc.getStorage().config().getInt("WeightedArmour.weight.leather.chestplate");
@@ -110,12 +115,11 @@ public class WeightedArmour implements Module, Listener {
 		}
 	}
 	
-	public int getArmorWeight(Player p) {
-		int weight = getBootsWeight(p) + getLeggingsWeight(p) + getChestplateWeight(p) + getHelmetWeight(p);
-		return weight;
+	private int getArmorWeight(Player p) {
+		return getBootsWeight(p) + getLeggingsWeight(p) + getChestplateWeight(p) + getHelmetWeight(p);
 	}
 	
-	public int getBootsWeight(Player p) {
+	private int getBootsWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getBoots() != null) {
 			switch (inv.getBoots().getType()) {
@@ -135,7 +139,7 @@ public class WeightedArmour implements Module, Listener {
 		}
 		return 0;
 	}
-	public int getLeggingsWeight(Player p) {
+	private int getLeggingsWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getLeggings() != null) {
 			switch (inv.getLeggings().getType()) {
@@ -155,7 +159,7 @@ public class WeightedArmour implements Module, Listener {
 		}
 		return 0;
 	}
-	public int getChestplateWeight(Player p) {
+	private int getChestplateWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getChestplate() != null) {
 			switch (inv.getChestplate().getType()) {
@@ -175,7 +179,7 @@ public class WeightedArmour implements Module, Listener {
 		}
 		return 0;
 	}
-	public int getHelmetWeight(Player p) {
+	private int getHelmetWeight(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getHelmet() != null) {
 			switch (inv.getHelmet().getType()) {
