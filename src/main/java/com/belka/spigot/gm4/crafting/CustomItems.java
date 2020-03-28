@@ -173,6 +173,15 @@ public class CustomItems {
 		return item;
 	}
 
+//	Ender Hopper
+	public static ItemStack ENDER_HOPPER_SKULL(int amount) {
+		ItemStack skull = getSkull("http://textures.minecraft.net/texture/78b9e215d3d8747c8df614fd8fe4d139de12124ffe19f2909d38cd4a732925d", amount);
+		ItemMeta meta = skull.getItemMeta();
+		meta.setDisplayName("Ender Hopper");
+		skull.setItemMeta(meta);
+		return skull;
+	}
+
 	private static ItemStack getSkull(String skinURL, int amount) {
 		ItemStack skull = SkullCreator.itemFromUrl(skinURL);
 		skull.setAmount(amount);
