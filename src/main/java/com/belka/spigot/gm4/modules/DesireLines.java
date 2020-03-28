@@ -40,7 +40,7 @@ public class DesireLines implements Module, Listener {
 		Player p = e.getPlayer();
 		if(random.nextInt(max) <= amount) {
 			Block below = p.getLocation().getBlock();
-			if(below != null && !p.isSneaking() && (p.getGameMode() == GameMode.SURVIVAL ||  p.getGameMode() == GameMode.ADVENTURE)) {
+			if(!p.isSneaking() && (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
 				if (!hasBoots(p)) {
 					Material replace = below.getType();
 					if (replace == Material.AIR) {
