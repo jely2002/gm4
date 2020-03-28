@@ -26,6 +26,8 @@ CustomTerrain:
     enabled: true
   DangerousDungeons:
     enabled: true
+  TowerStructures:
+    enabled: true
 DesireLines:
   enabled: true
   max: 50

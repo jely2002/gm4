@@ -38,6 +38,7 @@ public class CustomTerrain implements Module, Listener {
 	private boolean customTerrain;
 	private boolean coolerCaves;
 	private boolean dangerousDungeons;
+	private boolean towerStructures;
 
 	private List<Pair<Integer, Integer>> loadedChunks = new ArrayList<>();
 
@@ -56,6 +57,7 @@ public class CustomTerrain implements Module, Listener {
 		customTerrain = mc.getStorage().config().getBoolean("CustomTerrain.enabled");
 		coolerCaves = mc.getStorage().config().getBoolean("CustomTerrain.CoolerCaves.enabled");
 		dangerousDungeons = mc.getStorage().config().getBoolean("CustomTerrain.DangerousDungeons.enabled");
+		towerStructures = mc.getStorage().config().getBoolean("CustomTerrain.TowerStructures.enabled");
 
 		cc = new CoolerCaves(mc, this);
 		dd = new DangerousDungeons(mc);
@@ -84,7 +86,7 @@ public class CustomTerrain implements Module, Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		if (!customTerrain) return;
-		if (coolerCaves || dangerousDungeons)
+		if (coolerCaves || dangerousDungeons || towerStructures)
 			if (e.getPlayer().getWorld().equals(Bukkit.getWorlds().get(0)))
 				loadChunks(e.getPlayer().getLocation());
 	}
@@ -92,7 +94,7 @@ public class CustomTerrain implements Module, Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		if (!customTerrain) return;
-		if (coolerCaves || dangerousDungeons)
+		if (coolerCaves || dangerousDungeons || towerStructures)
 			if (e.getPlayer().getWorld().equals(Bukkit.getWorlds().get(0)))
 				if (!e.getFrom().getChunk().equals(e.getTo().getChunk()))
 					loadChunks(e.getTo());
@@ -120,7 +122,7 @@ public class CustomTerrain implements Module, Listener {
 
 		Structure structure = null;
 		Location loc = null;
-		if (c.getBlock(10,1,10).getType() == Material.DIORITE) {//TODO add config bool
+		if (towerStructures && c.getBlock(10,1,10).getType() == Material.DIORITE) {
 			Bukkit.broadcastMessage("Tower");
 			List<Material> triggers = Arrays.asList(Material.AIR, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.DEAD_BUSH, Material.GRASS, Material.FERN, Material.VINE, Material.SNOW,
 					Material.DANDELION, Material.POPPY, Material.BLUE_ORCHID, Material.ALLIUM, Material.AZURE_BLUET, Material.OXEYE_DAISY, Material.ORANGE_TULIP, Material.PINK_TULIP, Material.RED_TULIP, Material.WHITE_TULIP,
