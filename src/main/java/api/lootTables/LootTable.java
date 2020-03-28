@@ -99,7 +99,7 @@ public class LootTable implements ConfigurationSerializable {
 		FileUtils.writeStringToFile(new File(location, name + ".yml"), getAsYaml(fileString, name), StandardCharsets.UTF_8);
 	}
 
-	public void place(Chest c, boolean emtpy) {
+	public void place(Chest c, boolean empty) {
 		List<ItemStack> items = new ArrayList<>();
 		for (Pool pool: pools) {
 			int poolRolls;
@@ -128,7 +128,7 @@ public class LootTable implements ConfigurationSerializable {
 				}
 			}
 		}
-		if (emtpy) c.getBlockInventory().clear();
+		if (empty) c.getBlockInventory().clear();
 		fillInventory(c.getBlockInventory(), items);
 	}
 	private void fillInventory(Inventory inv, List<ItemStack> items) {
