@@ -10,14 +10,12 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Stairs;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Pig;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -71,6 +69,7 @@ public class Chairs implements Listener {
 						}
 						Pig pig = (Pig) b.getWorld().spawnEntity(pigLoc, EntityType.PIG);
 						pig.teleport(pigLoc);
+						pig.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true, false));
 						pig.setAI(false);
 						pig.setSaddle(true);
 						pig.setGravity(false);
@@ -82,11 +81,8 @@ public class Chairs implements Listener {
 						pig.addScoreboardTag("gm4_chairs");
 						pig.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1.0);
 						pig.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.0);
-						pig.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true, false));
 						pig.setLootTable(null);
-
 						i.remove();
-
 						active.add("x:" + block.getX() + " y:" + block.getY() + " z:" + block.getZ() + " w:" + block.getWorld().getName());
 						mc.getStorage().data().set("Chairs", active);
 						mc.getStorage().saveData();
@@ -102,13 +98,27 @@ public class Chairs implements Listener {
 		Pig pig = (Pig) e.getDismounted();
 		if (pig.getScoreboardTags().contains("gm4_chairs")) {
 			Block block = pig.getLocation().add(0, 1, 0).getBlock();
-			System.out.println(block.getType().toString());
+			Player p = (Player) e.getEntity();
 			if (block.getBlockData() instanceof Stairs) {
+				Stairs stairs = (Stairs) block.getBlockData();
+
 				Bukkit.getScheduler().scheduleSyncDelayedTask(mc, new Runnable() {
 					@Override
 					public void run() {
+						Location playerLoc = pig.getLocation();
+						if (stairs.getFacing().equals(BlockFace.EAST)) {
+							playerLoc = pig.getLocation().subtract(1,0,0).add(0,1,0);
+						} else if (stairs.getFacing().equals(BlockFace.WEST)) {
+							playerLoc = pig.getLocation().add(1,1,0);
+						} else if (stairs.getFacing().equals(BlockFace.NORTH)) {
+							playerLoc = pig.getLocation().add(0,1,1);
+						} else if (stairs.getFacing().equals(BlockFace.SOUTH)) {
+							playerLoc = pig.getLocation().subtract(0,0,1).add(0,1,0);
+						}
+						playerLoc.setPitch(p.getLocation().getPitch());
+						playerLoc.setYaw(p.getLocation().getYaw());
+						p.teleport(playerLoc);
 						Location pigLoc = block.getLocation();
-						Stairs stairs = (Stairs) block.getBlockData();
 						if (stairs.getFacing().equals(BlockFace.NORTH)) {
 							pigLoc.add(.5, -.39, .55);
 							pigLoc.setYaw(0f);
@@ -124,7 +134,7 @@ public class Chairs implements Listener {
 						}
 						pig.teleport(pigLoc);
 					}
-				}, 5L);
+				}, 1L);
 
 			}
 		}
