@@ -18,9 +18,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.List;
 
@@ -71,8 +74,11 @@ public class Chairs implements Listener {
 						pig.setAI(false);
 						pig.setSaddle(true);
 						pig.setGravity(false);
+						pig.setCollidable(false);
 						pig.setSilent(true);
 						pig.setInvulnerable(true);
+						pig.setBreed(false);
+						pig.setCanPickupItems(false);
 						pig.addScoreboardTag("gm4_chairs");
 						pig.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1.0);
 						pig.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.0);
@@ -91,6 +97,40 @@ public class Chairs implements Listener {
 	}
 
 	@EventHandler
+	public void onPigDismount(EntityDismountEvent e) {
+		if (!(e.getDismounted() instanceof Pig)) return;
+		Pig pig = (Pig) e.getDismounted();
+		if (pig.getScoreboardTags().contains("gm4_chairs")) {
+			Block block = pig.getLocation().add(0, 1, 0).getBlock();
+			System.out.println(block.getType().toString());
+			if (block.getBlockData() instanceof Stairs) {
+				Bukkit.getScheduler().scheduleSyncDelayedTask(mc, new Runnable() {
+					@Override
+					public void run() {
+						Location pigLoc = block.getLocation();
+						Stairs stairs = (Stairs) block.getBlockData();
+						if (stairs.getFacing().equals(BlockFace.NORTH)) {
+							pigLoc.add(.5, -.39, .55);
+							pigLoc.setYaw(0f);
+						} else if (stairs.getFacing().equals(BlockFace.EAST)) {
+							pigLoc.add(.45, -.39, .5);
+							pigLoc.setYaw(90f);
+						} else if (stairs.getFacing().equals(BlockFace.SOUTH)) {
+							pigLoc.add(.5, -.39, .45);
+							pigLoc.setYaw(180f);
+						} else if (stairs.getFacing().equals(BlockFace.WEST)) {
+							pigLoc.add(.55, -.39, .5);
+							pigLoc.setYaw(-90f);
+						}
+						pig.teleport(pigLoc);
+					}
+				}, 5L);
+
+			}
+		}
+	}
+
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block b = event.getBlock();
 		List<String> active = mc.getStorage().data().getStringList("Chairs");
@@ -103,10 +143,13 @@ public class Chairs implements Listener {
 			mc.getStorage().data().set("Chairs", active);
 			mc.getStorage().saveData();
 
-			for(Entity e : Helper.getNearbyEntities(b.getLocation().add(.5, -.39, .5), 0.5))
-				if(e instanceof Pig)
-					if (e.getScoreboardTags().contains("gm4_chairs"))
+			for(Entity e : Helper.getNearbyEntities(b.getLocation().add(.5, -.39, .5), 0.5)) {
+				if (e instanceof Pig) {
+					if (e.getScoreboardTags().contains("gm4_chairs")) {
 						e.remove();
+					}
+				}
+			}
 		}
 	}
 }
