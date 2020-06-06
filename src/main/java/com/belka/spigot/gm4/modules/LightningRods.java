@@ -4,6 +4,7 @@ import api.ConsoleColor;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,7 +26,6 @@ public class LightningRods implements Module, Listener {
     private MainClass mc;
     private boolean enabled = true;
     private HashMap<Location, int[]> droppedRods = new HashMap<>();
-    private ArrayList<String> players = new ArrayList<>();
 
     public LightningRods(MainClass mc) {
         this.mc = mc;
@@ -64,12 +64,7 @@ public class LightningRods implements Module, Listener {
         if(!(is.getType() == Material.BLAZE_ROD)) return;
         if(!(is.getItemMeta().getDisplayName().contains("Lightning"))) return;
         if(!(is.getItemMeta().getLore().get(0).contains("boom"))) return;
-        if(players.contains(event.getPlayer().getName())) {
-            event.setCancelled(true);
-            return;
-        }
-        players.add(event.getPlayer().getName());
-        mc.getServer().getScheduler().scheduleSyncDelayedTask(mc, () -> players.remove(event.getPlayer().getName()), 3*20L);
+
         final int[] task = new int[]{-1};
         task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
             if (i.isOnGround()) {
@@ -82,7 +77,11 @@ public class LightningRods implements Module, Listener {
 				final int[] t = new int[]{-1};
 				droppedRods.put(locRound, t);
 				t[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-					i.setCustomName("<" + (3 - count.get()) + ">");
+				    if(count.get() == 2) {
+                        i.setCustomName(ChatColor.RED + "<" + (3 - count.get()) + ">");
+				    } else {
+                        i.setCustomName(ChatColor.GOLD + "<" + (3 - count.get()) + ">");
+                    }
 					if(count.get() >= 3) {
 						Bukkit.getScheduler().cancelTask(t[0]);
 						if (b.getRelative(BlockFace.DOWN).getType() == Material.PURPUR_BLOCK) {
