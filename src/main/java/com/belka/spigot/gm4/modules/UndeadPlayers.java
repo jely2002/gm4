@@ -41,6 +41,7 @@ public class UndeadPlayers implements Listener {
         zombie.getEquipment().setLeggingsDropChance(1.0f);
         zombie.getEquipment().setItemInMainHandDropChance(1.0f);
         zombie.getEquipment().setItemInOffHandDropChance(1.0f);
+        Advancements.grantAdvancement("risen", e.getEntity());
     }
 
 }

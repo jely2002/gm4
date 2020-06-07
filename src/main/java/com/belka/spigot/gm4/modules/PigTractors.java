@@ -36,10 +36,6 @@ public class PigTractors implements Listener, Module {
         return !mc.getStorage().config().getBoolean("PigTractors.enabled");
     }
 
-    private void grantAchievement(Player p) {
-        Advancements.grantAdvancement("oink_tractors", p);
-    }
-
     @Override
     public void init(MainClass mc) {
         startScheduler();
@@ -54,6 +50,7 @@ public class PigTractors implements Listener, Module {
                     if(p.isInsideVehicle() && p.getVehicle() instanceof Pig) {
                         if(hasHoe(p)) {
                             Tractors.putIfAbsent(p.getName(), p.getVehicle());
+                            Advancements.grantAdvancement("oink_tractors", p);
                         }
                     }
                     if(Tractors.containsKey(p.getName())) {
