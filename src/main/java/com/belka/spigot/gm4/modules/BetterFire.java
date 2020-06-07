@@ -10,10 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -59,6 +57,16 @@ public class BetterFire implements Module, Listener {
 				}
 			}
 		}, 0, 5L);
+	}
+
+	@EventHandler
+	public void projectileFire(EntityShootBowEvent e) {
+		if(!mc.getStorage().config().getBoolean("BetterFire.enabled")) return;
+		if(!(e.getEntity() instanceof Player)) return;
+		if(!e.getBow().hasItemMeta()) return;
+		if(e.getBow().getEnchantments().containsKey(Enchantment.ARROW_FIRE)) {
+			//Advancements.grantAdvancement(); TODO add adavancement to Advancements.java
+		}
 	}
 
 	@EventHandler
