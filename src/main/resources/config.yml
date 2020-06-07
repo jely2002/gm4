@@ -93,3 +93,6 @@ XpStorage:
   enabled: true
 ZauberCauldrons:
   enabled: true
+Ziprails:
+  enabled: true
+  railSpeedFactor: 0.25
