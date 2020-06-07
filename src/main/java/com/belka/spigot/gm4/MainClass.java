@@ -100,6 +100,7 @@ public class MainClass extends JavaPlugin {
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
 		ZauberCauldrons zauberCauldrons = new ZauberCauldrons(this);
+		Ziprails ziprails = new Ziprails(this);
 		//Register classes and used interfaces
 		registerClasses(
 				storage,
@@ -135,7 +136,9 @@ public class MainClass extends JavaPlugin {
 				undeadPlayers,
 				weightedArmour,
 				xpStorage,
-				zauberCauldrons);
+				zauberCauldrons,
+				ziprails
+				);
 	}
 
 	@Override
