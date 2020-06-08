@@ -160,7 +160,7 @@ public class MainClass extends JavaPlugin {
 		} else {
 			getLogger().log(Level.SEVERE, "AD Manager is null");
 		}
-		System.out.println(ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
+		getLogger().log(Level.INFO, ConsoleColor.RED + ConsoleColor.BOLD + "Gamemode 4 has been disabled!" + ConsoleColor.RESET);
 	}
 
 	private void registerClasses(Object... classes) {
@@ -190,7 +190,7 @@ public class MainClass extends JavaPlugin {
 
 	public ArrayList<Module> getModules() { return modules; }
 
-	private void serializeConfig(){
+	private void serializeConfig() {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		ConfigurationSerialization.registerClass(LootTable.class, "LootTable");

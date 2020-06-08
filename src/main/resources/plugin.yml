@@ -3,6 +3,7 @@ main: com.belka.spigot.gm4.MainClass
 version: 0.2.1
 api-version: 1.15
 description: Gamemode 4 Plugin
+prefix: Gamemode 4
 commands:
    gamemode4:
       aliases: gm4
