@@ -8,10 +8,8 @@ import com.belka.spigot.gm4.config.SettingsGUI;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.modules.Advancements;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.command.*;
@@ -27,8 +25,6 @@ import java.util.List;
 
 public class CommandManager implements TabCompleter, CommandExecutor {
 
-	private ArrayList<String> subCommands = new ArrayList();
-
 	private MainClass mc;
 	private SettingsGUI gui;
 	private CustomItems ci = new CustomItems();
@@ -36,8 +32,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 	public CommandManager(MainClass mc, SettingsGUI gui) {
 		this.mc = mc;
 		this.gui = gui;
-		subCommands.add("version");
-		subCommands.add("reload");
 	}
 
 	@Override
@@ -200,20 +194,26 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 		if (cmd.getName().equalsIgnoreCase("gamemode4")) {
 			if (sender instanceof Player) {
 				if (args.length == 1)
-					return Helper.filterTab(args[0], subCommands.stream());
+					return Helper.filterTab(args[0], "version", "reload", "give", "customblock");
 				else if (args[0].equalsIgnoreCase("give")) {
 					if (args.length == 2) {
 						return null;
 					}
-					else if (args.length == 3)
-						return Helper.filterTab(args[2], "HEART_CANISTER_TIER_1", "HEART_CANISTER_TIER_2", "MINIUM_DUST", "INERT_STONE", "PHILOSOPHERS_STONE", "PHILOSOPHERS_STONE_MKII", "PHILOSOPHERS_STONE_MKIII", "PHILOSOPHERS_STONE_MKIV", "AC_ERROR", "BOOTS_OF_OSTARA", "TRAPPED_SIGN", "LIGHTNING_ROD", "SOUL_PROBES_BOOK", "EMPTY_SPAWN_EGG");
+					else if (args.length == 3) {
+						List<String> items = new ArrayList<>();
+						for (Method method : CustomItems.class.getDeclaredMethods()) {
+							String name = method.getName();
+							if (!name.equalsIgnoreCase("getSkull") && !name.equalsIgnoreCase("ENDER_HOPPER_SKULL")) items.add(name);
+						}
+						return Helper.filterTab(args[2], items);
+					}
 				}
 				else if (args[0].equalsIgnoreCase("loot")) {
 					if (args.length == 2) return Helper.filterTab(args[1], "source", "file");
 					if (args.length == 3 && args[1].equalsIgnoreCase("source")) return Helper.filterTab(args[2], "tower_structures/", "dangerous_dungeons/");
-					if (args.length == 4) return Helper.filterTab(args[3], Helper.getLookingCoords((Player) sender, 0, 3).stream());
-					if (args.length == 5) return Helper.filterTab(args[4], Helper.getLookingCoords((Player) sender, 1, 3).stream());
-					if (args.length == 6) return Helper.filterTab(args[5], Helper.getLookingCoords((Player) sender, 2, 3).stream());
+					if (args.length == 4) return Helper.filterTab(args[3], Helper.getLookingCoords((Player) sender, 0, 3));
+					if (args.length == 5) return Helper.filterTab(args[4], Helper.getLookingCoords((Player) sender, 1, 3));
+					if (args.length == 6) return Helper.filterTab(args[5], Helper.getLookingCoords((Player) sender, 2, 3));
 				}
 				else if (args[0].equalsIgnoreCase("customblock")) {
 					/*
@@ -223,18 +223,21 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 					 */
 					if (args.length == 2) return Helper.filterTab(args[1], "place", "replace", "destroy");
 					if (args.length == 3) {
-						if (args[1].equalsIgnoreCase("place") || args[1].equalsIgnoreCase("replace")) return Helper.filterTab(args[2], Arrays.stream(CustomBlockType.values()).map(CustomBlockType::getId));
-						if (args[1].equalsIgnoreCase("destroy")) return Helper.filterTab(args[2], Helper.getLookingCoords((Player) sender, 0, 3).stream());
+						if (args[1].equalsIgnoreCase("place") || args[1].equalsIgnoreCase("replace"))
+							return Helper.filterTab(args[2], Arrays.stream(CustomBlockType.values()).map(CustomBlockType::getId));
+						if (args[1].equalsIgnoreCase("destroy")) return Helper.filterTab(args[2], Helper.getLookingCoords((Player) sender, 0, 3));
 					}
 					if (args.length == 4) {
-						if (args[1].equalsIgnoreCase("place") || args[1].equalsIgnoreCase("replace")) return Helper.filterTab(args[3], Helper.getLookingCoords((Player) sender, 0, 3).stream());
-						if (args[1].equalsIgnoreCase("destroy")) return Helper.filterTab(args[3], Helper.getLookingCoords((Player) sender, 1, 3).stream());
+						if (args[1].equalsIgnoreCase("place") || args[1].equalsIgnoreCase("replace"))
+							return Helper.filterTab(args[3], Helper.getLookingCoords((Player) sender, 0, 3));
+						if (args[1].equalsIgnoreCase("destroy")) return Helper.filterTab(args[3], Helper.getLookingCoords((Player) sender, 1, 3));
 					}
 					if (args.length == 5) {
-						if (args[1].equalsIgnoreCase("place") || args[1].equalsIgnoreCase("replace")) return Helper.filterTab(args[4], Helper.getLookingCoords((Player) sender, 1, 3).stream());
-						if (args[1].equalsIgnoreCase("destroy")) return Helper.filterTab(args[4], Helper.getLookingCoords((Player) sender, 2, 3).stream());
+						if (args[1].equalsIgnoreCase("place") || args[1].equalsIgnoreCase("replace"))
+							return Helper.filterTab(args[4], Helper.getLookingCoords((Player) sender, 1, 3));
+						if (args[1].equalsIgnoreCase("destroy")) return Helper.filterTab(args[4], Helper.getLookingCoords((Player) sender, 2, 3));
 					}
-					if (args.length == 6) return Helper.filterTab(args[5], Helper.getLookingCoords((Player) sender, 2, 3).stream());
+					if (args.length == 6) return Helper.filterTab(args[5], Helper.getLookingCoords((Player) sender, 2, 3));
 				}
 			}
 		}

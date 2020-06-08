@@ -1,12 +1,14 @@
 package api;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,6 +150,9 @@ public class Helper {
 	}
 	public static List<String> filterTab(String arg, Stream<String> items) {
 		return items.filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).collect(Collectors.toList());
+	}
+	public static List<String> filterTab(String arg, List<String> items) {
+		return items.stream().filter(s -> s.toLowerCase().startsWith(arg.toLowerCase())).collect(Collectors.toList());
 	}
 
 	public static List<String> getLookingCoords(Player p, int i, int size) {
