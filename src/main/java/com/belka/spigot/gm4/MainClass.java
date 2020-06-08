@@ -1,8 +1,6 @@
 package com.belka.spigot.gm4;
 
-import api.ConsoleColor;
-import api.CustomBlock;
-import api.InventoryCreator;
+import api.*;
 import api.lootTables.Entry;
 import api.lootTables.Function;
 import api.lootTables.LootTable;
@@ -65,6 +63,9 @@ public class MainClass extends JavaPlugin {
 		cmdMgmt = new CommandManager(this, gui);
 		getCommand("gamemode4").setExecutor(cmdMgmt);
 		storage = new ConfigManager(this);
+		//Custom Events
+		getServer().getPluginManager().registerEvents(new ArmorListener(getStorage().data().getStringList("ArmorEvents.blocked")), this);
+		getServer().getPluginManager().registerEvents(new DispenserArmorListener(), this);
 		//Services
 		Updater updater = new Updater();
 		InventoryCreator inventoryCreator = new InventoryCreator(this);
