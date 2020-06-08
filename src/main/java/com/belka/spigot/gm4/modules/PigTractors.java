@@ -64,17 +64,13 @@ public class PigTractors implements Listener, Module {
     }
 
     private void removeDurability(Inventory inv) {
-        Bukkit.getLogger().log(Level.INFO, "called");
         for(int i = 0; i < 35; ++i) {
             if(inv.getItem(i) == null) continue;
             if(inv.getItem(i).getType() == Material.DIAMOND_HOE || inv.getItem(i).getType() == Material.GOLDEN_HOE || inv.getItem(i).getType() == Material.IRON_HOE || inv.getItem(i).getType() == Material.STONE_HOE || inv.getItem(i).getType() == Material.WOODEN_HOE) {
-                Bukkit.getLogger().log(Level.INFO, "issa hoe");
                 ItemStack item = inv.getItem(i);
                 Damageable dmg = (Damageable) item.getItemMeta();
-                Bukkit.getLogger().log(Level.INFO, String.valueOf(dmg.getDamage()));
                 dmg.setDamage(dmg.getDamage() + 1);
                 item.setItemMeta((ItemMeta) dmg);
-                Bukkit.getLogger().log(Level.INFO, String.valueOf(dmg.getDamage()));
                 inv.setItem(i, item);
                 break;
             }
@@ -92,8 +88,6 @@ public class PigTractors implements Listener, Module {
             Player p = e.getPlayer();
             Entity vehicle = p.getVehicle();
             Block blockUnderneath = new Location(e.getTo().getWorld(), e.getTo().getX(), vehicle.getLocation().getY() - 0.5, e.getTo().getZ()).getBlock();
-            Bukkit.getLogger().log(Level.INFO, blockUnderneath.getRelative(BlockFace.UP).getType().toString());
-            Bukkit.getLogger().log(Level.INFO, "Under:" + blockUnderneath.getType().toString());
             if(blockUnderneath.getType() == Material.DIRT) {
                 blockUnderneath.setType(Material.FARMLAND);
                 removeDurability(p.getInventory());
