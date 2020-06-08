@@ -3,13 +3,17 @@ package api;
 import com.belka.spigot.gm4.MainClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class InventoryCreator {
 
@@ -30,6 +34,50 @@ public class InventoryCreator {
 			loreArr.add(lcc + lore);
 		}
 		meta.setLore(loreArr);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public ItemStack createGuiItem(ItemStack item, ChatColor color, String name, boolean bold, String... lores) {
+		ItemMeta meta = item.getItemMeta();
+
+		meta.setDisplayName((bold ? (color + "" + ChatColor.BOLD) : color) + name);
+		ArrayList<String> loreArr = new ArrayList<>();
+		ChatColor lcc = ChatColor.GRAY;
+		for(String lore : lores) {
+			loreArr.add(lcc + lore);
+		}
+		meta.setLore(loreArr);
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack createGuiItem(Material mat, String name, String... lores) {
+		ItemStack item = new ItemStack(mat, 1);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.DARK_AQUA + name);
+		List<String> loreArr = new ArrayList<>();
+		for(String lore : lores) {
+			loreArr.add(ChatColor.GRAY + lore);
+		}
+		meta.setLore(loreArr);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	public static ItemStack createGuiItem(Material mat, String name, boolean enabled) {
+		ItemStack item = new ItemStack(mat, 1);
+		ItemMeta meta = item.getItemMeta();
+		if (enabled) {
+			meta.setDisplayName(ChatColor.DARK_GREEN + name);
+			meta.setLore(Collections.singletonList(ChatColor.GRAY + "Click to disable this module"));
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		}
+		else {
+			meta.setDisplayName(ChatColor.RED + name);
+			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			meta.setLore(Collections.singletonList(ChatColor.GRAY + "Click to enable this module"));
+		}
 		item.setItemMeta(meta);
 		return item;
 	}
