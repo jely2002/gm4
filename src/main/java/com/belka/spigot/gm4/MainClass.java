@@ -9,6 +9,7 @@ import api.services.Metrics;
 import api.services.Updater;
 import com.belka.spigot.gm4.config.ConfigManager;
 import com.belka.spigot.gm4.config.SettingsGUI;
+import com.belka.spigot.gm4.crafting.CraftingBook;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
@@ -54,8 +55,6 @@ public class MainClass extends JavaPlugin {
 		serializeConfig();
 		initializeMetrics();
 
-
-
 		//Initialize advancement API
 		advancementsAPI = new CrazyAdvancements(this);
 		//Internals
@@ -74,6 +73,7 @@ public class MainClass extends JavaPlugin {
 		RecipeHandler recipeHandler = new RecipeHandler(this);
 		CustomCrafter customCrafter = new CustomCrafter(this, recipeHandler);
 		CustomRecipes customRecipes = new CustomRecipes(this);
+		CraftingBook craftingBook = new CraftingBook(this, inventoryCreator);
 		//With Craftable Items
 		HeartCanisters heartCanisters = new HeartCanisters(this);
 		BlastFurnaces blastFurnaces = new BlastFurnaces(this);
@@ -113,6 +113,7 @@ public class MainClass extends JavaPlugin {
 				recipeHandler,
 				customCrafter,
 				customRecipes,
+				craftingBook,
 				heartCanisters,
 				blastFurnaces,
 				lightningRods,

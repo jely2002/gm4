@@ -20,6 +20,17 @@ import java.util.UUID;
 public class CustomItems {
 	//TODO Handle custom item placing
 
+	public static ItemStack CRAFTING_RECIPE_BOOK(int amount) {
+		ItemStack item = new ItemStack(Material.BOOK, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.GOLD + "Crafting Recipes");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.GRAY + "by " + ChatColor.DARK_AQUA + "Gamemode 4", ChatColor.GRAY + "Original")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
 //	Heart Canisters
 	public static ItemStack HEART_CANISTER_TIER_1(int amount) {
     	ItemStack skull = getSkull("http://textures.minecraft.net/texture/53cf06d5b47b746d16ee631187cb857d8c16bfcd570a40f286b2c38867cfda", amount);

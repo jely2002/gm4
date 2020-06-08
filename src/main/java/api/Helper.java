@@ -179,4 +179,11 @@ public class Helper {
 		}
     	return items;
 	}
+
+	public static String getItemName(ItemStack item) {
+		String name = "";
+		if (item.getItemMeta() != null) name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+		if (name.equalsIgnoreCase("")) name = Helper.capitalize(item.getType().name().replace("_", " "));
+		return name;
+	}
 }
