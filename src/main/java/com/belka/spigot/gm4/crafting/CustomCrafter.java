@@ -15,12 +15,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -87,6 +90,17 @@ public class CustomCrafter implements Module, Listener {
 //			event.getPlayer().sendMessage(ChatColor.GREEN + "Successfully destroyed a " + cb.getType().getName() + " at " + b.getX() + " " + b.getY() + " " + b.getZ() + ".");
 		}
 	}
+	@EventHandler
+	public void onDispense(BlockDispenseEvent e) {
+		Inventory inv = ((InventoryHolder) e.getBlock().getState()).getInventory();
+		if (inv.getType().equals(InventoryType.DROPPER) && inv.getLocation() != null) {
+			Block b = e.getBlock();
+			CustomBlock cb = CustomBlock.get(b.getLocation());
+			if (cb != null) {
+				e.setCancelled(true);
+			}
+		}
+	}
 
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
@@ -96,6 +110,11 @@ public class CustomCrafter implements Module, Listener {
 	public void onDrag(InventoryDragEvent e) {
 		updateInv(e.getInventory());
 	}
+	@EventHandler
+	public void onDrag(InventoryMoveItemEvent e) {
+		updateInv(e.getDestination());
+	}
+
 	private void updateInv(Inventory inv) {
 		if (inv.getType().equals(InventoryType.DROPPER) && inv.getLocation() != null) {
 			Block b = inv.getLocation().getBlock();
@@ -104,7 +123,8 @@ public class CustomCrafter implements Module, Listener {
 				Objects.requireNonNull(Bukkit.getEntity(cb.getUuid())).setFireTicks(Integer.MAX_VALUE);
 				mc.getServer().getScheduler().runTaskLater(mc, () -> {
 					Dropper dropper = (Dropper) b.getState();
-					rh.craft(dropper, (Player) inv.getViewers().get(0));
+					if (inv.getViewers().size() == 0) rh.craft(dropper, null);
+					else rh.craft(dropper, (Player) inv.getViewers().get(0));
 				}, 1L);
 			}
 		}
