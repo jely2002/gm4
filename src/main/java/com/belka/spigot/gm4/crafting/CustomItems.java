@@ -131,12 +131,62 @@ public class CustomItems {
     }
 
 //	Trapped Signs
-	public static ItemStack TRAPPED_SIGN(int amount) {
+	public static ItemStack OAK_TRAPPED_SIGN(int amount) {
 		ItemStack item = new ItemStack(Material.OAK_SIGN, amount);
 		ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
-		meta.setDisplayName(ChatColor.AQUA + "Trapped Sign");
+		meta.setDisplayName(ChatColor.AQUA + "Oak Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack SPRUCE_TRAPPED_SIGN(int amount) {
+		ItemStack item = new ItemStack(Material.SPRUCE_SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Spruce Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack BIRCH_TRAPPED_SIGN(int amount) {
+		ItemStack item = new ItemStack(Material.BIRCH_SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Birch Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack JUNGLE_TRAPPED_SIGN(int amount) {
+		ItemStack item = new ItemStack(Material.JUNGLE_SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Jungle Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack ACACIA_TRAPPED_SIGN(int amount) {
+		ItemStack item = new ItemStack(Material.ACACIA_SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Acacia Trapped Sign");
+		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
+		item.setItemMeta(meta);
+		return item;
+	}
+	public static ItemStack DARK_OAK_TRAPPED_SIGN(int amount) {
+		ItemStack item = new ItemStack(Material.DARK_OAK_SIGN, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Dark Oak Trapped Sign");
 		meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.DARK_PURPLE + "Place this item to make a trapped sign")));
 		item.setItemMeta(meta);
 		return item;

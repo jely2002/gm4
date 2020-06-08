@@ -640,16 +640,62 @@ public class CustomRecipes implements Module {
 	}
 	//</editor-fold>
 
-//	Trapped Signs
-	private static ShapedRecipe TRAPPED_SIGN() {
-		ItemStack returnItem = CustomItems.TRAPPED_SIGN(1);
-		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN"), returnItem);
+	//<editor-fold desc="Trapped Signs">
+	public static ShapedRecipe TRAPPED_SIGN_OAK() {
+		ItemStack returnItem = CustomItems.OAK_TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN_OAK"), returnItem);
 		recipe.shape("   ","TST","RRR");
 		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
 		recipe.setIngredient('S', Material.OAK_SIGN);
 		recipe.setIngredient('R', Material.REDSTONE);
 		return recipe;
 	}
+	public static ShapedRecipe TRAPPED_SIGN_SPRUCE() {
+		ItemStack returnItem = CustomItems.SPRUCE_TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN_SPRUCE"), returnItem);
+		recipe.shape("   ","TST","RRR");
+		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
+		recipe.setIngredient('S', Material.SPRUCE_SIGN);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	public static ShapedRecipe TRAPPED_SIGN_BIRCH() {
+		ItemStack returnItem = CustomItems.BIRCH_TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN_BIRCH"), returnItem);
+		recipe.shape("   ","TST","RRR");
+		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
+		recipe.setIngredient('S', Material.BIRCH_SIGN);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	public static ShapedRecipe TRAPPED_SIGN_JUNGLE() {
+		ItemStack returnItem = CustomItems.JUNGLE_TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN_JUNGLE"), returnItem);
+		recipe.shape("   ","TST","RRR");
+		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
+		recipe.setIngredient('S', Material.JUNGLE_SIGN);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	public static ShapedRecipe TRAPPED_SIGN_ACACIA() {
+		ItemStack returnItem = CustomItems.ACACIA_TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN_ACACIA"), returnItem);
+		recipe.shape("   ","TST","RRR");
+		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
+		recipe.setIngredient('S', Material.ACACIA_SIGN);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	public static ShapedRecipe TRAPPED_SIGN_DARK_OAK() {
+		ItemStack returnItem = CustomItems.DARK_OAK_TRAPPED_SIGN(1);
+		ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(mc, "TRAPPED_SIGN_DARK_OAK"), returnItem);
+		recipe.shape("   ","TST","RRR");
+		recipe.setIngredient('T', Material.TRIPWIRE_HOOK);
+		recipe.setIngredient('S', Material.DARK_OAK_SIGN);
+		recipe.setIngredient('R', Material.REDSTONE);
+		return recipe;
+	}
+	//</editor-fold>
 
 //	Lightning Rods
 	public static ShapedRecipe LIGHTNING_ROD() {
