@@ -68,14 +68,14 @@ public class HeartCanisters implements Module, Listener {
 	private void updateCanisters(Player p) {
 		if (!enabled) return;
 		Bukkit.getScheduler().scheduleSyncDelayedTask(mc, new Runnable() {
-			boolean hasCansiter = false;
+			boolean hasCanister = false;
 			int levels = 0;
 			public void run() {
 				ItemStack[] inv = p.getInventory().getContents();
 
 				ItemStack tier1 = getCanisterT1(inv);
 				if (tier1 != null) {
-					hasCansiter = true;
+					hasCanister = true;
 					int amount = tier1.getAmount();
 					if (amount >= 5) amount = 5;
 					levels = amount;
@@ -89,7 +89,7 @@ public class HeartCanisters implements Module, Listener {
 					t1.put(p.getUniqueId(), amount);
 				}
 
-				if (hasCansiter) {
+				if (hasCanister) {
 					if (levels != t1.get(p.getUniqueId())) {
 						int level = levels - 1;
 						p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
