@@ -240,7 +240,7 @@ public class CustomItems {
 	public static ItemStack EMPTY_SPAWN_EGG(int amount) {
 		ItemStack item = new ItemStack(Material.GHAST_SPAWN_EGG, amount);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName("Empty Spawn Egg");
+		meta.setDisplayName(ChatColor.WHITE + "Empty Spawn Egg");
 		item.setItemMeta(meta);
 		return item;
 	}
