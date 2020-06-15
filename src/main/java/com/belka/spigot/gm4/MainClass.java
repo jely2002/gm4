@@ -94,6 +94,7 @@ public class MainClass extends JavaPlugin {
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass();
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
 		PigTractors pigTractors = new PigTractors(this);
+		PodzolRootingSoil podzolRootingSoil = new PodzolRootingSoil(this);
 		PotionSwords potionSwords = new PotionSwords(this);
 		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
@@ -134,6 +135,7 @@ public class MainClass extends JavaPlugin {
 				endermanSupportClass,
 				inkSpittingSquid,
 				pigTractors,
+				podzolRootingSoil,
 				potionSwords,
 				soulProbes,
 				spawnerMinecarts,

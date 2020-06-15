@@ -44,6 +44,8 @@ LightningRods:
   enabled: true
 PigTractors:
   enabled: true
+PodzolRootingSoil:
+  enabled: true
 PotionSwords:
   enabled: true
 SoulGlass:
