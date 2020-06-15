@@ -72,7 +72,7 @@ public class BetterFire implements Module, Listener {
 		if(!(e.getEntity() instanceof Player)) return;
 		if(!e.getBow().hasItemMeta()) return;
 		if(e.getBow().getEnchantments().containsKey(Enchantment.ARROW_FIRE)) {
-			//Advancements.grantAdvancement(); TODO add adavancement to Advancements.java
+			Advancements.grantAdvancement("flint_n_stick", (Player) e.getEntity());
 		}
 	}
 
