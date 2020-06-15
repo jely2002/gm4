@@ -54,6 +54,38 @@ SpeedPaths:
   enabled: true
   pathBlock: GRASS_PATH
   speedFactor: 2
+SunkenTreasure:
+  enabled: true
+  treasure:
+    bone: 15
+    seagrass: 15
+    squid_spawn: 10
+    message_in_a_bottle: 10
+    mossy_cobblestone: 10
+    kelp: 7.5
+    prismarine_crystals: 5
+    prismarine_shard: 5
+    sea_pickle: 5
+    waders: 3
+    bottle_o_enchanting: 2.5
+    scute: 2.5
+    gold_ingot: 2.5
+    guardian_spawn: 2.5
+    leather_boots: 2.5
+    wet_sponge: 1.5
+    treasure_chest: .5
+  #Override specified values if module Scuba Tanks is enabled
+  scubaOverride:
+    waders: 2.5
+    leather_boots: 2
+    scuba_flippers: .5
+    scuba_tank: .5
+  #Chance of getting treasure for levels of Fortune (I-III)
+  chance:
+    '0': 0
+    '1': 11
+    '2': 27
+    '3': 49
 TrappedSigns:
   enabled: true
 UndeadPlayers:

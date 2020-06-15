@@ -97,6 +97,7 @@ public class MainClass extends JavaPlugin {
 		SoulProbes soulProbes = new SoulProbes(this, inventoryCreator);
 		SpawnerMinecarts spawnerMinecarts = new SpawnerMinecarts(this);
 		SpeedPaths speedPaths = new SpeedPaths(this);
+		SunkenTreasure sunkenTreasure = new SunkenTreasure(this);
 		UndeadPlayers undeadPlayers = new UndeadPlayers(this);
 		WeightedArmour weightedArmour = new WeightedArmour(this);
 		XPStorage xpStorage = new XPStorage(this);
@@ -135,6 +136,7 @@ public class MainClass extends JavaPlugin {
 				soulProbes,
 				spawnerMinecarts,
 				speedPaths,
+				sunkenTreasure,
 				undeadPlayers,
 				weightedArmour,
 				xpStorage,

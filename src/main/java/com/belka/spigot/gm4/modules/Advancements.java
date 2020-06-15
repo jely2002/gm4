@@ -77,7 +77,7 @@ public class Advancements implements Module, Listener {
 
         addAdvancement(gm4, "up_and_away", "Up, Up and Away!", "Ride a minecart going up a vertical rail", Material.LADDER, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, -2f);
         addAdvancement(gm4, "wheeeeeeeee", "Wheeeeeeeee", "Fly through the sky on a ziprail", Material.MINECART, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, -1f);
-        addAdvancement(gm4, "all_my_audreys", "All my Audreys", "Find all Dearest Audrey messages in a bottle", Material.GLASS_BOTTLE, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 1f);
+        addAdvancement(gm4, "all_my_audreys", "All my Audreys", "Find all Dearest Audrey messages in a bottle", Material.GLASS_BOTTLE, AdvancementFrame.CHALLENGE, true, true, AdvancementVisibility.ALWAYS, 1f, 1f, 20);
 		addAdvancement(gm4, "a_fun_gi", "A Fun-gi", "Decor some decorative mushroom", Material.RED_MUSHROOM_BLOCK, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 2f);
         ItemStack phantomHead = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2U5NTE1M2VjMjMyODRiMjgzZjAwZDE5ZDI5NzU2ZjI0NDMxM2EwNjFiNzBhYzAzYjk3ZDIzNmVlNTdiZDk4MiJ9fX0=");
         addAdvancement(gm4, "not_so_smart_defenses", "Not so smart defenses", "Get hit by a Phantom Scarecrow", phantomHead, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 5f);
@@ -92,12 +92,15 @@ public class Advancements implements Module, Listener {
     }
 
     private void addAdvancement(Advancement parent, String key, String title, String description, Material icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
-        AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
-        display.setCoordinates(x, y);
-        Advancement child = new Advancement(parent, new NameKey("gm4", key), display);
-        child.setCriteria(1);
-        manager.addAdvancement(child);
+		addAdvancement(parent, key, title, description, icon, frame, showToast, announceChat, visibility, x, y, 1);
     }
+	private void addAdvancement(Advancement parent, String key, String title, String description, Material icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y, int criteria) {
+		AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
+		display.setCoordinates(x, y);
+		Advancement child = new Advancement(parent, new NameKey("gm4", key), display);
+		child.setCriteria(criteria);
+		manager.addAdvancement(child);
+	}
 	private void addAdvancement(Advancement parent, String key, String title, String description, ItemStack icon, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility, float x, float y) {
         AdvancementDisplay display = new AdvancementDisplay(icon, title, description, frame, showToast, announceChat, visibility);
         display.setCoordinates(x, y);
@@ -139,11 +142,16 @@ public class Advancements implements Module, Listener {
 		manager.removePlayer(p);
 	}
 
-    public static void grantAdvancement(String advName, Player p) {
-        Advancement adv = manager.getAdvancement(new NameKey("gm4", advName));
+	public static void grantAdvancement(String advName, Player p) {
+		Advancement adv = manager.getAdvancement(new NameKey("gm4", advName));
 //        manager.grantAdvancement(p, adv);
 		if (manager.getCriteriaProgress(p, adv) != 1)
 			manager.setCriteriaProgress(p, adv, 1);
-        manager.saveProgress(p, "gm4");
-    }
+		manager.saveProgress(p, "gm4");
+	}
+	public static void grantCriteria(String advName, int amount, Player p) {
+		Advancement adv = manager.getAdvancement(new NameKey("gm4", advName));
+			manager.setCriteriaProgress(p, adv, manager.getCriteriaProgress(p, adv) + amount);
+		manager.saveProgress(p, "gm4");
+	}
 }
