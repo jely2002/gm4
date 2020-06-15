@@ -9,12 +9,14 @@ import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
 import eu.endercentral.crazy_advancements.manager.AdvancementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
@@ -85,6 +87,12 @@ public class Advancements implements Module, Listener {
         addAdvancement(gm4, "not_so_smart_defenses", "Not so smart defenses", "Get hit by a Phantom Scarecrow", phantomHead, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 5f);
 		addAdvancement(gm4, "dont_go_breaking_my_cart", "Don't go breaking my cart", "Capture a Monster Spawner", Material.SPAWNER, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, 1f, 6f);
 		addAdvancement(gm4, "corruption_at_its_finest", "Corruption at its finest", "Corrupt the effects of a beacon", CustomItems.SOUL_GLASS(1), AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, -1f, 1f);
+		addAdvancement(gm4, "things_are_going_swimmingly", "Things are going swimmingly!", "Suit up with a full set of SCUBA gear", Material.HORN_CORAL, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, -1f, -1f);
+		ItemStack betterFireBow = new ItemStack(Material.BOW,1);
+		ItemMeta bowMeta = betterFireBow.getItemMeta();
+		bowMeta.addEnchant(Enchantment.ARROW_FIRE, 1, true);
+		betterFireBow.setItemMeta(bowMeta);
+		addAdvancement(gm4, "flint_n_stick", "Flint 'n Stick", "Lose 1 durability when shooting a bow with the Flame enchantment", betterFireBow, AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS, -1f, -2f);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 			manager.loadProgress(p, "gm4");
