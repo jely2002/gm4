@@ -13,7 +13,10 @@ import com.belka.spigot.gm4.crafting.CraftingBook;
 import com.belka.spigot.gm4.crafting.CustomCrafter;
 import com.belka.spigot.gm4.crafting.CustomRecipes;
 import com.belka.spigot.gm4.crafting.RecipeHandler;
+import com.belka.spigot.gm4.customTerrain.CoolerCaves;
 import com.belka.spigot.gm4.customTerrain.CustomTerrain;
+import com.belka.spigot.gm4.customTerrain.DangerousDungeons;
+import com.belka.spigot.gm4.customTerrain.TowerStructures;
 import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.modules.*;
 import eu.endercentral.crazy_advancements.CrazyAdvancements;
@@ -83,6 +86,9 @@ public class MainClass extends JavaPlugin {
 		//Custom Terrain
 		LootTable lootTable = new LootTable();
 		customTerrain = new CustomTerrain(this, lootTable);
+		CoolerCaves coolerCaves = new CoolerCaves(this, customTerrain);
+		DangerousDungeons dangerousDungeons = new DangerousDungeons(this);
+		TowerStructures towerStructures = new TowerStructures(this);
 		//Modules
 		Advancements advancements = new Advancements(this);
 		BatGrenades batGrenades = new BatGrenades(this);
@@ -125,6 +131,9 @@ public class MainClass extends JavaPlugin {
 				soulGlass,
 
 				customTerrain,
+				coolerCaves,
+				dangerousDungeons,
+				towerStructures,
 
 				advancements,
 				batGrenades,
