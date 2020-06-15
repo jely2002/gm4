@@ -32,7 +32,8 @@ public enum CustomBlockType {// implements Consumer<Block>
 	ENDER_HOPPER("EnderHopper", "Ender Hopper", Material.HOPPER, new Vector(0.5, 0, 0.5), CustomItems.ENDER_HOPPER_SKULL(1), (Block b) -> {
 		b.getWorld().spawnParticle(Particle.SMOKE_LARGE, b.getLocation().add(0.5, 0.75, 0.5), 10);
 		b.getWorld().playSound(b.getLocation(), Sound.BLOCK_PORTAL_TRIGGER, 1, 1);
-	});
+	}),
+	SOUL_GLASS("SoulGlass", "Soul Glass", Material.BROWN_STAINED_GLASS);
 
 	private String id;
 	private String name;
@@ -137,6 +138,8 @@ public enum CustomBlockType {// implements Consumer<Block>
 				return items;
 			case ENDER_HOPPER:
 				return new ArrayList<>(Arrays.asList(new ItemStack(Material.ENDER_PEARL, 4), new ItemStack(Material.IRON_BLOCK, 4), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.ENDER_EYE)));
+			case SOUL_GLASS:
+				return Collections.singletonList(CustomItems.SOUL_GLASS(1));
 			default: return new ArrayList<>();
 		}
 	}

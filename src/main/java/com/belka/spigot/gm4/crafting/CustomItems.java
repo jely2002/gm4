@@ -215,6 +215,17 @@ public class CustomItems {
 		return item;
 	}
 
+//	Soul Glass
+	public static ItemStack SOUL_GLASS(int amount) {
+		ItemStack item = new ItemStack(Material.BROWN_STAINED_GLASS, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		meta.addEnchant(Enchantment.DURABILITY, 1, true);
+		meta.setDisplayName(ChatColor.AQUA + "Soul Glass");
+		item.setItemMeta(meta);
+		return item;
+	}
+
 //	Soul Probes
 	public static ItemStack SOUL_PROBES_BOOK(int amount) {
 		ItemStack item = new ItemStack(Material.BOOK, amount);

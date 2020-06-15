@@ -79,6 +79,7 @@ public class MainClass extends JavaPlugin {
 		BlastFurnaces blastFurnaces = new BlastFurnaces(this);
 		LightningRods lightningRods = new LightningRods(this);
 		TrappedSigns trappedSigns = new TrappedSigns(this);
+		SoulGlass soulGlass = new SoulGlass();
 		//Custom Terrain
 		LootTable lootTable = new LootTable();
 		customTerrain = new CustomTerrain(this, lootTable);
@@ -119,6 +120,7 @@ public class MainClass extends JavaPlugin {
 				blastFurnaces,
 				lightningRods,
 				trappedSigns,
+				soulGlass,
 
 				customTerrain,
 

@@ -46,6 +46,11 @@ PigTractors:
   enabled: true
 PotionSwords:
   enabled: true
+SoulGlass:
+  enabled: true
+  smelting:
+    cookingTime: 800 #in ticks
+    experience: 1
 SoulProbes:
   enabled: true
 SpawnerMinecarts:
