@@ -21,7 +21,7 @@ public class CustomItems {
 	//TODO Handle custom item placing
 
 	public static ItemStack CRAFTING_RECIPE_BOOK(int amount) {
-		ItemStack item = new ItemStack(Material.BOOK, amount);
+		ItemStack item = new ItemStack(Material.KNOWLEDGE_BOOK, amount);
 		ItemMeta meta = item.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		meta.addEnchant(Enchantment.DURABILITY, 1, true);
