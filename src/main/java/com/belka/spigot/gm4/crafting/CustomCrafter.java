@@ -28,6 +28,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CustomCrafter implements Module, Listener {
@@ -89,7 +90,9 @@ public class CustomCrafter implements Module, Listener {
 	public void onBlockBreak(BlockBreakEvent event) { // Remove Custom Blocks
 		Block b = event.getBlock();
 		CustomBlock cb = CustomBlock.get(b.getLocation());
-		if (cb != null && cb.getType() != CustomBlockType.ENDER_HOPPER) {
+		if (cb != null && Arrays.asList(CustomBlockType.CUSTOM_CRAFTER, CustomBlockType.ALCHEMICAL_CRAFTER,
+				CustomBlockType.BLAST_FURNACE, CustomBlockType.DISASSEMBLER, CustomBlockType.LIQUID_TANK,
+				CustomBlockType.MASTER_CRAFTER, CustomBlockType.ZAUBER_CAULDRON).contains(cb.getType())) {
 			cb.destroy(true);
 //			event.getPlayer().sendMessage(ChatColor.GREEN + "Successfully destroyed a " + cb.getType().getName() + " at " + b.getX() + " " + b.getY() + " " + b.getZ() + ".");
 		}
