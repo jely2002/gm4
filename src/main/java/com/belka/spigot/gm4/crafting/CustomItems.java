@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 public class CustomItems {
@@ -252,6 +253,43 @@ public class CustomItems {
 		meta.setDisplayName("Ender Hopper");
 		skull.setItemMeta(meta);
 		return skull;
+	}
+
+	//Scuba gear flippers
+	public static ItemStack SCUBA_GEAR_FLIPPERS(int amount) {
+		ItemStack item = new ItemStack(Material.LEATHER_BOOTS, amount);
+		LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "Movement speed", -0.04, AttributeModifier.Operation.ADD_NUMBER));
+		meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "Armor", 1, AttributeModifier.Operation.ADD_NUMBER));
+		meta.setColor(Color.fromRGB(167,255,79));
+		meta.setDisplayName("Flippers");
+		meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Makes you swim faster")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	//Scuba gear tank
+	public static ItemStack SCUBA_GEAR_TANK(int amount) {
+		ItemStack item = new ItemStack(Material.GOLDEN_CHESTPLATE, amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "Movement speed", -0.01, AttributeModifier.Operation.ADD_NUMBER));
+		meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "Armor", 4, AttributeModifier.Operation.ADD_NUMBER));
+		meta.setDisplayName("SCUBA Tank");
+		meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Contains air to breath underwater")));
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	//Scuba gear helmet
+	public static ItemStack SCUBA_GEAR_HELMET(int amount) {
+		ItemStack item = getSkull("http://textures.minecraft.net/texture/759f56e7078493c1306eeb6bd13e0bd556eb018e3ddc0030a571ab88c4cdce4e", amount);
+		ItemMeta meta = item.getItemMeta();
+		meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier(UUID.randomUUID(), "Movement speed", -0.5, AttributeModifier.Operation.ADD_NUMBER));
+		meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "Armor", 2, AttributeModifier.Operation.ADD_NUMBER));
+		meta.setDisplayName("SCUBA Helmet");
+		meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Lets you breath underwater")));
+		item.setItemMeta(meta);
+		return item;
 	}
 
 	private static ItemStack getSkull(String skinURL, int amount) {
