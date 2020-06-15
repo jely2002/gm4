@@ -70,7 +70,18 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 						Method method = type.getMethod(args[2], int.class);
 						ItemStack itemStack = (ItemStack) method.invoke(ci, x);
 						p.getInventory().addItem(itemStack);
-						sender.sendMessage("Gave " + x + " [" + ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()) + "] to " + args[1]);
+
+						TextComponent text = new TextComponent("Gave " + x + " ");
+						TextComponent item = new TextComponent("[" + ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()) + "]");
+//						JsonObject obj = new JsonObject();
+//						obj.addProperty("a", JsonItemStack.toJson(itemStack));
+//						String itemStr = obj.toString().replace("{\"a\":\"", "");
+//						itemStr = itemStr.substring(0, itemStr.length()-2);
+//						item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(itemStr).create()));
+						text.addExtra(item);
+						text.addExtra(new TextComponent(" to " + args[1]));
+						sender.spigot().sendMessage(text);
+//						sender.sendMessage("Gave " + x + " [" + ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()) + "] to " + args[1]);
 					} catch (Exception ignored) {}
 				}
 				else {
