@@ -93,6 +93,7 @@ public class MainClass extends JavaPlugin {
 		EnderHoppers enderHoppers = new EnderHoppers(this);
 		EndermanSupportClass endermanSupportClass = new EndermanSupportClass();
 		InkSpittingSquid inkSpittingSquid = new InkSpittingSquid(this);
+		NoteBlockInterface noteBlockInterface = new NoteBlockInterface();
 		PigTractors pigTractors = new PigTractors(this);
 		PodzolRootingSoil podzolRootingSoil = new PodzolRootingSoil(this);
 		PotionSwords potionSwords = new PotionSwords(this);
@@ -134,6 +135,7 @@ public class MainClass extends JavaPlugin {
 				enderHoppers,
 				endermanSupportClass,
 				inkSpittingSquid,
+				noteBlockInterface,
 				pigTractors,
 				podzolRootingSoil,
 				potionSwords,

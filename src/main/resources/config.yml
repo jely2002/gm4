@@ -42,6 +42,8 @@ InkSpittingSquid:
   enabled: true
 LightningRods:
   enabled: true
+NoteBlockInterface:
+  enabled: true
 PigTractors:
   enabled: true
 PodzolRootingSoil:
