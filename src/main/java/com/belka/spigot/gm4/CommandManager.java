@@ -84,11 +84,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 					if (name.contains("/")) name = name.split("/")[name.split("/").length];
 					if (args[1].equalsIgnoreCase("source")) {
 						try {
-							loot = new LootTable().load(mc.getResourceAsFile("custom_terrain/" + args[2] + ".nbt"), name);
+							loot = LootTable.load(mc.getResourceAsFile("custom_terrain/" + args[2] + ".nbt"), name);
 						} catch (IOException ignored) {}
 					}
 					else if (args[1].equalsIgnoreCase("file")) {
-						loot = new LootTable().load(mc.getDataFolder() + "/", name);
+						loot = LootTable.load(mc.getDataFolder() + "/", name);
 					}
 					Block block = new Location(((Player) sender).getWorld(), Helper.toInteger(args[3]), Helper.toInteger(args[4]), Helper.toInteger(args[5])).getBlock();
 					if (block.getState() instanceof Chest && loot != null) {
