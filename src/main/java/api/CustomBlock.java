@@ -15,6 +15,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -28,17 +30,18 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 
 	private CustomBlockType type;//Required
 	private Location location;//Required
-	private UUID uuid;//Required
+	private UUID uuid;
 	private BlockFace direction;
 	private Boolean active;
 
+	@NotNull
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("type", type.getId());
 		map.put("location", location);
-		map.put("uuid", uuid.toString());
+		if (uuid != null) map.put("uuid", uuid.toString());
 		if (direction != null) map.put("direction", direction.name());
 		if (active != null) map.put("active", active);
 
@@ -53,15 +56,21 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 			List<CustomBlock> customBlockList = (List<CustomBlock>) mc.getStorage().data().getList("CustomBlocks");
 			assert customBlockList != null;
 			for (CustomBlock cb : customBlockList) {
-				Entity e = Bukkit.getEntity(cb.getUuid());
-				if (e != null)
-					e.setFireTicks(Integer.MAX_VALUE);
-//				Bukkit.broadcastMessage(cb.getType().getName() + " " + cb.getLocation().toString() + " " + cb.getUuid().toString());
+				if (cb.hasEntity()) {
+					Entity e = Bukkit.getEntity(cb.getUuid());
+					if (e != null)
+						e.setFireTicks(Integer.MAX_VALUE);
+//					Bukkit.broadcastMessage(cb.getType().getName() + " " + cb.getLocation().toString() + " " + cb.getUuid().toString());
+				}
 			}
 		}
 	}
 
-	public CustomBlock(CustomBlockType type, Location location, UUID uuid) {
+	public CustomBlock(@NotNull CustomBlockType type, @NotNull Location location) {
+		this.type = type;
+		this.location = location;
+	}
+	public CustomBlock(@NotNull CustomBlockType type, @NotNull Location location, @Nullable UUID uuid) {
 		this.type = type;
 		this.location = location;
 		this.uuid = uuid;
@@ -69,21 +78,9 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 	public CustomBlock(Map<String, Object> map) {
 		this.type = CustomBlockType.getById((String) map.get("type"));
 		this.location = (Location) map.get("location");
-		this.uuid = UUID.fromString((String) map.get("uuid"));
+		if (map.containsKey("uuid")) this.uuid = UUID.fromString((String) map.get("uuid"));
 		if (map.containsKey("direction")) this.direction = BlockFace.valueOf((String) map.get("direction"));
 		if (map.containsKey("active")) this.active = (boolean) map.get("active");
-	}
-	public CustomBlock(String type, Location location) {
-		this.type = CustomBlockType.getById(type);
-		this.location = location;
-		CustomBlock cb = create(Objects.requireNonNull(CustomBlockType.getById(type)), location);
-		this.uuid = cb.getUuid();
-	}
-	public CustomBlock(CustomBlockType type, Location location) {
-		this.type = type;
-		this.location = location;
-		CustomBlock cb = create(type, location);
-		this.uuid = cb.getUuid();
 	}
 
 	public CustomBlockType getType() {
@@ -93,10 +90,14 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 	public Location getLocation() {
 		return location;
 	}
+
 	public Block getBlock() {
 		return location.getBlock();
 	}
 
+	public boolean hasEntity() {
+		return uuid != null;
+	}
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -143,25 +144,33 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 		else return null;
 	}
 	public static CustomBlock create(CustomBlockType type, Location location) {
-		ArmorStand as = (ArmorStand) Objects.requireNonNull(location.getWorld()).spawnEntity(location.clone().add(type.getOffset()), EntityType.ARMOR_STAND);
-		as.setVisible(false);
-		as.setSmall(true);
-		as.setGravity(false);
-		as.setCanPickupItems(false);
-		as.setCustomNameVisible(false);
-		as.setRemoveWhenFarAway(false);
-		as.setMarker(true);
-		as.setFireTicks(Integer.MAX_VALUE);
-		as.addScoreboardTag("gm4");
-		as.setCustomName(type.getId());
-		Objects.requireNonNull(as.getEquipment()).setHelmet(type.getHelmet());
+		CustomBlock cb;
+		if (type.hasArmorStand()) {
+			ArmorStand as = (ArmorStand) Objects.requireNonNull(location.getWorld()).spawnEntity(location.clone().add(type.getOffset()), EntityType.ARMOR_STAND);
+			as.setVisible(false);
+			as.setSmall(true);
+			as.setGravity(false);
+			as.setCanPickupItems(false);
+			as.setCustomNameVisible(false);
+			as.setRemoveWhenFarAway(false);
+			as.setMarker(true);
+			as.setFireTicks(Integer.MAX_VALUE);
+			as.addScoreboardTag("gm4");
+			as.setCustomName(type.getId());
+			if (type.hasHelmet())
+				Objects.requireNonNull(as.getEquipment()).setHelmet(type.getHelmet());
 
-		if (type.hasHeadPose())
-			as.setHeadPose(type.getHeadPose());
+			if (type.hasHeadPose())
+				as.setHeadPose(type.getHeadPose());
 
-		handleBlock(location, type);
+			handleBlock(location, type);
 
-		CustomBlock cb = new CustomBlock(type, location, as.getUniqueId());
+			cb = new CustomBlock(type, location, as.getUniqueId());
+		}
+		else {
+			handleBlock(location, type);
+			cb = new CustomBlock(type, location);
+		}
 
 		List<CustomBlock> customBlockList = (List<CustomBlock>) mc.getStorage().data().getList("CustomBlocks");
 		assert customBlockList != null;
@@ -175,19 +184,21 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 	public void convert(CustomBlockType type) {
 		Location loc = this.getLocation().clone();
 
-		Entity e = Bukkit.getEntity(this.getUuid());
-		if (e != null) {
-			if (e instanceof ArmorStand) {
-				ArmorStand as = (ArmorStand) e;
-				if (type.hasHeadPose()) {
-					as.setHeadPose(type.getHeadPose());
-				}
-				Objects.requireNonNull(as.getEquipment()).setHelmet(type.getHelmet());
+		if (hasEntity()) {
+			Entity e = Bukkit.getEntity(this.getUuid());
+			if (e != null) {
+				if (e instanceof ArmorStand) {
+					ArmorStand as = (ArmorStand) e;
+					if (type.hasHeadPose()) {
+						as.setHeadPose(type.getHeadPose());
+					}
+					Objects.requireNonNull(as.getEquipment()).setHelmet(type.getHelmet());
 
-				if (type.hasHeadPose())
-					as.setHeadPose(type.getHeadPose());
+					if (type.hasHeadPose())
+						as.setHeadPose(type.getHeadPose());
+				}
+				e.teleport(loc.clone().add(type.getOffset()));
 			}
-			e.teleport(loc.clone().add(type.getOffset()));
 		}
 
 		handleBlock(loc, type);
@@ -203,9 +214,28 @@ public class CustomBlock implements ConfigurationSerializable, Module {
 //		CustomBlock.create(type, loc);
 	}
 
+	public void move(Location loc) {
+		CustomBlock cb = this;
+
+		List<CustomBlock> customBlockList = (List<CustomBlock>) mc.getStorage().data().getList("CustomBlocks");
+		assert customBlockList != null;
+		customBlockList.remove(cb);
+		if (hasEntity()) {
+			Entity e = Bukkit.getEntity(cb.getUuid());
+			if (e != null)
+			e.teleport(e.getLocation().add(loc.clone().subtract(this.location.clone())));
+		}
+		this.location = loc;
+		customBlockList.add(cb);
+
+		mc.getStorage().data().set("CustomBlocks", customBlockList);
+		mc.getStorage().saveData();
+	}
+
 	public void destroy(boolean dropItems) {
 		CustomBlock cb = this;
-		Objects.requireNonNull(Bukkit.getEntity(cb.getUuid())).remove();
+		if (hasEntity())
+			Objects.requireNonNull(Bukkit.getEntity(cb.getUuid())).remove();
 
 		List<CustomBlock> customBlockList = (List<CustomBlock>) mc.getStorage().data().getList("CustomBlocks");
 		assert customBlockList != null;
