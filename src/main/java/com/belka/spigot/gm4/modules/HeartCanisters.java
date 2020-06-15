@@ -1,10 +1,12 @@
 package com.belka.spigot.gm4.modules;
 
 import api.ConsoleColor;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +30,9 @@ public class HeartCanisters implements Module, Listener {
 	public HeartCanisters(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Heart Canisters", Material.RED_DYE); }
 
 	@Override
 	public void init(MainClass mc) {

@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
@@ -30,7 +31,10 @@ public class PigTractors implements Listener, Module {
         this.mc = mc;
     }
 
-    HashMap<String, Entity> Tractors = new HashMap<>();
+	@Override
+	public Setting getSetting() { return new Setting("Pig Tractors", Material.CARROT_ON_A_STICK); }
+
+    private HashMap<String, Entity> tractors = new HashMap<>();
 
     private boolean isDisabled() {
         return !mc.getStorage().config().getBoolean("PigTractors.enabled");
@@ -43,24 +47,21 @@ public class PigTractors implements Listener, Module {
 
     private void startScheduler() {
         BukkitScheduler scheduler = mc.getServer().getScheduler();
-        scheduler.runTaskTimer(mc, new Runnable() {
-            @Override
-            public void run() {
-                for(Player p : mc.getServer().getOnlinePlayers()) {
-                    if(p.isInsideVehicle() && p.getVehicle() instanceof Pig) {
-                        if(hasHoe(p)) {
-                            Tractors.putIfAbsent(p.getName(), p.getVehicle());
-                            Advancements.grantAdvancement("oink_tractors", p);
-                        }
-                    }
-                    if(Tractors.containsKey(p.getName())) {
-                        if(!hasHoe(p) || !(p.isInsideVehicle() && p.getVehicle() instanceof Pig)) {
-                            Tractors.remove(p.getName());
-                        }
-                    }
-                }
-            }
-        }, 0L, 20L);
+        scheduler.runTaskTimer(mc, () -> {
+			for(Player p : mc.getServer().getOnlinePlayers()) {
+				if(p.isInsideVehicle() && p.getVehicle() instanceof Pig) {
+					if(hasHoe(p)) {
+						tractors.putIfAbsent(p.getName(), p.getVehicle());
+						Advancements.grantAdvancement("oink_tractors", p);
+					}
+				}
+				if(tractors.containsKey(p.getName())) {
+					if(!hasHoe(p) || !(p.isInsideVehicle() && p.getVehicle() instanceof Pig)) {
+						tractors.remove(p.getName());
+					}
+				}
+			}
+		}, 0L, 20L);
     }
 
     private void removeDurability(Inventory inv) {
@@ -83,8 +84,8 @@ public class PigTractors implements Listener, Module {
         if(isDisabled()) return;
         if(e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
         if(e.getFrom().getBlock().getType() != e.getTo().getBlock().getType() && e.getFrom().getY() != e.getTo().getY()) return;
-        if(Tractors.containsKey(e.getPlayer().getName())) {
-            if(!(Tractors.get(e.getPlayer().getName()) == e.getPlayer().getVehicle())) return;
+        if(tractors.containsKey(e.getPlayer().getName())) {
+            if(!(tractors.get(e.getPlayer().getName()) == e.getPlayer().getVehicle())) return;
             Player p = e.getPlayer();
             Entity vehicle = p.getVehicle();
             Block blockUnderneath = new Location(e.getTo().getWorld(), e.getTo().getX(), vehicle.getLocation().getY() - 0.5, e.getTo().getZ()).getBlock();

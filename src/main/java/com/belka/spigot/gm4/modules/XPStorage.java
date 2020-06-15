@@ -1,6 +1,8 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class XPStorage implements Listener {
+public class XPStorage implements Listener, Module {
 
 	private MainClass mc;
 	private Map<UUID, Integer> timers = new HashMap<>();
@@ -25,9 +27,12 @@ public class XPStorage implements Listener {
 		this.mc = mc;
 	}
 
+	@Override
+	public Setting getSetting() { return new Setting("XP Storage", Material.EXPERIENCE_BOTTLE); }
+
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
-		if(!mc.getStorage().config().getBoolean("XpStorage.enabled")) return;
+		if(!mc.getStorage().config().getBoolean("XPStorage.enabled")) return;
 		if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) return;
 		Block bTo = e.getTo().getBlock();
 		Block bFrom = e.getFrom().getBlock();
@@ -46,11 +51,11 @@ public class XPStorage implements Listener {
 
 	private void editLevel(Player p, String place) {
 		UUID uuid = p.getUniqueId();
-		if (!mc.getStorage().data().contains("XpStorage." + uuid)) {
-			mc.getStorage().data().set("XpStorage." + uuid, 0);
+		if (!mc.getStorage().data().contains("XPStorage." + uuid)) {
+			mc.getStorage().data().set("XPStorage." + uuid, 0);
 			mc.getStorage().saveData();
 		}
-		final int fStoredLevel = mc.getStorage().data().getInt("XpStorage." + uuid);
+		final int fStoredLevel = mc.getStorage().data().getInt("XPStorage." + uuid);
 
 		if (place.equals("ABOVE")) {
 			int addXP = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, new Runnable() {
@@ -60,7 +65,7 @@ public class XPStorage implements Listener {
 					if (p.isSneaking() && level >= 50) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel + 50;
-						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().data().set("XPStorage." + uuid, storedLevel);
 						mc.getStorage().saveData();
 						level = level - 50;
 						p.setLevel(level);
@@ -68,7 +73,7 @@ public class XPStorage implements Listener {
 					else if (level > 0) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel + 1;
-						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().data().set("XPStorage." + uuid, storedLevel);
 						mc.getStorage().saveData();
 						level = level - 1;
 						p.setLevel(level);
@@ -87,7 +92,7 @@ public class XPStorage implements Listener {
 					if (p.isSneaking() && storedLevel >= 50) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel - 50;
-						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().data().set("XPStorage." + uuid, storedLevel);
 						mc.getStorage().saveData();
 						level = level + 50;
 						p.setLevel(level);
@@ -95,7 +100,7 @@ public class XPStorage implements Listener {
 					else if (storedLevel > 0) {
 						p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
 						storedLevel = storedLevel - 1;
-						mc.getStorage().data().set("XpStorage." + uuid, storedLevel);
+						mc.getStorage().data().set("XPStorage." + uuid, storedLevel);
 						mc.getStorage().saveData();
 						level = level + 1;
 						p.setLevel(level);

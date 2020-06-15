@@ -1,7 +1,10 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -10,13 +13,16 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.UUID;
 
-public class UndeadPlayers implements Listener {
+public class UndeadPlayers implements Listener, Module {
 
     private MainClass mc;
 
     public UndeadPlayers(MainClass mc) {
         this.mc = mc;
     }
+
+	@Override
+	public Setting getSetting() { return new Setting("Undead Players", Material.BONE); }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {

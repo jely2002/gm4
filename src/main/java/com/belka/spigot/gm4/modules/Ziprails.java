@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Location;
@@ -23,6 +24,9 @@ public class Ziprails implements Module, Listener {
     public Ziprails(MainClass mc) {
         this.mc = mc;
     }
+
+	@Override
+	public Setting getSetting() { return new Setting("Ziprails", Material.STRING); }
 
     @EventHandler
     public void getOnLine(VehicleMoveEvent e) {

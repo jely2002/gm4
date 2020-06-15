@@ -1,7 +1,9 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -27,13 +29,16 @@ import org.bukkit.material.PoweredRail;
 
 import java.util.List;
 
-public class SpawnerMinecarts implements Listener {
+public class SpawnerMinecarts implements Listener, Module {
 
 	private MainClass mc;
 
 	public SpawnerMinecarts(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Spawner Minecarts", Material.SPAWNER); }
 
 	@SuppressWarnings("deprecation")
     @EventHandler

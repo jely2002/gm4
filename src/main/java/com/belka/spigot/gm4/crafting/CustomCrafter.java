@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.crafting;
 
 import api.CustomBlock;
 import api.CustomBlockType;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import com.belka.spigot.gm4.modules.Advancements;
@@ -39,6 +40,9 @@ public class CustomCrafter implements Module, Listener {
 		this.mc = mc;
 		this.rh = rh;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Custom Crafters", Material.CRAFTING_TABLE); }
 
 	@Override
 	public void init(MainClass mc) {

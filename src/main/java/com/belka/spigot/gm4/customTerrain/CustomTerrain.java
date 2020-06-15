@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.customTerrain;
 
 import api.ConsoleColor;
 import api.Helper;
+import api.Setting;
 import api.Structure;
 import api.lootTables.LootTable;
 import com.belka.spigot.gm4.MainClass;
@@ -51,6 +52,9 @@ public class CustomTerrain implements Module, Listener {
 		this.mc = mc;
 		this.lt = lt;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Orbis", Material.STONE); }
 
 	@Override
 	public void init(MainClass mc) {

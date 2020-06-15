@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Material;
@@ -10,8 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -25,6 +29,9 @@ public class BetterFire implements Module, Listener {
 	public BetterFire(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Better Fire", Material.BLAZE_POWDER); }
 
 	private ArrayList<Arrow> fireArrows = new ArrayList<>();
 	private HashMap<UUID, Integer> checkArrows = new HashMap<>();

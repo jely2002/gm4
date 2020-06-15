@@ -1,7 +1,9 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,9 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
-import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -25,13 +24,17 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.List;
 
-public class Chairs implements Listener {
+public class Chairs implements Listener, Module {
 
 	private MainClass mc;
 
 	public Chairs(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Chairs", Material.OAK_STAIRS); }
+
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent e) {
 		if (!mc.getStorage().config().getBoolean("Chairs.enabled")) return;
@@ -102,38 +105,35 @@ public class Chairs implements Listener {
 			if (block.getBlockData() instanceof Stairs) {
 				Stairs stairs = (Stairs) block.getBlockData();
 
-				Bukkit.getScheduler().scheduleSyncDelayedTask(mc, new Runnable() {
-					@Override
-					public void run() {
-						Location playerLoc = pig.getLocation();
-						if (stairs.getFacing().equals(BlockFace.EAST)) {
-							playerLoc = pig.getLocation().subtract(1,0,0).add(0,1,0);
-						} else if (stairs.getFacing().equals(BlockFace.WEST)) {
-							playerLoc = pig.getLocation().add(1,1,0);
-						} else if (stairs.getFacing().equals(BlockFace.NORTH)) {
-							playerLoc = pig.getLocation().add(0,1,1);
-						} else if (stairs.getFacing().equals(BlockFace.SOUTH)) {
-							playerLoc = pig.getLocation().subtract(0,0,1).add(0,1,0);
-						}
-						playerLoc.setPitch(p.getLocation().getPitch());
-						playerLoc.setYaw(p.getLocation().getYaw());
-						p.teleport(playerLoc);
-						Location pigLoc = block.getLocation();
-						if (stairs.getFacing().equals(BlockFace.NORTH)) {
-							pigLoc.add(.5, -.39, .55);
-							pigLoc.setYaw(0f);
-						} else if (stairs.getFacing().equals(BlockFace.EAST)) {
-							pigLoc.add(.45, -.39, .5);
-							pigLoc.setYaw(90f);
-						} else if (stairs.getFacing().equals(BlockFace.SOUTH)) {
-							pigLoc.add(.5, -.39, .45);
-							pigLoc.setYaw(180f);
-						} else if (stairs.getFacing().equals(BlockFace.WEST)) {
-							pigLoc.add(.55, -.39, .5);
-							pigLoc.setYaw(-90f);
-						}
-						pig.teleport(pigLoc);
+				Bukkit.getScheduler().scheduleSyncDelayedTask(mc, () -> {
+					Location playerLoc = pig.getLocation();
+					if (stairs.getFacing().equals(BlockFace.EAST)) {
+						playerLoc = pig.getLocation().subtract(1,0,0).add(0,1,0);
+					} else if (stairs.getFacing().equals(BlockFace.WEST)) {
+						playerLoc = pig.getLocation().add(1,1,0);
+					} else if (stairs.getFacing().equals(BlockFace.NORTH)) {
+						playerLoc = pig.getLocation().add(0,1,1);
+					} else if (stairs.getFacing().equals(BlockFace.SOUTH)) {
+						playerLoc = pig.getLocation().subtract(0,0,1).add(0,1,0);
 					}
+					playerLoc.setPitch(p.getLocation().getPitch());
+					playerLoc.setYaw(p.getLocation().getYaw());
+					p.teleport(playerLoc);
+					Location pigLoc = block.getLocation();
+					if (stairs.getFacing().equals(BlockFace.NORTH)) {
+						pigLoc.add(.5, -.39, .55);
+						pigLoc.setYaw(0f);
+					} else if (stairs.getFacing().equals(BlockFace.EAST)) {
+						pigLoc.add(.45, -.39, .5);
+						pigLoc.setYaw(90f);
+					} else if (stairs.getFacing().equals(BlockFace.SOUTH)) {
+						pigLoc.add(.5, -.39, .45);
+						pigLoc.setYaw(180f);
+					} else if (stairs.getFacing().equals(BlockFace.WEST)) {
+						pigLoc.add(.55, -.39, .5);
+						pigLoc.setYaw(-90f);
+					}
+					pig.teleport(pigLoc);
 				}, 1L);
 
 			}

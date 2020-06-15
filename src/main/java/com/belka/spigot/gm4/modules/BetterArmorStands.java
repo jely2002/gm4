@@ -1,7 +1,9 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -14,13 +16,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class BetterArmorStands implements Listener {
+public class BetterArmorStands implements Listener, Module {
 
 	private MainClass mc;
 
 	public BetterArmorStands(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Better Armor Stands", Material.ARMOR_STAND); }
 
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {

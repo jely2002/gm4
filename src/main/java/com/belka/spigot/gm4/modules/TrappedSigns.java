@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.ConsoleColor;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
@@ -31,6 +32,9 @@ public class TrappedSigns implements Module, Listener {
     public TrappedSigns(MainClass mc) {
         this.mc = mc;
     }
+
+	@Override
+	public Setting getSetting() { return new Setting("Trapped Signs", Material.OAK_SIGN); }
 
     @Override
     public void init(MainClass mc) {
@@ -75,9 +79,9 @@ public class TrappedSigns implements Module, Listener {
                 if (e.getBlock().getLocation().getBlockY() == mc.getStorage().data().getInt("TrappedSigns." + id + ".y")) {
                     if (e.getBlock().getLocation().getBlockZ() == mc.getStorage().data().getInt("TrappedSigns." + id + ".z")) {
                         if (e.getBlock().getWorld().getName().equals(mc.getStorage().data().getString("TrappedSigns." + id + ".world"))) {
-                            if (e.getLine(3).isEmpty()) {
+//                            if (e.getLine(3).isEmpty()) {//TODO secret signs
                                 e.setLine(3, "-x-");
-                            }
+//                            }
                         }
                     }
                 }

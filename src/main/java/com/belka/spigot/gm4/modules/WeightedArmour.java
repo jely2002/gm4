@@ -1,7 +1,9 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +19,9 @@ public class WeightedArmour implements Module, Listener {
 	public WeightedArmour(MainClass mc){
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Weighted Armour", Material.CHAINMAIL_BOOTS); }
     
     private int leatherBoots = 1;
     private int leatherLeggings = 2;

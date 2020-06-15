@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Location;
@@ -25,6 +26,9 @@ public class PotionSwords implements Listener, Module {
 		this.mc = mc;
 	}
 
+	@Override
+	public Setting getSetting() { return new Setting("Potion Swords", Material.IRON_SWORD); }
+
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent e) {
 		if(!mc.getStorage().config().getBoolean("PotionSwords.enabled")) return;
@@ -44,7 +48,7 @@ public class PotionSwords implements Listener, Module {
 						if(skeleton.getType() == EntityType.SKELETON) {
 							Advancements.grantAdvancement("instant_regret", p);
 							Location skeletonLoc = skeleton.getLocation();
-							Double skeletonHealth = skeleton.getHealth();
+							double skeletonHealth = skeleton.getHealth();
 							skeletonLoc.getWorld().spawnEntity(skeletonLoc, EntityType.WITHER_SKELETON);
 							skeleton.remove();
 							for (Entity nearbyEntity : Helper.getNearbyEntities(skeletonLoc, 0.1)) {

@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.ConsoleColor;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
@@ -17,7 +18,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,6 +30,9 @@ public class LightningRods implements Module, Listener {
     public LightningRods(MainClass mc) {
         this.mc = mc;
     }
+
+	@Override
+	public Setting getSetting() { return new Setting("Lightning Rods", Material.BLAZE_ROD); }
 
     @Override
     public void init(MainClass mc) {

@@ -1,7 +1,9 @@
 package com.belka.spigot.gm4.customTerrain;
 
+import api.Setting;
 import api.Structure;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -12,11 +14,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class TowerStructures {
+public class TowerStructures implements Module {
 	private MainClass mc;
 	public TowerStructures(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Tower Structures", Material.CRACKED_STONE_BRICKS).setPath("CustomTerrain."); }
 
 	Structure getStructure(Chunk c, int y) {
 		ChunkSnapshot cs = c.getChunkSnapshot(true, true, false);

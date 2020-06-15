@@ -1,9 +1,11 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -19,6 +21,9 @@ public class InkSpittingSquid implements Module {
 	public InkSpittingSquid(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Ink Spitting Squid", Material.INK_SAC); }
 
 	@Override
 	public void init(MainClass mc) {

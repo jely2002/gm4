@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.InventoryCreator;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.Module;
@@ -40,7 +41,10 @@ public class SoulProbes implements Module, Listener {
 	}
 
 	@Override
-    public void init(MainClass mc) {
+	public Setting getSetting() { return new Setting("Soul Probes", Material.GHAST_SPAWN_EGG); }
+
+	@Override
+    public void init(MainClass mc) {//TODO add to config
 		hostileOverworld.put(EntityType.CREEPER, 100);
 		hostileOverworld.put(EntityType.SKELETON, 100);
 		hostileOverworld.put(EntityType.SPIDER, 100);

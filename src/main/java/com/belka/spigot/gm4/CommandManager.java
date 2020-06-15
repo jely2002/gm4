@@ -181,7 +181,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 			if (sender instanceof Player) {
 				Player p = (Player) sender;
 				if (!p.hasPermission("gm4.settings")) return true;
-				gui.openInventory(p);
+//				gui.openInventory(p);
+				p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+				p.openInventory(gui.settings(p, 1));
 			}
 			else {
 				sender.sendMessage(ChatColor.RED + "The settings menu can only be opened as player.");

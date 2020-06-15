@@ -1,12 +1,10 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,6 +16,9 @@ public class BatGrenades implements Module {
 	public BatGrenades(MainClass mc){
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Bat Grenades", Material.TNT); }
 
 	@Override
 	public void init(MainClass mc) {

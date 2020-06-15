@@ -182,6 +182,15 @@ public class MainClass extends JavaPlugin {
 			if(o instanceof Module) {
 				Module module = (Module) o;
 				module.init(this);
+				if (module.getSetting() != null) {
+					String className = o.toString().replace("com.belka.spigot.gm4.", "").split("\\.")[1].split("@")[0];
+					if (!getStorage().data().contains("settings." + className)) {
+						getStorage().data().set("settings." + className + ".name", module.getSetting().getName());
+						getStorage().data().set("settings." + className + ".type", module.getSetting().getIcon().name());
+						getStorage().data().set("settings." + className + ".path", module.getSetting().getPath());
+						getStorage().saveData();
+					}
+				}
 				modules.add(module);
 				modulesRegistered++;
 			}

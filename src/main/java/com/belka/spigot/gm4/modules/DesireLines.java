@@ -1,5 +1,6 @@
 package com.belka.spigot.gm4.modules;
 
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.crafting.CustomItems;
 import com.belka.spigot.gm4.interfaces.Module;
@@ -27,6 +28,9 @@ public class DesireLines implements Module, Listener {
 	}
 
 	@Override
+	public Setting getSetting() { return new Setting("Desire Lines", Material.COARSE_DIRT); }
+
+	@Override
 	public void init(MainClass mc) {
 		max = mc.getStorage().config().getInt("DesireLines.max");
 		amount = mc.getStorage().config().getInt("DesireLines.amount");
@@ -38,6 +42,7 @@ public class DesireLines implements Module, Listener {
 		if(e.getFrom().getBlock() == e.getTo().getBlock()) return;
 
 		Player p = e.getPlayer();
+		if (p.getLocation().getBlock().isLiquid()) return;
 		if(random.nextInt(max) <= amount) {
 			Block below = p.getLocation().getBlock();
 			if(!p.isSneaking() && (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
@@ -68,9 +73,7 @@ public class DesireLines implements Module, Listener {
 			case SAND:
 				return Material.SANDSTONE;
 			default:
-				if(isPlant(i)) {
-					return Material.AIR;
-				}
+				if(isPlant(i)) return Material.AIR;
 				return i;
 		}
 	}
@@ -85,6 +88,6 @@ public class DesireLines implements Module, Listener {
 	private boolean hasBoots(Player p) {
 		PlayerInventory inv = p.getInventory();
 		if (inv.getBoots() == null) return false;
-		return p.getInventory().getBoots().equals(CustomItems.BOOTS_OF_OSTARA(1));
+		return inv.getBoots().equals(CustomItems.BOOTS_OF_OSTARA(1));
 	}
 }

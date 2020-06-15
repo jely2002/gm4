@@ -2,6 +2,7 @@ package com.belka.spigot.gm4.modules;
 
 import api.CustomBlock;
 import api.CustomBlockType;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
@@ -33,6 +34,9 @@ public class EnderHoppers implements Module, Listener {
         this.mc = mc;
     }
 
+	@Override
+	public Setting getSetting() { return new Setting("Ender Hoppers", Material.ENDER_EYE); }
+
     @Override
     public void init(MainClass mc) {
 		if(!mc.getStorage().config().getBoolean("EnderHoppers.enabled")) return;
@@ -59,12 +63,12 @@ public class EnderHoppers implements Module, Listener {
 	public void onItemDrop(PlayerDropItemEvent e) {
 		if (!mc.getStorage().config().getBoolean("EnderHoppers.enabled")) return;
 		Item i = e.getItemDrop();
-		final int[] task = new int[]{-1};
-		task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
-			if (i.isOnGround()) {
-				Bukkit.getScheduler().cancelTask(task[0]);
-				Location loc = i.getLocation();
-				if (i.getItemStack().getType() == Material.ENDER_EYE) {
+		if (i.getItemStack().getType() == Material.ENDER_EYE) {
+			final int[] task = new int[]{-1};
+			task[0] = mc.getServer().getScheduler().scheduleSyncRepeatingTask(mc, () -> {
+				if (i.isOnGround()) {
+					Bukkit.getScheduler().cancelTask(task[0]);
+					Location loc = i.getLocation();
 					Block b = loc.getBlock();
 					if (b.getBlockData().getMaterial() == Material.HOPPER || b.getRelative(0, -1, 0).getBlockData().getMaterial() == Material.HOPPER) {
 						Hopper h;
@@ -80,8 +84,8 @@ public class EnderHoppers implements Module, Listener {
 						}
 					}
 				}
-			}
-		}, 0, 1L);
+			}, 0, 1L);
+		}
 	}
 
 	@EventHandler

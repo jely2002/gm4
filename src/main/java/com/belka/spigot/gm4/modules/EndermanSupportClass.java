@@ -1,9 +1,11 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.*;
@@ -13,6 +15,9 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.List;
 
 public class EndermanSupportClass implements Module {
+
+	@Override
+	public Setting getSetting() { return new Setting("Enderman Support Class", Material.ENDER_PEARL); }
 
 	@Override
 	public void init(MainClass mc) {

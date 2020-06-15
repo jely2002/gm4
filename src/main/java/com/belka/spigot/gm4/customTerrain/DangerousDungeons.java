@@ -1,7 +1,9 @@
 package com.belka.spigot.gm4.customTerrain;
 
+import api.Setting;
 import api.Structure;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
@@ -11,12 +13,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class DangerousDungeons {
+public class DangerousDungeons implements Module {
 	private MainClass mc;
 
 	public DangerousDungeons(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Dangerous Dungeons", Material.COBWEB).setPath("CustomTerrain."); }
 
 	Structure getStructure(Chunk c) {
 		ChunkSnapshot cs = c.getChunkSnapshot(true, true, false);

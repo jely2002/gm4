@@ -1,6 +1,7 @@
 package com.belka.spigot.gm4.modules;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Location;
@@ -10,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Levelled;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -19,7 +20,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZauberCauldrons implements Module, Listener{
+public class ZauberCauldrons implements Module, Listener {
 
 	private MainClass mc;
 	private List<String> active = new ArrayList<>();
@@ -27,6 +28,9 @@ public class ZauberCauldrons implements Module, Listener{
 	public ZauberCauldrons(MainClass mc) {
 		this.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Zauber Cauldrons", Material.CAULDRON); }
 
 	@Override
 	public void init(MainClass mc) {

@@ -3,6 +3,7 @@ package com.belka.spigot.gm4.modules;
 import api.ConsoleColor;
 import api.CustomBlock;
 import api.CustomBlockType;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
 import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.Bukkit;
@@ -34,6 +35,9 @@ public class BlastFurnaces implements Module, Listener {
 	public BlastFurnaces(MainClass mc) {
 		BlastFurnaces.mc = mc;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Blast Furnaces", Material.BLAST_FURNACE); }
 
 	@Override
 	public void init(MainClass mc) {

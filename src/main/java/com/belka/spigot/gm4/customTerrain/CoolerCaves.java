@@ -1,14 +1,19 @@
 package com.belka.spigot.gm4.customTerrain;
 
 import api.Helper;
+import api.Setting;
 import com.belka.spigot.gm4.MainClass;
+import com.belka.spigot.gm4.interfaces.Module;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Snow;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class CoolerCaves {
+public class CoolerCaves implements Module {
 
 	private MainClass mc;
 	private CustomTerrain ct;
@@ -16,6 +21,9 @@ public class CoolerCaves {
 		this.mc = mc;
 		this.ct = ct;
 	}
+
+	@Override
+	public Setting getSetting() { return new Setting("Cooler Caves", Material.MOSSY_COBBLESTONE).setPath("CustomTerrain."); }
 
 	private List<BiomeGroup> updatable = Arrays.asList(BiomeGroup.SNOWY, BiomeGroup.OCEAN, BiomeGroup.DESERT, BiomeGroup.BADLANDS);
 	private BiomeGroup[] updatableArray = updatable.toArray(new BiomeGroup[0]);
