@@ -42,6 +42,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
         return handlers;
     }
 
+    public static HandlerList getHandlerList() { return handlers; }
     /**
      * Sets if this event should be cancelled.
      *

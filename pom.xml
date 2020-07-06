@@ -16,13 +16,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.jely2002</groupId>
             <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
-            <version>1.13.7</version>
+            <version>1.13.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

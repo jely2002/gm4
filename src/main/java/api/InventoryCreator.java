@@ -127,8 +127,8 @@ public class InventoryCreator {
 			case MAGMA_CUBE:
 				url += "38957d5023c937c4c41aa2412d43410bda23cf79a9f6ab36b76fef2d7c429";
 				break;
-			case PIG_ZOMBIE:
-				name = "Zombie Pigman";
+			case ZOMBIFIED_PIGLIN: //TODO Add nether mobs
+				name = "Zombified Piglin";
 				url += "95fb2df754c98b742d35e7b81a1eeac9d37c69fc8cfecd3e91c67983516f";
 				break;
 			case BLAZE:

@@ -59,7 +59,7 @@ public class SoulProbes implements Module, Listener {
 
 		hostileNether.put(EntityType.GHAST, 25);
 		hostileNether.put(EntityType.MAGMA_CUBE, 50);
-		hostileNether.put(EntityType.PIG_ZOMBIE, 100);
+		hostileNether.put(EntityType.ZOMBIFIED_PIGLIN, 100); //TODO Add nether mobs
 		hostileNether.put(EntityType.BLAZE, 100);
 
 		passive.put(EntityType.COW, 100);
